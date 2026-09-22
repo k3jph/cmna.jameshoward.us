@@ -701,3 +701,19 @@ code:not(pre code) {
     scroll-behavior: auto;
   }
 }
+
+
+.button.secondary-on-light {
+  background: transparent;
+  color: var(--azure);
+  border-color: var(--azure);
+}
+
+.button.secondary-on-light:hover {
+  background: var(--azure);
+  color: var(--white);
+}
+
+.aside-card {
+  margin-top: 1rem;
+}
