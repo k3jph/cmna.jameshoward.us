@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="Bisection Method — CMNA"
+  description="The bisection method as implemented in CMNA."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Root finding</p>
+      <h1 class="page-title">The bisection method</h1>
+      <p class="lede">
+        Bracket a real root, halve the interval, keep the half that still contains
+        the sign change, and repeat.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>The idea</h2>
+        <p>
+          Suppose a continuous function changes sign between <code>a</code> and
+          <code>b</code>. The intermediate value theorem tells us that at least one
+          real root lies between them. Bisection repeatedly evaluates the midpoint
+          and discards the half-interval that cannot contain the sign change.
+        </p>
+        <p>
+          The method is not glamorous, but it is difficult to misunderstand. Each
+          successful iteration cuts the width of the bracket in half. That makes the
+          convergence behavior explicit and gives us a direct handle on the remaining
+          interval error.
+        </p>
+
+        <h2>CMNA implementation</h2>
+        <p>
+          The companion package stops when the interval width is below
+          <code>tol</code>, or when the iteration cap <code>m</code> is exceeded.
+        </p>
+      </article>
+
+      <div class="code-panel">
+        <pre><code>bisection &lt;- function(f, a, b, tol = 1e-3, m = 100) {
+    iter &lt;- 0
+    f.a &lt;- f(a)
+    f.b &lt;- f(b)
+
+    while (abs(b - a) &gt; tol) {
+        iter &lt;- iter + 1
+        if (iter &gt; m) {
+            warning("iterations maximum exceeded")
+            break
+        }
+
+        xmid &lt;- (a + b) / 2
+        ymid &lt;- f(xmid)
+
+        if (f.a * ymid &gt; 0) {
+            a &lt;- xmid
+            f.a &lt;- ymid
+        } else {
+            b &lt;- xmid
+            f.b &lt;- ymid
+        }
+    }
+
+    root &lt;- (a + b) / 2
+    return(root)
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell content">
+      <h2>Why it belongs here</h2>
+      <p>
+        Bisection is a particularly good model for the CMNA approach because the
+        method, the code, and the convergence argument all remain visible at once.
+        There is almost no software machinery between the mathematical statement and
+        the implementation.
+      </p>
+      <p>
+        <a href="https://github.com/k3jph/cmna-pkg/blob/main/R/bisection.R">View the current source on GitHub →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
