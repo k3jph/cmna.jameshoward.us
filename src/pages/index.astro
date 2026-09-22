@@ -97,11 +97,52 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <div class="code-panel">
           <pre><code>f &lt;- function(x) x^3 - 2*x^2 - 159*x - 540
-root &lt;- bisection(f, 0, 10)
+root &lt;- bisection(f, 10, 20)
 
 # The answer matters.
 # The path to the answer matters too.</code></pre>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-intro">
+    <div class="shell">
+      <p class="section-kicker">CMNA Laboratory</p>
+      <h2 class="section-title">Make the iteration visible.</h2>
+      <p class="lede">
+        A printed algorithm freezes the process at exactly the moment when movement
+        is most informative. The laboratory pages put that movement back: change the
+        problem, walk the iterations, and watch convergence happen.
+      </p>
+      <div class="card-grid">
+        <article class="card lab-card">
+          <span class="lab-badge">Live lab</span>
+          <h3>Halve the uncertainty</h3>
+          <p>
+            Run bisection against several functions, inspect every bracket, and play
+            the convergence from the first interval to the final estimate.
+          </p>
+          <a href="/methods/bisection/">Open the bisection lab →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Comparison</span>
+          <h3>Same root, different path</h3>
+          <p>
+            Compare bisection, Newton, and secant by residual and see why iteration
+            count alone is not the whole story.
+          </p>
+          <a href="/methods/root-finding/">Compare root finders →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge muted">Atlas</span>
+          <h3>Find the machinery</h3>
+          <p>
+            Search the method atlas by concept or R function across the algorithms
+            currently represented in the companion package.
+          </p>
+          <a href="/methods/">Search the atlas →</a>
+        </article>
       </div>
     </div>
   </section>
@@ -111,9 +152,9 @@ root &lt;- bisection(f, 0, 10)
       <p class="section-kicker">Living companion</p>
       <h2 class="section-title">The printed page does not have to be the end of the project.</h2>
       <p class="lede">
-        Corrections, modernized code, expanded examples, teaching notes, and
-        second-edition-scale ideas can accumulate here without pretending that every
-        useful addition belongs in the first edition.
+        Corrections, modernized code, expanded examples, and teaching notes can
+        accumulate here as the project grows beyond the printed page. If that body
+        of work someday supports a new edition, the evidence will already exist.
       </p>
       <div class="hero-actions">
         <a class="button" href="/updates/">See project updates</a>
