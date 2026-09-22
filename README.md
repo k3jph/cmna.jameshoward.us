@@ -15,7 +15,7 @@ This is not a general numerical-analysis encyclopedia. It is the front door for 
 
 ## Brand
 
-The CMNA mark is heraldic: a deep Azure shield bearing a pile Or charged with three diminishing roundels Murrey, representing successive approximations converging toward a limit.
+The CMNA mark is heraldic: a square deep Azure field bearing a pile Or charged with three diminishing roundels Murrey, representing successive approximations converging toward a limit.
 
 The footer uses the shared James Howard site grammar and the canonical James Howard badge, while the rest of the design is specific to CMNA.
 
@@ -37,3 +37,10 @@ The custom domain is declared in `public/CNAME`; deployment is handled by `.gith
 Selected method pages include browser-side interactive demonstrations. These are teaching visualizations of the algorithms represented in the companion package. The first laboratory pages cover bisection and a convergence comparison among bisection, Newton's method, and the secant method.
 
 The method atlas is structured from `src/data/methods.ts` and can be filtered in the browser by method name, domain, or R function.
+
+
+## R Workbench
+
+The site includes a client-side R workbench powered by webR. Valid R is executed in the browser through WebAssembly rather than on a CMNA computation server. A small bundle of canonical CMNA functions is loaded into the session at startup; base R remains available for arbitrary user code and plotting.
+
+Because GitHub Pages cannot provide the cross-origin-isolated headers required for webR's interruptible SharedArrayBuffer channel, the workbench uses the PostMessage channel. A pathological or infinite R computation is terminated by reloading the page and thereby destroying the browser session.
