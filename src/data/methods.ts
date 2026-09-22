@@ -1,4 +1,19 @@
-export const methodGroups = [
+export interface MethodEntry {
+  name: string;
+  functions: string[];
+  href?: string;
+  lab?: boolean;
+}
+
+export interface MethodGroup {
+  slug: string;
+  title: string;
+  description: string;
+  compareHref?: string;
+  methods: MethodEntry[];
+}
+
+export const methodGroups: MethodGroup[] = [
   {
     slug: "fundamentals",
     title: "Error and elementary computation",
