@@ -1,5 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const defaultCode = `f <- function(x) {
+  exp(-x^2) * cos(7 * x)
+}
+
+f(c(-1, 0, 1))
+
+curve(
+  f,
+  from = -3,
+  to = 3,
+  n = 500,
+  xlab = "x",
+  ylab = "f(x)"
+)`;
 ---
 <BaseLayout
   title="R Workbench — CMNA"
@@ -67,20 +82,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             spellcheck="false"
             autocomplete="off"
             aria-label="R code editor"
-          >f <- function(x) {
-  exp(-x^2) * cos(7 * x)
-}
-
-f(c(-1, 0, 1))
-
-curve(
-  f,
-  from = -3,
-  to = 3,
-  n = 500,
-  xlab = "x",
-  ylab = "f(x)"
-)</textarea>
+          >{defaultCode}</textarea>
         </div>
 
         <div class="r-run-row">
