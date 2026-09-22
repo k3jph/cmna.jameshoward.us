@@ -11,7 +11,7 @@ This is not a general numerical-analysis encyclopedia. It is the front door for 
 - Astro
 - static output
 - no client-side framework by default
-- Netlify-ready build configuration
+- GitHub Pages deployment from `main`
 
 ## Brand
 
@@ -27,4 +27,4 @@ npm run dev
 npm run build
 ```
 
-Production URL: <https://cmna.jameshoward.us>
+Production URL: <https://cmna.jameshoward.us>\n\nThe custom domain is declared in `public/CNAME`; deployment is handled by `.github/workflows/deploy-pages.yml`.
