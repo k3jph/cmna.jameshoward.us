@@ -155,6 +155,118 @@ const implementation = [
     </div>
   </section>
 
+
+  <section class="section r-guided-section">
+    <div class="shell" data-bisection-r-lab>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Bring your own function</p>
+          <h2 class="section-title">Now remove the training wheels.</h2>
+          <p class="lede">
+            Define <code>f</code> as any valid R function, choose an interval, and let
+            the browser run the same bisection logic against your problem. The point
+            here is not merely to get a root: CMNA will unpack why the interval works,
+            what the first sign test does, how the uncertainty shrinks, and exactly
+            why the algorithm stops.
+          </p>
+        </div>
+        <div class="lab-expression r-badge-panel">
+          <span>Runtime</span>
+          <code data-r-status>Preparing R…</code>
+        </div>
+      </div>
+
+      <div class="r-guided-grid">
+        <section class="r-guided-editor">
+          <div class="r-editor-label">
+            <span>R</span>
+            <small>Define a function named <code>f</code></small>
+          </div>
+          <textarea
+            class="r-editor r-function-editor"
+            data-r-function
+            spellcheck="false"
+            autocomplete="off"
+            aria-label="Arbitrary R function for bisection"
+          >f <- function(x) {
+  exp(-x) - x
+}</textarea>
+
+          <div class="r-guided-controls">
+            <label>
+              a
+              <input type="number" value="0" step="any" data-r-a />
+            </label>
+            <label>
+              b
+              <input type="number" value="1" step="any" data-r-b />
+            </label>
+            <label>
+              tolerance
+              <input type="number" value="0.000001" min="0" step="any" data-r-tol />
+            </label>
+          </div>
+
+          <div class="r-run-row">
+            <button class="button r-run" type="button" data-r-bisect disabled>Run this R function</button>
+            <button class="r-reset" type="button" data-r-reset>Reset R session</button>
+          </div>
+        </section>
+
+        <aside class="r-guided-primer">
+          <h3>What has to be true first?</h3>
+          <p>
+            Bisection is not magic. The method needs a continuous function and an
+            interval whose endpoint values have opposite signs. If your function does
+            not satisfy that condition, the laboratory will stop there and explain
+            why rather than pretending the algorithm succeeded.
+          </p>
+          <div class="mini-proof">
+            <span>sign f(a)</span>
+            <strong>≠</strong>
+            <span>sign f(b)</span>
+            <strong>⇒</strong>
+            <span>root in [a,b]</span>
+          </div>
+        </aside>
+      </div>
+
+      <div class="lab-summary" data-r-summary></div>
+      <div class="teaching-sequence" data-r-explanation></div>
+
+      <div class="lab-plot-frame">
+        <svg
+          class="lab-plot r-bisection-plot"
+          role="img"
+          aria-label="Graph and interval ladder generated from the arbitrary R function"
+          data-r-plot
+        ></svg>
+      </div>
+
+      <div class="lab-table-wrap">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>n</th>
+              <th>a</th>
+              <th>b</th>
+              <th>midpoint</th>
+              <th>f(midpoint)</th>
+              <th>kept half</th>
+            </tr>
+          </thead>
+          <tbody data-r-rows></tbody>
+        </table>
+      </div>
+
+      <p class="workbench-source-note">
+        The function and trace above are evaluated by real R through webR. The
+        teaching trace instruments the current CMNA bisection update rule; the
+        canonical <code>bisection()</code> function itself remains unchanged.
+      </p>
+    </div>
+  </section>
+
   <section class="section">
     <div class="shell two-column">
       <article class="content">
@@ -184,5 +296,5 @@ const implementation = [
     </div>
   </section>
 
-  <script is:inline type="module" src="/js/bisection-lab.js"></script>
+  <script is:inline type="module" src="/js/bisection-lab.js"></script>\n  <script is:inline type="module" src="/js/bisection-r-lab.js"></script>
 </BaseLayout>
