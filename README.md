@@ -30,3 +30,10 @@ npm run build
 Production URL: <https://cmna.jameshoward.us>
 
 The custom domain is declared in `public/CNAME`; deployment is handled by `.github/workflows/deploy-pages.yml`.
+
+
+## CMNA Laboratory
+
+Selected method pages include browser-side interactive demonstrations. These are teaching visualizations of the algorithms represented in the companion package. The first laboratory pages cover bisection and a convergence comparison among bisection, Newton's method, and the secant method.
+
+The method atlas is structured from `src/data/methods.ts` and can be filtered in the browser by method name, domain, or R function.
