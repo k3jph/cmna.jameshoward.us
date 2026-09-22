@@ -92,14 +92,8 @@ import { methodGroups, methodCount, functionCount } from "../../data/methods";
             <div class="method-list">
               {group.methods.map((method) => {
                 const search = [group.title, method.name, ...method.functions].join(" ").toLowerCase();
-                const Tag = method.href ? "a" : "div";
-                return (
-                  <Tag
-                    class:list={["method-item", method.href && "method-item-link"]}
-                    href={method.href}
-                    data-method-item
-                    data-search={search}
-                  >
+                const body = (
+                  <>
                     <span class="method-name">
                       {method.name}
                       {method.lab && <small class="inline-lab-badge">LAB</small>}
@@ -107,7 +101,21 @@ import { methodGroups, methodCount, functionCount } from "../../data/methods";
                     <span class="method-functions">
                       {method.functions.map((fn) => <code>{fn}</code>)}
                     </span>
-                  </Tag>
+                  </>
+                );
+                return method.href ? (
+                  <a
+                    class="method-item method-item-link"
+                    href={method.href}
+                    data-method-item
+                    data-search={search}
+                  >
+                    {body}
+                  </a>
+                ) : (
+                  <div class="method-item" data-method-item data-search={search}>
+                    {body}
+                  </div>
                 );
               })}
             </div>
