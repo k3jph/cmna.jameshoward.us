@@ -8,7 +8,7 @@
     "build": "npm test && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --test"
+    "test": "node --test && node --check public/js/r-workbench.js && node --check public/js/bisection-r-lab.js && node --check public/js/bisection-lab.js && node --check public/js/root-compare.js && node --check public/js/method-finder.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
