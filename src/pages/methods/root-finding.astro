@@ -1,0 +1,142 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="Root-Finding Methods — CMNA"
+  description="Compare bisection, Newton's method, and the secant method using the CMNA implementations."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Root finding · CMNA Laboratory</p>
+      <h1 class="page-title">Three roads to a root.</h1>
+      <p class="lede">
+        Bisection narrows a bracket. Newton follows a derivative. Secant estimates
+        that derivative from recent function values. The answer may be the same; the
+        path almost never is.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell">
+      <div class="comparison-intro">
+        <article class="card">
+          <span class="lab-badge">Robust</span>
+          <h3>Bisection</h3>
+          <p>
+            Requires a sign-changing bracket. Convergence is steady and easy to
+            bound because every successful step halves the interval.
+          </p>
+        </article>
+        <article class="card">
+          <span class="lab-badge">Fast when happy</span>
+          <h3>Newton</h3>
+          <p>
+            Uses the derivative to jump toward the root. Local convergence can be
+            excellent, but the initial value and derivative matter.
+          </p>
+        </article>
+        <article class="card">
+          <span class="lab-badge">Derivative-free</span>
+          <h3>Secant</h3>
+          <p>
+            Replaces the exact derivative with a slope estimated from nearby points,
+            trading some of Newton's speed for less information.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-section">
+    <div class="shell" data-root-compare>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Compare convergence</p>
+          <h2 class="section-title">Same function. Different machinery.</h2>
+          <p class="lede">
+            The graph uses <code>log10 |f(x)|</code> so that several orders of
+            magnitude of residual fit on one axis. Lower is better.
+          </p>
+        </div>
+        <div class="lab-expression">
+          <span>f(x)</span>
+          <code data-expression></code>
+        </div>
+      </div>
+
+      <div class="lab-controls">
+        <label>
+          Function
+          <select data-preset>
+            <option value="cubic">x³ − x − 2</option>
+            <option value="fixed">cos(x) − x</option>
+            <option value="sqrt2">x² − 2</option>
+            <option value="book">CMNA cubic</option>
+          </select>
+        </label>
+        <label>
+          Tolerance
+          <select data-tolerance>
+            <option value="0.1">10⁻¹</option>
+            <option value="0.01">10⁻²</option>
+            <option value="0.001" selected>10⁻³</option>
+            <option value="0.000001">10⁻⁶</option>
+          </select>
+        </label>
+        <button class="button lab-button" type="button" data-run>Run comparison</button>
+      </div>
+
+      <div class="compare-cards" data-cards></div>
+
+      <div class="comparison-legend" aria-label="Chart legend">
+        <span><i class="legend-azure"></i>Bisection</span>
+        <span><i class="legend-murrey"></i>Newton</span>
+        <span><i class="legend-gold"></i>Secant</span>
+      </div>
+
+      <div class="lab-plot-frame">
+        <svg
+          class="lab-plot"
+          role="img"
+          aria-label="Residual by iteration for bisection, Newton, and secant methods"
+          data-plot
+        ></svg>
+      </div>
+
+      <p class="lab-status" data-note></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>What the comparison is really showing</h2>
+        <p>
+          Iteration count is not the whole cost of a numerical method. Newton asks
+          for a derivative evaluation at every step. Bisection asks only for function
+          values but needs a valid bracket. The secant method avoids an explicit
+          derivative, but the estimated slope can become poor or collapse.
+        </p>
+        <p>
+          The laboratory therefore treats the graph as a way to inspect behavior, not
+          a scoreboard declaring one method universally superior. Numerical analysis
+          is mostly the art of knowing which assumptions you can afford.
+        </p>
+      </article>
+
+      <aside class="callout">
+        <strong>Implementation note</strong>
+        <p>
+          Newton and secant here follow the control flow of the current
+          <code>cmna</code> package implementations, including their initial
+          perturbation by <code>10 * tol</code>. Bisection uses the bracket listed
+          with each example.
+        </p>
+        <a href="https://github.com/k3jph/cmna-pkg/tree/main/R">Inspect the package source →</a>
+      </aside>
+    </div>
+  </section>
+
+  <script is:inline type="module" src="/js/root-compare.js"></script>
+</BaseLayout>
