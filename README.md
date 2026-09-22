@@ -4,7 +4,7 @@ Web companion to **Computational Methods for Numerical Analysis with R** by Jame
 
 ## Purpose
 
-This is not a general numerical-analysis encyclopedia. It is the front door for the book, the `cmna` companion package, selected method explanations, teaching material, errata, and material that may eventually justify a second edition.
+This is not a general numerical-analysis encyclopedia. It is the front door for the book, the `cmna` companion package, selected method explanations, teaching material, errata, and continuing project updates. The accumulated material may someday help make the case for a future edition, but no second edition is currently being presented or announced.
 
 ## Stack
 
@@ -27,4 +27,6 @@ npm run dev
 npm run build
 ```
 
-Production URL: <https://cmna.jameshoward.us>\n\nThe custom domain is declared in `public/CNAME`; deployment is handled by `.github/workflows/deploy-pages.yml`.
+Production URL: <https://cmna.jameshoward.us>
+
+The custom domain is declared in `public/CNAME`; deployment is handled by `.github/workflows/deploy-pages.yml`.
