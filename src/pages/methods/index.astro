@@ -1,43 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-
-const groups = [
-  {
-    title: "Error and elementary computation",
-    copy: "The small algorithms that expose floating-point behavior, evaluation order, and the difference between a formula and a numerically sensible implementation.",
-    tags: ["horner", "kahansum", "quadratic", "nthroot"],
-  },
-  {
-    title: "Linear algebra",
-    copy: "Row operations, matrix reduction, decompositions, and iterative methods implemented close enough to the mathematics to inspect.",
-    tags: ["rrefmatrix", "lumatrix", "choleskymatrix", "jacobi", "gaussseidel", "cgmmatrix"],
-  },
-  {
-    title: "Interpolation and extrapolation",
-    copy: "From linear and polynomial interpolation through splines, Bézier curves, nearest-neighbor methods, and bilinear interpolation.",
-    tags: ["linterp", "polyinterp", "cubicspline", "qbezier", "cbezier", "bilinear", "nn"],
-  },
-  {
-    title: "Differentiation and integration",
-    copy: "Finite differences, Newton–Cotes formulas, Gaussian quadrature, adaptive integration, Romberg integration, and Monte Carlo methods.",
-    tags: ["findiff", "simp", "simp38", "gaussint", "adaptint", "romberg", "mcint"],
-  },
-  {
-    title: "Root finding",
-    copy: "Three classic approaches that make convergence behavior especially easy to see and compare.",
-    tags: ["bisection", "newton", "secant"],
-  },
-  {
-    title: "Optimization",
-    copy: "Continuous and discrete search methods including golden-section search, gradient methods, hill climbing, simulated annealing, and a traveling-salesperson example.",
-    tags: ["goldsectmin", "gd", "hillclimbing", "sa", "tspsa"],
-  },
-  {
-    title: "Differential equations",
-    copy: "Initial-value methods, systems, elementary PDE examples, and boundary-value applications.",
-    tags: ["euler", "midptivp", "rungekutta4", "adamsbashforth", "eulersys", "heat", "wave"],
-  },
-];
+import { methodGroups, methodCount, functionCount } from "../../data/methods";
 ---
 <BaseLayout
   title="Methods — CMNA"
@@ -48,34 +11,111 @@ const groups = [
       <p class="eyebrow">Method atlas</p>
       <h1 class="page-title">The algorithms behind the answers.</h1>
       <p class="lede">
-        This is not intended to become an encyclopedia of numerical analysis. It is
-        a map of the methods that belong to the book and its companion software.
+        This is not a general encyclopedia of numerical analysis. It is a map of the
+        methods that belong to the book and its companion software, with room for
+        demonstrations where seeing the method work is better than another paragraph.
       </p>
+      <div class="atlas-stats" aria-label="Method atlas summary">
+        <span><strong>{methodGroups.length}</strong> domains</span>
+        <span><strong>{methodCount}</strong> methods</span>
+        <span><strong>{functionCount}</strong> R functions</span>
+      </div>
     </div>
   </header>
 
-  <section class="section">
+  <section class="section lab-intro">
     <div class="shell">
-      <div class="method-groups">
-        {groups.map((group) => (
-          <article class="method-group">
-            <h2>{group.title}</h2>
-            <p>{group.copy}</p>
-            <div class="method-tags">
-              {group.tags.map((tag) => (
-                tag === "bisection"
-                  ? <a href="/methods/bisection/">{tag}</a>
-                  : <span>{tag}</span>
-              ))}
-            </div>
-          </article>
-        ))}
-      </div>
+      <p class="section-kicker">CMNA Laboratory</p>
+      <h2 class="section-title">Some algorithms should be watched, not merely read.</h2>
       <p class="lede">
-        The full package reference remains available with the software. This site
-        will add method pages when there is something useful to say beyond the API
-        signature.
+        The laboratory pages turn selected methods into experiments. Change a
+        tolerance, choose a function, walk through individual iterations, and compare
+        the path different algorithms take toward the same answer.
       </p>
+      <div class="card-grid">
+        <article class="card lab-card">
+          <span class="lab-badge">Live lab</span>
+          <h3>Bisection, one interval at a time</h3>
+          <p>
+            Watch the bracket contract, inspect every midpoint, and scrub backward
+            and forward through the iterations.
+          </p>
+          <a href="/methods/bisection/">Open the bisection laboratory →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Comparison</span>
+          <h3>Three roads to a root</h3>
+          <p>
+            Put bisection, Newton, and secant on the same problem and compare
+            convergence by residual.
+          </p>
+          <a href="/methods/root-finding/">Compare root-finding methods →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge muted">Next</span>
+          <h3>More laboratories</h3>
+          <p>
+            Integration, iterative linear algebra, optimization, and differential
+            equations are natural next stops as the interactive grammar settles.
+          </p>
+        </article>
+      </div>
     </div>
   </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="atlas-tools">
+        <label for="method-search">Find a method or function</label>
+        <input
+          id="method-search"
+          type="search"
+          placeholder="Try “Simpson”, “jacobi”, “interpolation”…"
+          autocomplete="off"
+          data-method-search
+        />
+        <p class="atlas-status" data-method-status aria-live="polite"></p>
+      </div>
+
+      <div class="method-groups">
+        {methodGroups.map((group) => (
+          <section class="method-group" id={group.slug} data-method-group>
+            <div class="method-group-head">
+              <div>
+                <h2>{group.title}</h2>
+                <p>{group.description}</p>
+              </div>
+              {group.compareHref && (
+                <a class="group-link" href={group.compareHref}>Compare methods →</a>
+              )}
+            </div>
+            <div class="method-list">
+              {group.methods.map((method) => {
+                const search = [group.title, method.name, ...method.functions].join(" ").toLowerCase();
+                const Tag = method.href ? "a" : "div";
+                return (
+                  <Tag
+                    class:list={["method-item", method.href && "method-item-link"]}
+                    href={method.href}
+                    data-method-item
+                    data-search={search}
+                  >
+                    <span class="method-name">
+                      {method.name}
+                      {method.lab && <small class="inline-lab-badge">LAB</small>}
+                    </span>
+                    <span class="method-functions">
+                      {method.functions.map((fn) => <code>{fn}</code>)}
+                    </span>
+                  </Tag>
+                );
+              })}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script is:inline src="/js/method-filter.js"></script>
 </BaseLayout>
