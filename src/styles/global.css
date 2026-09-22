@@ -1744,3 +1744,182 @@ code:not(pre code) {
     flex-direction: column;
   }
 }
+
+
+.r-guided-section {
+  background:
+    radial-gradient(circle at 88% 8%, rgba(122, 45, 75, 0.08), transparent 28rem),
+    var(--paper);
+}
+
+.r-badge-panel {
+  min-width: 280px;
+}
+
+.r-guided-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.r-guided-editor {
+  border: 1px solid #263b4c;
+  background: #07131f;
+}
+
+.r-function-editor {
+  min-height: 210px;
+}
+
+.r-guided-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  background: #0a1928;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.r-guided-controls label {
+  display: grid;
+  gap: 0.28rem;
+  color: #aebbc5;
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.r-guided-controls input {
+  min-width: 0;
+  width: 100%;
+  min-height: 40px;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #466078;
+  background: #102b46;
+  color: #edf2f5;
+  font: 0.92rem var(--mono);
+}
+
+.r-guided-primer {
+  padding: 1.3rem;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--gold);
+  background: var(--white);
+}
+
+.r-guided-primer h3 {
+  margin: 0 0 0.6rem;
+  color: var(--azure);
+  font: 700 1.4rem/1.1 var(--serif);
+}
+
+.r-guided-primer p {
+  margin: 0;
+  color: #44525e;
+}
+
+.mini-proof {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1.3fr;
+  gap: 0.5rem;
+  align-items: center;
+  color: var(--azure);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.mini-proof span {
+  padding: 0.55rem 0.4rem;
+  border: 1px solid var(--line);
+  background: #faf7f0;
+}
+
+.mini-proof strong {
+  color: var(--murrey);
+  font-size: 1.05rem;
+}
+
+.teaching-sequence {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.3rem;
+}
+
+.teaching-step {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.82);
+}
+
+.teaching-step > span {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: var(--azure);
+  color: var(--white);
+  font-weight: 900;
+}
+
+.teaching-step h3 {
+  margin: 0 0 0.35rem;
+  color: var(--azure);
+  font: 700 1.18rem/1.1 var(--serif);
+}
+
+.teaching-step p {
+  margin: 0;
+  color: #44525e;
+}
+
+.teaching-step strong {
+  color: var(--murrey);
+}
+
+.teaching-error {
+  border-left: 5px solid var(--murrey);
+}
+
+.teaching-error > span {
+  background: var(--murrey);
+}
+
+.r-bisection-plot {
+  min-height: 360px;
+}
+
+@media (max-width: 860px) {
+  .r-guided-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .r-badge-panel {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .r-guided-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-proof {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-proof strong {
+    transform: rotate(90deg);
+  }
+
+  .teaching-step {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+}
