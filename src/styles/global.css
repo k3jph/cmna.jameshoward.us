@@ -1707,3 +1707,40 @@ code:not(pre code) {
     font-size: 0.82rem;
   }
 }
+
+
+.hardcore-callout {
+  margin: 2.2rem 0 1.2rem;
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: center;
+  background: var(--azure);
+  color: var(--white);
+  border-top: 5px solid var(--gold);
+}
+
+.hardcore-callout h3 {
+  margin: 0.15rem 0 0.35rem;
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  line-height: 1.05;
+}
+
+.hardcore-callout p {
+  margin: 0;
+  max-width: 48rem;
+  color: #dbe3e9;
+}
+
+.hardcore-callout .button {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 760px) {
+  .hardcore-callout {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
