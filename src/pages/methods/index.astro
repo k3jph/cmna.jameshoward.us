@@ -1,0 +1,81 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const groups = [
+  {
+    title: "Error and elementary computation",
+    copy: "The small algorithms that expose floating-point behavior, evaluation order, and the difference between a formula and a numerically sensible implementation.",
+    tags: ["horner", "kahansum", "quadratic", "nthroot"],
+  },
+  {
+    title: "Linear algebra",
+    copy: "Row operations, matrix reduction, decompositions, and iterative methods implemented close enough to the mathematics to inspect.",
+    tags: ["rrefmatrix", "lumatrix", "choleskymatrix", "jacobi", "gaussseidel", "cgmmatrix"],
+  },
+  {
+    title: "Interpolation and extrapolation",
+    copy: "From linear and polynomial interpolation through splines, Bézier curves, nearest-neighbor methods, and bilinear interpolation.",
+    tags: ["linterp", "polyinterp", "cubicspline", "qbezier", "cbezier", "bilinear", "nn"],
+  },
+  {
+    title: "Differentiation and integration",
+    copy: "Finite differences, Newton–Cotes formulas, Gaussian quadrature, adaptive integration, Romberg integration, and Monte Carlo methods.",
+    tags: ["findiff", "simp", "simp38", "gaussint", "adaptint", "romberg", "mcint"],
+  },
+  {
+    title: "Root finding",
+    copy: "Three classic approaches that make convergence behavior especially easy to see and compare.",
+    tags: ["bisection", "newton", "secant"],
+  },
+  {
+    title: "Optimization",
+    copy: "Continuous and discrete search methods including golden-section search, gradient methods, hill climbing, simulated annealing, and a traveling-salesperson example.",
+    tags: ["goldsectmin", "gd", "hillclimbing", "sa", "tspsa"],
+  },
+  {
+    title: "Differential equations",
+    copy: "Initial-value methods, systems, elementary PDE examples, and boundary-value applications.",
+    tags: ["euler", "midptivp", "rungekutta4", "adamsbashforth", "eulersys", "heat", "wave"],
+  },
+];
+---
+<BaseLayout
+  title="Methods — CMNA"
+  description="Browse the numerical methods and computational topics represented in CMNA."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Method atlas</p>
+      <h1 class="page-title">The algorithms behind the answers.</h1>
+      <p class="lede">
+        This is not intended to become an encyclopedia of numerical analysis. It is
+        a map of the methods that belong to the book and its companion software.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell">
+      <div class="method-groups">
+        {groups.map((group) => (
+          <article class="method-group">
+            <h2>{group.title}</h2>
+            <p>{group.copy}</p>
+            <div class="method-tags">
+              {group.tags.map((tag) => (
+                tag === "bisection"
+                  ? <a href="/methods/bisection/">{tag}</a>
+                  : <span>{tag}</span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="lede">
+        The full package reference remains available with the software. This site
+        will add method pages when there is something useful to say beyond the API
+        signature.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
