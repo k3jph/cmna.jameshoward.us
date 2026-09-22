@@ -13,10 +13,8 @@ const implementation = [
   '            warning("iterations maximum exceeded")',
   '            break',
   '        }',
-  '',
   '        xmid <- (a + b) / 2',
   '        ymid <- f(xmid)',
-  '',
   '        if (f.a * ymid > 0) {',
   '            a <- xmid',
   '            f.a <- ymid',
@@ -33,15 +31,16 @@ const implementation = [
 ---
 <BaseLayout
   title="Bisection Method — CMNA"
-  description="The bisection method as implemented in CMNA."
+  description="Learn and experiment with the bisection method as implemented in CMNA."
 >
   <header class="page-head">
     <div class="shell">
-      <p class="eyebrow">Root finding</p>
+      <p class="eyebrow">Root finding · CMNA Laboratory</p>
       <h1 class="page-title">The bisection method</h1>
       <p class="lede">
         Bracket a real root, halve the interval, keep the half that still contains
-        the sign change, and repeat.
+        the sign change, and repeat. It is difficult to make glamorous, which is
+        precisely why it is so useful.
       </p>
     </div>
   </header>
@@ -53,21 +52,23 @@ const implementation = [
         <p>
           Suppose a continuous function changes sign between <code>a</code> and
           <code>b</code>. The intermediate value theorem tells us that at least one
-          real root lies between them. Bisection repeatedly evaluates the midpoint
-          and discards the half-interval that cannot contain the sign change.
+          real root lies between them. Bisection evaluates the midpoint and discards
+          the half-interval that cannot contain the sign change.
         </p>
         <p>
-          The method is not glamorous, but it is difficult to misunderstand. Each
-          successful iteration cuts the width of the bracket in half. That makes the
-          convergence behavior explicit and gives us a direct handle on the remaining
-          interval error.
+          Each successful iteration cuts the width of the bracket in half. After
+          <em>n</em> steps, the surviving interval is only
+          <code>(b − a) / 2^n</code> wide. That makes the method slower than some
+          alternatives, but unusually transparent: the computation carries its own
+          error bound around with it.
         </p>
 
-        <h2>CMNA implementation</h2>
-        <p>
-          The companion package stops when the interval width is below
-          <code>tol</code>, or when the iteration cap <code>m</code> is exceeded.
-        </p>
+        <div class="callout">
+          <strong>What bisection buys you:</strong> if the starting interval really
+          brackets a sign change and the function is continuous, the method does not
+          need a clever initial guess or a derivative. It just keeps making the
+          uncertainty smaller.
+        </div>
       </article>
 
       <div class="code-panel">
@@ -76,18 +77,111 @@ const implementation = [
     </div>
   </section>
 
-  <section class="section">
-    <div class="shell content">
-      <h2>Why it belongs here</h2>
-      <p>
-        Bisection is a particularly good model for the CMNA approach because the
-        method, the code, and the convergence argument all remain visible at once.
-        There is almost no software machinery between the mathematical statement and
-        the implementation.
-      </p>
-      <p>
-        <a href="https://github.com/k3jph/cmna-pkg/blob/main/R/bisection.R">View the current source on GitHub →</a>
-      </p>
+  <section class="section lab-section">
+    <div class="shell" data-bisection-lab>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Experiment</p>
+          <h2 class="section-title">Watch the bracket collapse.</h2>
+          <p class="lede">
+            Choose a function and tolerance, then scrub through the iterations.
+            The Murrey endpoints mark the current bracket; the gold point is the
+            midpoint tested at that step.
+          </p>
+        </div>
+        <div class="lab-expression">
+          <span>f(x)</span>
+          <code data-expression></code>
+        </div>
+      </div>
+
+      <div class="lab-controls">
+        <label>
+          Function
+          <select data-preset>
+            <option value="cubic">x³ − x − 2</option>
+            <option value="fixed">cos(x) − x</option>
+            <option value="sqrt2">x² − 2</option>
+            <option value="book">CMNA cubic</option>
+          </select>
+        </label>
+        <label>
+          Tolerance
+          <select data-tolerance>
+            <option value="0.1">10⁻¹</option>
+            <option value="0.01">10⁻²</option>
+            <option value="0.001" selected>10⁻³</option>
+            <option value="0.000001">10⁻⁶</option>
+          </select>
+        </label>
+        <button class="button lab-button" type="button" data-run>Run</button>
+      </div>
+
+      <div class="lab-summary" data-summary></div>
+      <p class="lab-status" data-status></p>
+
+      <div class="lab-plot-frame">
+        <svg
+          class="lab-plot"
+          role="img"
+          aria-label="Graph of the selected function with the current bisection interval"
+          data-plot
+        ></svg>
+      </div>
+
+      <div class="lab-stepper">
+        <button class="button secondary-on-light" type="button" data-play>Play convergence</button>
+        <label>
+          <span data-step-label>Iteration</span>
+          <input type="range" min="0" max="1" value="0" data-step />
+        </label>
+      </div>
+
+      <div class="lab-table-wrap">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>n</th>
+              <th>a</th>
+              <th>b</th>
+              <th>midpoint</th>
+              <th>f(midpoint)</th>
+              <th>width</th>
+            </tr>
+          </thead>
+          <tbody data-rows></tbody>
+        </table>
+      </div>
     </div>
   </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>Where bisection sits among root finders</h2>
+        <p>
+          Newton's method can converge much faster when a useful derivative and
+          starting value are available. The secant method estimates that derivative
+          from nearby function values. Bisection trades that speed for a remarkably
+          simple guarantee: preserve the sign-changing bracket and the search region
+          keeps shrinking.
+        </p>
+        <p>
+          <a href="/methods/root-finding/">Compare bisection, Newton, and secant on the same functions →</a>
+        </p>
+      </article>
+
+      <aside class="callout">
+        <strong>Source of truth</strong>
+        <p>
+          The code shown above follows the current <code>cmna</code> package source.
+          The laboratory is a browser-side visualization of the same update rule, not
+          a replacement implementation for production work.
+        </p>
+        <a href="https://github.com/k3jph/cmna-pkg/blob/main/R/bisection.R">View bisection.R on GitHub →</a>
+      </aside>
+    </div>
+  </section>
+
+  <script is:inline type="module" src="/js/bisection-lab.js"></script>
 </BaseLayout>
