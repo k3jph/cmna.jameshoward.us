@@ -1,5 +1,5 @@
 const input = document.querySelector("[data-method-search]");
-const status = document.querySelector("[data-method-status]");
+const statusLine = document.querySelector("[data-method-status]");
 const items = [...document.querySelectorAll("[data-method-item]")];
 const groups = [...document.querySelectorAll("[data-method-group]")];
 
@@ -20,8 +20,8 @@ function filterMethods() {
     group.hidden = !hasVisible;
   }
 
-  if (status) {
-    status.textContent = query
+  if (statusLine) {
+    statusLine.textContent = query
       ? `${visible} method${visible === 1 ? "" : "s"} match “${input.value.trim()}”`
       : `${items.length} methods in the atlas`;
   }
