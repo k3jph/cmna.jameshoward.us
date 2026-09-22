@@ -622,6 +622,7 @@ code:not(pre code) {
   border-top: 1px solid rgba(255, 255, 255, 0.13);
   color: #aeb9c2;
   font-size: 0.82rem;
+  text-align: right;
 }
 
 
@@ -720,4 +721,44 @@ code:not(pre code) {
 
 .aside-card {
   margin-top: 1rem;
+}
+
+
+.buy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.3rem;
+}
+
+.buy-link {
+  display: grid;
+  gap: 0.18rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  background: rgba(255, 253, 248, 0.7);
+  color: var(--azure);
+  text-decoration: none;
+}
+
+.buy-link:hover {
+  border-left-color: var(--murrey);
+  background: var(--white);
+}
+
+.buy-link strong {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+}
+
+.buy-link span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+@media (max-width: 620px) {
+  .buy-grid {
+    grid-template-columns: 1fr;
+  }
 }
