@@ -1,5 +1,35 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const implementation = [
+  'bisection <- function(f, a, b, tol = 1e-3, m = 100) {',
+  '    iter <- 0',
+  '    f.a <- f(a)',
+  '    f.b <- f(b)',
+  '',
+  '    while (abs(b - a) > tol) {',
+  '        iter <- iter + 1',
+  '        if (iter > m) {',
+  '            warning("iterations maximum exceeded")',
+  '            break',
+  '        }',
+  '',
+  '        xmid <- (a + b) / 2',
+  '        ymid <- f(xmid)',
+  '',
+  '        if (f.a * ymid > 0) {',
+  '            a <- xmid',
+  '            f.a <- ymid',
+  '        } else {',
+  '            b <- xmid',
+  '            f.b <- ymid',
+  '        }',
+  '    }',
+  '',
+  '    root <- (a + b) / 2',
+  '    return(root)',
+  '}',
+].join("\n");
 ---
 <BaseLayout
   title="Bisection Method — CMNA"
@@ -41,33 +71,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       </article>
 
       <div class="code-panel">
-        <pre><code>bisection &lt;- function(f, a, b, tol = 1e-3, m = 100) {
-    iter &lt;- 0
-    f.a &lt;- f(a)
-    f.b &lt;- f(b)
-
-    while (abs(b - a) &gt; tol) {
-        iter &lt;- iter + 1
-        if (iter &gt; m) {
-            warning("iterations maximum exceeded")
-            break
-        }
-
-        xmid &lt;- (a + b) / 2
-        ymid &lt;- f(xmid)
-
-        if (f.a * ymid &gt; 0) {
-            a &lt;- xmid
-            f.a &lt;- ymid
-        } else {
-            b &lt;- xmid
-            f.b &lt;- ymid
-        }
-    }
-
-    root &lt;- (a + b) / 2
-    return(root)
-}</code></pre>
+        <pre><code>{implementation}</code></pre>
       </div>
     </div>
   </section>
