@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="Software — CMNA"
+  description="The companion software for Computational Methods for Numerical Analysis with R."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Software</p>
+      <h1 class="page-title">The code is part of the text.</h1>
+      <p class="lede">
+        The <code>cmna</code> R package collects the implementations that accompany
+        the book, plus a number of additional examples.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>Install from CRAN</h2>
+        <p>For ordinary use, install the released package from CRAN.</p>
+        <div class="code-panel">
+          <pre><code>install.packages("cmna")
+library(cmna)</code></pre>
+        </div>
+
+        <h2>Install from GitHub</h2>
+        <p>The repository is the source of truth for development and issue tracking.</p>
+        <div class="code-panel">
+          <pre><code>devtools::install_github("k3jph/cmna-pkg")
+
+# development branch
+devtools::install_github(
+  "k3jph/cmna-pkg",
+  ref = "develop"
+)</code></pre>
+        </div>
+      </article>
+
+      <aside>
+        <div class="callout">
+          <strong>Package DOI</strong><br />
+          <a href="https://doi.org/10.5281/zenodo.3249230">10.5281/zenodo.3249230</a>
+        </div>
+        <div class="card aside-card">
+          <h3>Source</h3>
+          <p>The complete package source, tests, documentation, and development history are public.</p>
+          <a href="https://github.com/k3jph/cmna-pkg">github.com/k3jph/cmna-pkg →</a>
+        </div>
+        <div class="card aside-card">
+          <h3>cmna-el</h3>
+          <p>
+            A small companion implementation in Emacs Lisp currently covers
+            fundamentals, numerical integration, utilities, and root finding.
+          </p>
+          <a href="https://github.com/k3jph/cmna-el">github.com/k3jph/cmna-el →</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
