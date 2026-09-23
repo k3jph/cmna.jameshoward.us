@@ -689,3 +689,62 @@ gd <- function(fp, x, h = 1e2, tol = 1e-4, m = 1e3) {
     }
     paste(lines, collapse="\n")
 }
+
+
+findiff <- function(f, x, h = x * sqrt(.Machine$double.eps)) {
+    return((f(x + h) - f(x)) / h)
+}
+
+symdiff <- function(f, x, h = x * .Machine$double.eps^(1/3)) {
+    return((f(x + h) - f(x - h)) / (2 * h))
+}
+
+findiff2 <- function(f, x, h) {
+    return((f(x + h) - 2 * f(x) + f(x - h)) / h^2)
+}
+
+rdiff <- function(f, x, n = 10, h = 1e-4) {
+    if(n == 1)
+        return(symdiff(f, x, h = h))
+
+    dx <- (4 * rdiff(f, x, n = n - 1, h = h / 2) -
+               symdiff(f, x, h = h)) / 3
+    return(dx)
+}
+
+.cmna_diff_trace_text <- function(f, x, h = 0.1, levels = 7, fp = NULL, samples = 241) {
+    if (!is.function(f)) stop("Define f as an R function.")
+    if (!is.finite(x) || !is.finite(h) || h <= 0) stop("Use a finite x and positive h.")
+    if (levels < 1 || levels > 12) stop("levels must be between 1 and 12.")
+
+    scalar <- function(v) format(v, digits = 17, scientific = TRUE, trim = TRUE)
+    exact <- NA_real_
+    if (is.function(fp)) {
+        exact <- as.numeric(fp(x))[1]
+        if (!is.finite(exact)) exact <- NA_real_
+    }
+
+    rows <- list()
+    for (i in 0:(levels - 1)) {
+        hi <- h / (2^i)
+        fd <- as.numeric(findiff(f, x, hi))[1]
+        sd <- as.numeric(symdiff(f, x, hi))[1]
+        rd <- as.numeric(rdiff(f, x, n = min(5, i + 1), h = hi))[1]
+        rows[[i + 1]] <- c(i=i, h=hi, fd=fd, sd=sd, rd=rd)
+    }
+
+    span <- max(h * 4, 1)
+    xmin <- x - span; xmax <- x + span
+    xs <- seq(xmin, xmax, length.out=samples)
+    ys <- as.numeric(f(xs))
+    if (length(ys) != length(xs)) stop("f must return one numeric value for each numeric input.")
+
+    lines <- c(paste("META", scalar(x), scalar(h), scalar(exact), scalar(xmin), scalar(xmax), sep="\t"))
+    for (r in rows) {
+        lines <- c(lines, paste("ROW", r["i"], scalar(r["h"]), scalar(r["fd"]), scalar(r["sd"]), scalar(r["rd"]), sep="\t"))
+    }
+    for (j in seq_along(xs)) {
+        if (is.finite(ys[j])) lines <- c(lines, paste("SAMPLE", scalar(xs[j]), scalar(ys[j]), sep="\t"))
+    }
+    paste(lines, collapse="\n")
+}
