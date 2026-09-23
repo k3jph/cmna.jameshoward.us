@@ -1923,3 +1923,14 @@ code:not(pre code) {
     grid-template-columns: 2rem minmax(0, 1fr);
   }
 }
+
+
+.lab-table tr.is-current td {
+  background: rgba(214, 167, 68, 0.14);
+  color: var(--azure);
+  font-weight: 750;
+}
+
+.lab-table tr.is-current td:first-child {
+  box-shadow: inset 4px 0 0 var(--murrey);
+}
