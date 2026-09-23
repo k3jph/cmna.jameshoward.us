@@ -1934,3 +1934,55 @@ code:not(pre code) {
 .lab-table tr.is-current td:first-child {
   box-shadow: inset 4px 0 0 var(--murrey);
 }
+
+
+.laboratory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.laboratory-card {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  padding: 1.35rem;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--gold);
+  background: rgba(255, 253, 248, 0.76);
+}
+
+.laboratory-card > span {
+  color: var(--murrey);
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.laboratory-card h2 {
+  margin: 0;
+  color: var(--azure);
+  font: 700 1.55rem/1.08 var(--serif);
+}
+
+.laboratory-card p {
+  margin: 0;
+  color: #46545f;
+}
+
+.laboratory-card a {
+  margin-top: 0.4rem;
+  font-weight: 800;
+}
+
+.gradient-plot {
+  min-height: 390px;
+}
+
+@media (max-width: 760px) {
+  .laboratory-grid {
+    grid-template-columns: 1fr;
+  }
+}
