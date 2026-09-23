@@ -240,10 +240,19 @@ const arbitraryExample = `f <- function(x) {
         <svg
           class="lab-plot r-bisection-plot"
           role="img"
-          aria-label="Graph and interval ladder generated from the arbitrary R function"
+          aria-label="Graph of the arbitrary R function with the current bisection interval"
           data-r-plot
         ></svg>
       </div>
+
+      <div class="lab-stepper">
+        <button class="button secondary-on-light" type="button" data-r-play disabled>Play convergence</button>
+        <label>
+          <span data-r-step-label>Iteration</span>
+          <input type="range" min="0" max="1" value="0" data-r-step disabled />
+        </label>
+      </div>
+      <p class="lab-status" data-r-step-detail></p>
 
       <div class="lab-table-wrap">
         <table class="lab-table">
@@ -254,7 +263,7 @@ const arbitraryExample = `f <- function(x) {
               <th>b</th>
               <th>midpoint</th>
               <th>f(midpoint)</th>
-              <th>kept half</th>
+              <th>width</th>
             </tr>
           </thead>
           <tbody data-r-rows></tbody>
