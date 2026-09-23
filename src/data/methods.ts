@@ -78,9 +78,9 @@ export const methodGroups: MethodGroup[] = [
     title: "Differentiation",
     description: "Finite-difference formulas for first and second derivatives.",
     methods: [
-      { name: "Finite difference", functions: ["findiff"] },
-      { name: "Symmetric difference", functions: ["symdiff"] },
-      { name: "Right difference", functions: ["rdiff"] },
+      { name: "Finite difference", functions: ["findiff"], href: "/methods/finite-differences/", lab: true },
+      { name: "Symmetric difference", functions: ["symdiff"], href: "/methods/finite-differences/", lab: true },
+      { name: "Right difference", functions: ["rdiff"], href: "/methods/finite-differences/", lab: true },
       { name: "Second derivative", functions: ["findiff2"] },
     ],
   },
