@@ -2009,3 +2009,462 @@ code:not(pre code) {
 .gauss-plot {
   min-height: 380px;
 }
+
+
+/* Teaching */
+
+.teaching-head {
+  background:
+    radial-gradient(circle at 82% 20%, rgba(122, 45, 75, 0.28), transparent 30rem),
+    var(--azure);
+}
+
+.teaching-resource-section {
+  background: linear-gradient(180deg, rgba(214, 167, 68, 0.06), transparent);
+}
+
+.teaching-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.teaching-resource-card {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  padding: 1.35rem;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--gold);
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.teaching-resource-card > span {
+  color: var(--murrey);
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.teaching-resource-card h3 {
+  margin: 0;
+  color: var(--azure);
+  font: 700 1.55rem/1.08 var(--serif);
+}
+
+.teaching-resource-card p {
+  margin: 0;
+  color: #46545f;
+}
+
+.teaching-resource-card a {
+  margin-top: 0.35rem;
+  font-weight: 800;
+}
+
+.teaching-week-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.teaching-week {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  border: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.76);
+}
+
+.teaching-week-number {
+  display: grid;
+  place-items: start;
+  padding: 1.2rem;
+  background: var(--azure);
+  color: var(--gold-pale);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.teaching-week-main {
+  padding: 1.2rem 1.35rem;
+}
+
+.teaching-week-main h2 {
+  margin: 0 0 0.55rem;
+  color: var(--azure);
+  font: 700 1.45rem/1.1 var(--serif);
+}
+
+.teaching-week-main p {
+  margin: 0.55rem 0 0;
+  color: #3d4c58;
+}
+
+.teaching-reading,
+.teaching-assignment {
+  padding-top: 0.55rem;
+  border-top: 1px solid #e7e0d5;
+}
+
+.teaching-lab-links a {
+  font-weight: 750;
+}
+
+.chapter-guide-list {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.chapter-guide {
+  border: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.76);
+}
+
+.chapter-guide-heading {
+  padding: 1.15rem 1.35rem;
+  border-bottom: 1px solid var(--line);
+  border-top: 5px solid var(--gold);
+}
+
+.chapter-guide-heading > span {
+  color: var(--murrey);
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.chapter-guide-heading h2 {
+  margin: 0.2rem 0 0;
+  color: var(--azure);
+  font: 700 clamp(1.7rem, 3vw, 2.45rem)/1.08 var(--serif);
+}
+
+.chapter-guide-body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 2rem;
+  padding: 1.35rem;
+}
+
+.chapter-guide-purpose > p {
+  margin-top: 0;
+  color: #3d4c58;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+}
+
+.chapter-guide-labs,
+.chapter-guide-functions {
+  margin-top: 1.1rem;
+}
+
+.chapter-guide-labs > strong,
+.chapter-guide-functions > strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--azure);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chapter-guide-labs div,
+.chapter-guide-functions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.chapter-guide-labs a,
+.chapter-guide-functions code {
+  display: inline-block;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid #c9c0b0;
+  background: #faf7f0;
+  text-decoration: none;
+}
+
+.chapter-guide-labs a {
+  color: var(--murrey);
+  font-weight: 750;
+}
+
+.chapter-guide-functions code {
+  color: var(--azure);
+}
+
+.chapter-guide-body h3 {
+  margin: 0;
+  color: var(--azure);
+  font: 700 1.25rem/1.1 var(--serif);
+}
+
+.objective-list {
+  margin: 0.8rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.objective-list li + li {
+  margin-top: 0.5rem;
+}
+
+.teaching-warning {
+  margin-top: 1.2rem;
+  padding: 1rem 1.1rem;
+  border-left: 5px solid var(--murrey);
+  background: #faf7f0;
+}
+
+.teaching-warning strong {
+  color: var(--murrey);
+}
+
+.teaching-warning p {
+  margin: 0.35rem 0 0;
+  color: #46545f;
+}
+
+.teaching-lab-note-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.teaching-lab-note {
+  border: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.teaching-lab-note-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 1rem;
+  align-items: end;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--line);
+  border-left: 5px solid var(--gold);
+}
+
+.teaching-lab-note-head > span {
+  grid-column: 1 / -1;
+  color: var(--murrey);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.teaching-lab-note-head h2 {
+  margin: 0;
+  color: var(--azure);
+  font: 700 1.45rem/1.08 var(--serif);
+}
+
+.teaching-lab-note-head a {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.teaching-lab-note-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.teaching-lab-note-grid > div {
+  padding: 1rem 1.15rem;
+}
+
+.teaching-lab-note-grid > div + div {
+  border-left: 1px solid var(--line);
+}
+
+.teaching-lab-note-grid h3 {
+  margin: 0 0 0.45rem;
+  color: var(--azure);
+  font: 700 1rem/1.1 var(--serif);
+}
+
+.teaching-lab-note-grid p {
+  margin: 0;
+  color: #46545f;
+}
+
+.break-groups {
+  display: grid;
+  gap: 2rem;
+}
+
+.break-group-head {
+  margin-bottom: 0.8rem;
+}
+
+.break-group-head span {
+  color: var(--murrey);
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.break-group-head h2 {
+  margin: 0.15rem 0 0;
+  color: var(--azure);
+  font: 700 2rem/1.08 var(--serif);
+}
+
+.break-exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.break-exercise {
+  position: relative;
+  padding: 1.2rem 1.25rem;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--murrey);
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.break-id {
+  color: var(--murrey);
+  font: 800 0.72rem var(--mono);
+}
+
+.break-exercise h3 {
+  margin: 0.25rem 0 0.6rem;
+  color: var(--azure);
+  font: 700 1.3rem/1.1 var(--serif);
+}
+
+.break-exercise > p {
+  margin: 0;
+  color: #3f4e59;
+}
+
+.break-record {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+}
+
+.break-record strong {
+  color: var(--azure);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.break-record p {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.adoption-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.adoption-grid article {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--gold);
+  background: rgba(255, 253, 248, 0.76);
+}
+
+.adoption-grid h3 {
+  margin: 0 0 0.5rem;
+  color: var(--azure);
+  font: 700 1.35rem/1.1 var(--serif);
+}
+
+.adoption-grid p {
+  margin: 0;
+  color: #46545f;
+}
+
+.adoption-checklist {
+  padding: 1.2rem 1.3rem;
+  background: var(--azure);
+  color: #e6edf3;
+  border-top: 5px solid var(--gold);
+}
+
+.adoption-checklist h2 {
+  margin: 0 0 0.7rem;
+  color: var(--white);
+  font: 700 1.5rem/1.1 var(--serif);
+}
+
+.adoption-checklist ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.adoption-checklist li + li {
+  margin-top: 0.55rem;
+}
+
+.syllabus-block {
+  max-width: 880px;
+  margin-top: 2rem;
+  padding: clamp(1.3rem, 4vw, 2rem);
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.syllabus-block h3 {
+  margin: 1.6rem 0 0.5rem;
+  color: var(--azure);
+  font: 700 1.35rem/1.1 var(--serif);
+}
+
+.syllabus-block h3:first-child {
+  margin-top: 0;
+}
+
+.syllabus-block p {
+  margin: 0;
+  color: #3e4c57;
+}
+
+@media (max-width: 860px) {
+  .chapter-guide-body,
+  .teaching-lab-note-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .teaching-lab-note-grid > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .adoption-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .teaching-resource-grid,
+  .break-exercise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .teaching-week {
+    grid-template-columns: 1fr;
+  }
+
+  .teaching-week-number {
+    place-items: start;
+  }
+
+  .teaching-lab-note-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
