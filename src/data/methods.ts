@@ -113,8 +113,8 @@ export const methodGroups: MethodGroup[] = [
     compareHref: "/methods/root-finding/",
     methods: [
       { name: "Bisection method", functions: ["bisection"], href: "/methods/bisection/", lab: true },
-      { name: "Newton's method", functions: ["newton"] },
-      { name: "Secant method", functions: ["secant"] },
+      { name: "Newton's method", functions: ["newton"], href: "/methods/newton/", lab: true },
+      { name: "Secant method", functions: ["secant"], href: "/methods/secant/", lab: true },
     ],
   },
   {
