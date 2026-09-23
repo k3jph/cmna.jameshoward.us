@@ -124,7 +124,7 @@ export const methodGroups: MethodGroup[] = [
     methods: [
       { name: "Golden-section maximum", functions: ["goldsectmax"] },
       { name: "Golden-section minimum", functions: ["goldsectmin"] },
-      { name: "Gradient descent", functions: ["gd", "gdls", "graddsc"] },
+      { name: "Gradient descent", functions: ["gd", "gdls", "graddsc"], href: "/methods/gradient-descent/", lab: true },
       { name: "Gradient ascent", functions: ["gradasc"] },
       { name: "Hill climbing", functions: ["hillclimbing"] },
       { name: "Simulated annealing", functions: ["sa"] },
