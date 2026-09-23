@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const defaultCode = `x <- c(0, 1, 2, 3, 4)
+y <- c(0, 1.2, 0.4, 2.0, 1.4)`;
+---
+<BaseLayout title="Interpolation — CMNA" description="Compare polynomial, piecewise-linear, and cubic-spline interpolation on arbitrary R data.">
+<header class="page-head"><div class="shell"><p class="eyebrow">Interpolation · CMNA Laboratory</p><h1 class="page-title">One set of points. Three very different curves.</h1><p class="lede">Paste data into R, then compare a global polynomial, local line segments, and a natural cubic spline across exactly the same samples.</p></div></header>
+<section class="section"><div class="shell two-column"><article class="content"><h2>Interpolation is a modeling choice.</h2><p>All three methods pass through the data. What changes is what they assume between observations: one global polynomial, independent local lines, or smooth local cubics joined together.</p></article><aside class="callout"><strong>Try awkward data.</strong><p>Move one point far away from the others or add more points. Polynomial interpolation can react globally while piecewise methods remain local.</p></aside></div></section>
+<section class="section lab-section"><div class="shell" data-interp-lab>
+<div class="lab-heading"><div><p class="section-kicker">Bring your own data</p><h2 class="section-title">Define x and y in R.</h2><p class="lede">The lab builds all three interpolants in R and lets you sweep across x to compare their values.</p></div><div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div></div>
+<div class="r-guided-grid"><section class="r-guided-editor"><div class="r-editor-label"><span>R</span><small>Define numeric vectors <code>x</code> and <code>y</code></small></div><textarea class="r-editor r-function-editor" data-r-code spellcheck="false">{defaultCode}</textarea><div class="r-run-row"><button class="button r-run" type="button" data-run disabled>Interpolate in R</button><button class="r-reset" type="button" data-reset>Reset R session</button></div></section><aside class="r-guided-primer"><h3>Watch locality.</h3><p>Change a single y-value. The global polynomial can move everywhere; piecewise linear and cubic-spline behavior is much more local.</p></aside></div>
+<div class="lab-summary" data-summary></div>
+<div class="comparison-legend"><span><i class="legend-azure"></i>Polynomial</span><span><i class="legend-gold"></i>Piecewise linear</span><span><i class="legend-murrey"></i>Cubic spline</span></div>
+<div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Three interpolants through supplied data" data-plot></svg></div>
+<div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Sweep across x</button><label><span data-step-label>x</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
+<div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>point</th><th>x</th><th>y</th></tr></thead><tbody data-rows></tbody></table></div>
+</div></section><script is:inline type="module" src="/js/interpolation-lab.js"></script></BaseLayout>
