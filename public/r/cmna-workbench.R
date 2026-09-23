@@ -970,3 +970,108 @@ heat <- function(u, alpha, xdelta, tdelta, n) {
     }
     paste(lines, collapse="\n")
 }
+
+
+goldsectmin <- function(f, a, b, tol = 1e-3, m = 100) {
+    iter <- 0
+    phi <- (sqrt(5) - 1) / 2
+    a.star <- b - phi * abs(b - a)
+    b.star <- a + phi * abs(b - a)
+
+    while (abs(b - a) > tol) {
+        iter <- iter + 1
+        if (iter > m) {
+            warning("iterations maximum exceeded")
+            break
+        }
+        if(f(a.star) < f(b.star)) {
+            b <- b.star
+            b.star <- a.star
+            a.star <- b - phi * abs(b - a)
+        } else {
+            a <- a.star
+            a.star <- b.star
+            b.star <- a + phi * abs(b - a)
+        }
+    }
+    return((a + b) / 2)
+}
+
+goldsectmax <- function(f, a, b, tol = 1e-3, m = 100) {
+    iter <- 0
+    phi <- (sqrt(5) - 1) / 2
+    a.star <- b - phi * abs(b - a)
+    b.star <- a + phi * abs(b - a)
+
+    while (abs(b - a) > tol) {
+        iter <- iter + 1
+        if (iter > m) {
+            warning("iterations maximum exceeded")
+            break
+        }
+        if(f(a.star) > f(b.star)) {
+            b <- b.star
+            b.star <- a.star
+            a.star <- b - phi * abs(b - a)
+        } else {
+            a <- a.star
+            a.star <- b.star
+            b.star <- a + phi * abs(b - a)
+        }
+    }
+    return((a + b) / 2)
+}
+
+.cmna_golden_trace_text <- function(f, a, b, tol = 1e-4, mode = "min", m = 100, samples = 241) {
+    if (!is.function(f)) stop("Define f as an R function.")
+    if (!is.finite(a) || !is.finite(b) || a >= b) stop("Use finite bounds with a < b.")
+    if (!is.finite(tol) || tol <= 0) stop("tol must be positive.")
+    if (!(mode %in% c("min","max"))) stop("mode must be min or max.")
+
+    phi <- (sqrt(5) - 1) / 2
+    astar <- b - phi * abs(b-a)
+    bstar <- a + phi * abs(b-a)
+    rows <- list()
+    iter <- 0
+
+    while(abs(b-a) > tol) {
+        iter <- iter + 1
+        if (iter > m) stop("Iteration limit reached.")
+        fa <- as.numeric(f(astar))[1]
+        fb <- as.numeric(f(bstar))[1]
+        if (!is.finite(fa) || !is.finite(fb)) stop("f became non-finite.")
+
+        olda <- a; oldb <- b; oldas <- astar; oldbs <- bstar
+        keepLeft <- if(mode == "min") fa < fb else fa > fb
+        if (keepLeft) {
+            b <- bstar
+            bstar <- astar
+            astar <- b - phi * abs(b-a)
+            kept <- "left"
+        } else {
+            a <- astar
+            astar <- bstar
+            bstar <- a + phi * abs(b-a)
+            kept <- "right"
+        }
+        rows[[iter]] <- c(
+            i=iter,a=olda,b=oldb,astar=oldas,bstar=oldbs,
+            fa=fa,fb=fb,kept=kept,nexta=a,nextb=b
+        )
+    }
+
+    optimum <- (a+b)/2
+    scalar <- function(v) format(v,digits=17,scientific=TRUE,trim=TRUE)
+    lines <- c(paste("META",scalar(optimum),iter,scalar(abs(b-a)),mode,sep="\t"))
+    for(r in rows) {
+        lines <- c(lines,paste(
+            "ROW",r["i"],scalar(r["a"]),scalar(r["b"]),
+            scalar(r["astar"]),scalar(r["bstar"]),scalar(r["fa"]),scalar(r["fb"]),
+            r["kept"],scalar(r["nexta"]),scalar(r["nextb"]),sep="\t"
+        ))
+    }
+    xs <- seq(rows[[1]]["a"], rows[[1]]["b"], length.out=samples)
+    ys <- as.numeric(f(xs))
+    for(i in seq_along(xs)) if(is.finite(ys[i])) lines <- c(lines,paste("SAMPLE",scalar(xs[i]),scalar(ys[i]),sep="\t"))
+    paste(lines,collapse="\n")
+}
