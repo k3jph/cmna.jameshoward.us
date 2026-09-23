@@ -1,0 +1,238 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const groups = [
+  {
+    chapter: "Chapters 1–2",
+    title: "Representation and error",
+    exercises: [
+      {
+        id: "B01",
+        title: "Make summation order matter",
+        task: "Construct a vector containing one very large value and many very small values. Sum it in different orders with ordinary summation and with Kahan summation. Find a case where the order changes the ordinary result enough to notice.",
+        record: "The vector, the two orderings, the results, and a short explanation of where the small contributions were lost."
+      },
+      {
+        id: "B02",
+        title: "Break the quadratic formula",
+        task: "Find coefficients for which the ordinary quadratic formula loses useful digits through cancellation. Compare the two CMNA implementations and explain why a mathematically equivalent form behaves better.",
+        record: "The coefficients, both roots from both implementations, and the subtraction that causes the trouble."
+      },
+      {
+        id: "B03",
+        title: "Too small to help",
+        task: "Use a smooth function with a known derivative. Keep shrinking h in a finite-difference approximation until the error stops improving and begins to grow.",
+        record: "A table of h, approximation, and error, plus the range where truncation error gives way to floating-point effects."
+      }
+    ]
+  },
+  {
+    chapter: "Chapter 3",
+    title: "Linear algebra",
+    exercises: [
+      {
+        id: "B04",
+        title: "Make Jacobi regret meeting your matrix",
+        task: "Begin with a diagonally dominant system that converges under Jacobi iteration. Change as few matrix entries as possible until convergence becomes poor or fails.",
+        record: "The original and modified matrices, residual histories, and the structural change that mattered."
+      },
+      {
+        id: "B05",
+        title: "Reorder before giving up",
+        task: "Find a system for which Jacobi behaves badly in the original row order. Reorder the equations and test whether the behavior improves.",
+        record: "Both systems, the permutation used, and an explanation of why reordering can change an iterative method without changing the underlying solution."
+      },
+      {
+        id: "B06",
+        title: "Ignore structure on purpose",
+        task: "Construct a tridiagonal system and solve it once with the dedicated tridiagonal algorithm and once as a generic dense system. Increase the problem size until the structural advantage is hard to ignore.",
+        record: "Problem sizes, timings, and a statement of what information the generic solver refused to use."
+      }
+    ]
+  },
+  {
+    chapter: "Chapter 4",
+    title: "Interpolation",
+    exercises: [
+      {
+        id: "B07",
+        title: "Make the polynomial wave",
+        task: "Choose evenly spaced points from a smooth function and increase the polynomial degree until the interpolant develops visibly unreasonable behavior near the ends of the interval.",
+        record: "The data points, degree, plot, and the region where fitting every point stopped being reassuring."
+      },
+      {
+        id: "B08",
+        title: "Move one point",
+        task: "Use the interpolation laboratory with a modest data set. Change one y-value substantially and compare the response of the global polynomial, piecewise linear interpolant, and cubic spline.",
+        record: "Before-and-after plots and a description of which methods changed locally and which changed globally."
+      },
+      {
+        id: "B09",
+        title: "Extrapolate until it becomes silly",
+        task: "Build an interpolant that behaves sensibly inside the data range, then evaluate it progressively farther outside the observed domain.",
+        record: "The first point at which you would stop trusting the extrapolation, and why that judgment cannot be recovered from the interpolation fit alone."
+      }
+    ]
+  },
+  {
+    chapter: "Chapter 5",
+    title: "Differentiation and integration",
+    exercises: [
+      {
+        id: "B10",
+        title: "Give Simpson something awkward",
+        task: "Find an integrand for which a coarse Simpson approximation is poor. Increase the panel count, then compare with a smooth integrand where the same coarse rule performs much better.",
+        record: "Both functions, panel counts, errors, and the feature of the difficult integrand that required more local resolution."
+      },
+      {
+        id: "B11",
+        title: "Spend the same number of evaluations differently",
+        task: "Compare Simpson's rule and Gauss-Legendre quadrature on the same smooth function using roughly comparable numbers of function evaluations.",
+        record: "Evaluation counts, estimates, errors, and a short explanation of why the node locations matter."
+      },
+      {
+        id: "B12",
+        title: "Make Monte Carlo disagree with itself",
+        task: "Fix the integrand, interval, and sample count. Run Monte Carlo integration with several seeds and compare the resulting estimates. Then increase the sample count.",
+        record: "The seed-to-seed spread at two sample sizes and what changed when m increased."
+      }
+    ]
+  },
+  {
+    chapter: "Chapter 6",
+    title: "Root finding and optimization",
+    exercises: [
+      {
+        id: "B13",
+        title: "Give bisection an illegal bracket",
+        task: "Choose a function with a real root but an interval whose endpoint values have the same sign. Explain why the existence of a root somewhere is not enough for bisection to start.",
+        record: "The function, interval, endpoint values, and a repaired bracket."
+      },
+      {
+        id: "B14",
+        title: "Make Newton leave",
+        task: "Find a function and starting value for which Newton's method moves away from the nearby root, cycles, or encounters a nearly zero derivative.",
+        record: "The first several tangent steps and the local feature of the function that caused the behavior."
+      },
+      {
+        id: "B15",
+        title: "Make the secant almost horizontal",
+        task: "Choose a function and initial value so that two successive function values are nearly equal. Watch what happens when the estimated secant slope becomes very small.",
+        record: "The two points defining the problematic secant and the next proposed iterate."
+      },
+      {
+        id: "B16",
+        title: "Turn gradient descent into gradient pinball",
+        task: "Use a simple convex objective and increase the step size until the iterates overshoot, oscillate, or diverge. Then reduce h until convergence becomes unnecessarily slow.",
+        record: "One step size that is too large, one that is useful, one that is too small, and the corresponding paths."
+      },
+      {
+        id: "B17",
+        title: "Cool too quickly",
+        task: "Run simulated annealing on a multimodal objective with the same starting point and seed but several cooling rates.",
+        record: "The best value found under each schedule and evidence of when the search stopped accepting exploratory moves."
+      }
+    ]
+  },
+  {
+    chapter: "Chapter 7",
+    title: "Differential equations",
+    exercises: [
+      {
+        id: "B18",
+        title: "Let Euler get ahead of itself",
+        task: "Choose an initial value problem with a known or high-quality reference solution. Increase h until Euler visibly departs from the reference while RK4 remains useful.",
+        record: "The equation, initial condition, step sizes, and final error for both methods."
+      },
+      {
+        id: "B19",
+        title: "Make the heat equation explode",
+        task: "Hold alpha and dx fixed. Increase dt until the FTCS coefficient crosses the stable range and compare the resulting evolution with a stable run.",
+        record: "Both coefficients, the same initial condition, and the first time step where the unstable solution becomes obviously unphysical."
+      },
+      {
+        id: "B20",
+        title: "Break the Courant condition",
+        task: "Run the wave equation with a Courant number below one, then above one, without changing the initial displacement.",
+        record: "The two parameter sets and a description of what the unstable numerical wave does that the physical wave did not request."
+      },
+      {
+        id: "B21",
+        title: "A smooth curve is not a certificate",
+        task: "Choose any ODE or PDE laboratory and produce a visually smooth numerical solution that is still measurably wrong by changing the discretization.",
+        record: "The plot, a quantitative error measure or reference comparison, and an explanation of why appearance alone was misleading."
+      }
+    ]
+  }
+];
+---
+<BaseLayout
+  title="Break It — CMNA Teaching"
+  description="Failure-driven numerical-analysis exercises for CMNA."
+>
+  <header class="page-head teaching-head">
+    <div class="shell">
+      <p class="eyebrow">Teaching · Assignments</p>
+      <h1 class="page-title">Break It</h1>
+      <p class="lede">
+        A numerical method that only appears in examples chosen to flatter it is not
+        being taught very hard. These exercises ask students to find the edge, cross
+        it, and explain what failed.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <p>
+          The assignment is not “make the computer produce nonsense.” Computers are
+          extraordinarily good at that and need very little encouragement. The useful
+          task is to identify an assumption, violate it deliberately, observe the
+          numerical consequence, and then connect the consequence back to the method.
+        </p>
+        <p>
+          A good submission should therefore contain the failed case and the repair.
+          If Newton runs away, show why the tangent geometry caused it and then choose
+          a better starting value. If an explicit PDE scheme becomes unstable, compute
+          the parameter that predicts the instability and then bring it back into
+          range. The explanation is the assignment. The ugly plot is evidence.
+        </p>
+      </article>
+      <aside class="callout">
+        <strong>One rule</strong>
+        <p>
+          Students should make a prediction before they change the parameter. “I kept
+          changing things until the graph looked broken” is experimentation, but it
+          is not yet numerical analysis.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell break-groups">
+      {groups.map((group) => (
+        <section class="break-group">
+          <div class="break-group-head">
+            <span>{group.chapter}</span>
+            <h2>{group.title}</h2>
+          </div>
+          <div class="break-exercise-grid">
+            {group.exercises.map((exercise) => (
+              <article class="break-exercise">
+                <span class="break-id">{exercise.id}</span>
+                <h3>{exercise.title}</h3>
+                <p>{exercise.task}</p>
+                <div class="break-record">
+                  <strong>Turn in</strong>
+                  <p>{exercise.record}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
