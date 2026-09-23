@@ -51,8 +51,8 @@ export const methodGroups: MethodGroup[] = [
       { name: "Cholesky decomposition", functions: ["choleskymatrix"] },
       { name: "LU decomposition", functions: ["lumatrix"] },
       { name: "Conjugate gradient", functions: ["cgmmatrix"] },
-      { name: "Gauss-Seidel iteration", functions: ["gaussseidel"] },
-      { name: "Jacobi iteration", functions: ["jacobi"] },
+      { name: "Gauss-Seidel iteration", functions: ["gaussseidel"], href: "/methods/iterative-linear-algebra/", lab: true },
+      { name: "Jacobi iteration", functions: ["jacobi"], href: "/methods/iterative-linear-algebra/", lab: true },
       { name: "Tridiagonal matrix solver", functions: ["tridiagmatrix"] },
     ],
   },
@@ -91,7 +91,7 @@ export const methodGroups: MethodGroup[] = [
     methods: [
       { name: "Midpoint rule", functions: ["midpt"] },
       { name: "Trapezoid rule", functions: ["trap"] },
-      { name: "Simpson's rule", functions: ["simp"] },
+      { name: "Simpson's rule", functions: ["simp"], href: "/methods/simpson/", lab: true },
       { name: "Simpson's 3/8 rule", functions: ["simp38"] },
       { name: "Gaussian integration driver", functions: ["gaussint"] },
       { name: "Gauss-Hermite quadrature", functions: ["gauss.hermite"] },
@@ -138,7 +138,7 @@ export const methodGroups: MethodGroup[] = [
     methods: [
       { name: "Euler method", functions: ["euler"] },
       { name: "Midpoint method for IVPs", functions: ["midptivp"] },
-      { name: "Fourth-order Runge-Kutta", functions: ["rungekutta4"] },
+      { name: "Fourth-order Runge-Kutta", functions: ["rungekutta4"], href: "/methods/runge-kutta/", lab: true },
       { name: "Adams-Bashforth", functions: ["adamsbashforth"] },
       { name: "Euler method for systems", functions: ["eulersys"] },
       { name: "Heat equation, 1D", functions: ["heat"] },
