@@ -241,3 +241,262 @@ wilkinson <- function(x, w = 20) {
 
     paste(lines, collapse = "\n")
 }
+
+
+## Additional canonical CMNA methods used by the browser laboratories.
+
+vecnorm <- function(b) {
+    return(sqrt(sum(b^2)))
+}
+
+simp <- function(f, a, b, m = 100) {
+    x.ends = seq(a, b, length.out = m + 1)
+    y.ends = f(x.ends)
+    x.mids = (x.ends[2:(m + 1)] - x.ends[1:m]) / 2 +
+        x.ends[1:m]
+    y.mids = f(x.mids)
+
+    p.area = sum(y.ends[2:(m+1)] + 4 * y.mids[1:m] +
+                     y.ends[1:m])
+    p.area = p.area * abs(b - a) / (6 * m)
+    return(p.area)
+}
+
+jacobi <- function(A, b, tol = 10e-7, maxiter = 100) {
+    n <- length(b)
+    iter <- 0
+
+    Dinv <- diag(1 / diag(A))
+    R <- A - diag(diag(A))
+    x <- rep(0, n)
+    newx <- rep(tol, n)
+
+    while(vecnorm(newx - x) > tol) {
+        if(maxiter < iter) {
+            warning("iterations maximum exceeded")
+            break
+        }
+        x <- newx
+        newx <- Dinv %*% (b - R %*% x)
+        iter <- iter + 1
+    }
+
+    return(as.vector(newx))
+}
+
+gaussseidel <- function(A, b, tol = 10e-7, maxiter = 100) {
+    n <- length(b)
+    iter <- 0
+
+    L <- U <- A
+    L[upper.tri(A, diag = FALSE)] <- 0
+    U[lower.tri(A, diag = TRUE)] <- 0
+    Linv <- solve(L)
+
+    x <- rep(0, n)
+    newx <- rep(tol * 10, n)
+
+    while(vecnorm(newx - x) > tol) {
+        if(maxiter < iter) {
+            warning("iterations maximum exceeded")
+            break
+        }
+        x <- newx
+        newx <- Linv %*% (b - U %*% x)
+        iter <- iter + 1
+    }
+
+    return(as.vector(newx))
+}
+
+euler <- function(f, x0, y0, h, n) {
+    x <- x0
+    y <- y0
+
+    for(i in 1:n) {
+        y0 <- y0 + h * f(x0, y0)
+        x0 <- x0 + h
+        x <- c(x, x0)
+        y <- c(y, y0)
+    }
+
+    return(data.frame(x = x, y = y))
+}
+
+midptivp <- function(f, x0, y0, h, n) {
+    x <- x0
+    y <- y0
+
+    for(i in 1:n) {
+        s1 <- h * f(x0, y0)
+        s2 <- h * f(x0 + h / 2, y0 + s1 / 2)
+        y0 <- y0 + s2
+
+        x0 <- x0 + h
+        x <- c(x, x0)
+        y <- c(y, y0)
+    }
+
+    return(data.frame(x = x, y = y))
+}
+
+rungekutta4 <- function(f, x0, y0, h, n) {
+    x <- x0
+    y <- y0
+
+    for(i in 1:n) {
+        s1 <- h * f(x0, y0)
+        s2 <- h * f(x0 + h / 2, y0 + s1 / 2)
+        s3 <- h * f(x0 + h / 2, y0 + s2 / 2)
+        s4 <- h * f(x0 + h, y0 + s3)
+        y0 <- y0 + s1 / 6 + s2 / 3 + s3 / 3 + s4 / 6
+
+        x0 <- x0 + h
+        x <- c(x, x0)
+        y <- c(y, y0)
+    }
+
+    return(data.frame(x = x, y = y))
+}
+
+## Instrumented teaching traces. Canonical methods above remain unchanged.
+
+.cmna_simpson_trace_text <- function(f, a, b, m = 8, samples = 241) {
+    if (!is.function(f)) stop("Define f as an R function.")
+    if (!is.finite(a) || !is.finite(b) || a == b) stop("Use distinct finite bounds.")
+    if (!is.finite(m) || m < 1 || m != as.integer(m)) stop("m must be a positive integer.")
+
+    x.ends <- seq(a, b, length.out = m + 1)
+    y.ends <- as.numeric(f(x.ends))
+    x.mids <- (x.ends[2:(m + 1)] - x.ends[1:m]) / 2 + x.ends[1:m]
+    y.mids <- as.numeric(f(x.mids))
+    if (length(y.ends) != length(x.ends) || length(y.mids) != length(x.mids))
+        stop("f must return one numeric value for each numeric input.")
+    if (any(!is.finite(c(y.ends, y.mids)))) stop("f produced non-finite values in the interval.")
+
+    h <- abs(b - a) / m
+    panel.area <- h / 6 * (y.ends[1:m] + 4 * y.mids + y.ends[2:(m + 1)])
+    total <- sum(panel.area)
+
+    scalar <- function(x) format(x, digits = 17, scientific = TRUE, trim = TRUE)
+    lines <- c(paste("META", scalar(total), m, scalar(h), sep = "\t"))
+    for (i in seq_len(m)) {
+        lines <- c(lines, paste(
+            "PANEL", i,
+            scalar(x.ends[i]), scalar(x.mids[i]), scalar(x.ends[i + 1]),
+            scalar(y.ends[i]), scalar(y.mids[i]), scalar(y.ends[i + 1]),
+            scalar(panel.area[i]), sep = "\t"
+        ))
+    }
+
+    xs <- seq(a, b, length.out = samples)
+    ys <- as.numeric(f(xs))
+    for (i in seq_along(xs)) {
+        if (is.finite(ys[i])) {
+            lines <- c(lines, paste("SAMPLE", scalar(xs[i]), scalar(ys[i]), sep = "\t"))
+        }
+    }
+    paste(lines, collapse = "\n")
+}
+
+.cmna_iterative_trace_text <- function(A, b, tol = 1e-6, maxiter = 100) {
+    A <- as.matrix(A)
+    b <- as.numeric(b)
+    if (nrow(A) != ncol(A)) stop("A must be square.")
+    if (length(b) != nrow(A)) stop("length(b) must match nrow(A).")
+    if (any(!is.finite(A)) || any(!is.finite(b))) stop("A and b must contain finite numbers.")
+    if (any(diag(A) == 0)) stop("The diagonal of A must be nonzero.")
+
+    scalar <- function(x) format(x, digits = 17, scientific = TRUE, trim = TRUE)
+    vector_text <- function(x) paste(vapply(as.numeric(x), scalar, character(1)), collapse = ",")
+
+    jacobi_rows <- list()
+    n <- length(b)
+    Dinv <- diag(1 / diag(A))
+    R <- A - diag(diag(A))
+    x <- rep(0, n)
+    newx <- rep(tol, n)
+    iter <- 0
+    while(vecnorm(newx - x) > tol && iter <= maxiter) {
+        x <- newx
+        nextx <- as.vector(Dinv %*% (b - R %*% x))
+        iter <- iter + 1
+        jacobi_rows[[iter]] <- c(
+            method = "Jacobi", iter = iter, vector = vector_text(nextx),
+            residual = scalar(vecnorm(A %*% nextx - b)),
+            delta = scalar(vecnorm(nextx - x))
+        )
+        newx <- nextx
+    }
+
+    gs_rows <- list()
+    L <- U <- A
+    L[upper.tri(A, diag = FALSE)] <- 0
+    U[lower.tri(A, diag = TRUE)] <- 0
+    Linv <- solve(L)
+    x <- rep(0, n)
+    newx <- rep(tol * 10, n)
+    iter <- 0
+    while(vecnorm(newx - x) > tol && iter <= maxiter) {
+        x <- newx
+        nextx <- as.vector(Linv %*% (b - U %*% x))
+        iter <- iter + 1
+        gs_rows[[iter]] <- c(
+            method = "Gauss-Seidel", iter = iter, vector = vector_text(nextx),
+            residual = scalar(vecnorm(A %*% nextx - b)),
+            delta = scalar(vecnorm(nextx - x))
+        )
+        newx <- nextx
+    }
+
+    direct <- solve(A, b)
+    lines <- c(paste("META", nrow(A), vector_text(direct), sep = "\t"))
+    for (row in c(jacobi_rows, gs_rows)) {
+        lines <- c(lines, paste("ROW", row["method"], row["iter"], row["vector"],
+                               row["residual"], row["delta"], sep = "\t"))
+    }
+    paste(lines, collapse = "\n")
+}
+
+.cmna_ivp_trace_text <- function(f, x0, y0, h, n) {
+    if (!is.function(f)) stop("Define f as function(x, y).")
+    if (any(!is.finite(c(x0, y0, h, n)))) stop("Use finite numeric inputs.")
+    if (h == 0) stop("h must be nonzero.")
+    if (n < 1 || n != as.integer(n) || n > 500) stop("n must be an integer from 1 to 500.")
+
+    scalar <- function(x) format(x, digits = 17, scientific = TRUE, trim = TRUE)
+    e <- euler(f, x0, y0, h, n)
+    mp <- midptivp(f, x0, y0, h, n)
+
+    rk_x <- x0
+    rk_y <- y0
+    rk_rows <- list()
+    x <- x0
+    y <- y0
+    for (i in 1:n) {
+        s1 <- h * f(x, y)
+        s2 <- h * f(x + h / 2, y + s1 / 2)
+        s3 <- h * f(x + h / 2, y + s2 / 2)
+        s4 <- h * f(x + h, y + s3)
+        yn <- y + s1 / 6 + s2 / 3 + s3 / 3 + s4 / 6
+        xn <- x + h
+        rk_rows[[i]] <- c(i=i, x=x, y=y, s1=s1, s2=s2, s3=s3, s4=s4, xn=xn, yn=yn)
+        x <- xn
+        y <- yn
+        rk_x <- c(rk_x, x)
+        rk_y <- c(rk_y, y)
+    }
+
+    lines <- c(paste("META", n, scalar(h), sep = "\t"))
+    for (i in seq_len(nrow(e))) lines <- c(lines, paste("SERIES","Euler",scalar(e$x[i]),scalar(e$y[i]),sep="\t"))
+    for (i in seq_len(nrow(mp))) lines <- c(lines, paste("SERIES","Midpoint",scalar(mp$x[i]),scalar(mp$y[i]),sep="\t"))
+    for (i in seq_along(rk_x)) lines <- c(lines, paste("SERIES","RK4",scalar(rk_x[i]),scalar(rk_y[i]),sep="\t"))
+    for (row in rk_rows) {
+        lines <- c(lines, paste(
+            "STEP", row["i"], scalar(row["x"]), scalar(row["y"]),
+            scalar(row["s1"]), scalar(row["s2"]), scalar(row["s3"]), scalar(row["s4"]),
+            scalar(row["xn"]), scalar(row["yn"]), sep="\t"
+        ))
+    }
+    paste(lines, collapse = "\n")
+}
