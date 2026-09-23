@@ -1,0 +1,184 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="Adopting CMNA — Teaching"
+  description="Prerequisites, course roles, software expectations, and sample syllabus language for using CMNA in a numerical-analysis course."
+>
+  <header class="page-head teaching-head">
+    <div class="shell">
+      <p class="eyebrow">Teaching · Adoption</p>
+      <h1 class="page-title">Where CMNA fits in a course</h1>
+      <p class="lede">
+        CMNA is strongest when we use it for the thing it was built to do: make
+        numerical methods concrete through explanation, working R code, examples,
+        and failure cases.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <p>
+          The book follows the ordinary introductory sequence in numerical analysis:
+          numerical error, linear algebra, interpolation, differentiation and
+          integration, root finding and optimization, and differential equations.
+          That makes it easy to line up with a conventional course. The unusual part
+          is the emphasis. We spend less time proving a method and more time exposing
+          what the method actually does when we implement it.
+        </p>
+        <p>
+          That distinction matters when choosing a role for the book. In a course
+          built around rigorous convergence proofs, CMNA makes a good computational
+          companion. In a computational methods or scientific computing course, it
+          can carry much more of the weekly structure. I would not pretend those are
+          the same course merely because both eventually call a function named
+          <code>newton()</code>.
+        </p>
+      </article>
+      <aside class="callout">
+        <strong>Best fit</strong>
+        <p>
+          Advanced undergraduate or beginning graduate students who already know
+          calculus, linear algebra, differential equations, and enough R to read a
+          small function without treating every bracket as a personal attack.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section teaching-resource-section">
+    <div class="shell">
+      <p class="section-kicker">Possible roles</p>
+      <h2 class="section-title">The same book can do different jobs.</h2>
+      <div class="adoption-grid">
+        <article>
+          <h3>Computational companion</h3>
+          <p>
+            Pair CMNA with a more analytical numerical-analysis text. Use the other
+            text for theorem, proof, and formal convergence analysis; use CMNA when
+            students need to see the algorithm turn into working code.
+          </p>
+        </article>
+        <article>
+          <h3>Computational spine</h3>
+          <p>
+            In a scientific-computing or computational-methods course, let the book
+            establish the sequence and implementation work, then add theoretical
+            depth where the course needs it.
+          </p>
+        </article>
+        <article>
+          <h3>Methods reference</h3>
+          <p>
+            In statistics, data science, engineering, or another applied course, use
+            individual chapters when a numerical method appears underneath a more
+            specialized problem.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>Prerequisites</h2>
+        <p>
+          Students should be comfortable with differential and integral calculus,
+          basic linear algebra, and ordinary differential equations. The code is
+          written in R, so some familiarity with vectors, matrices, functions, loops,
+          and data frames is helpful. They do not need to be software engineers.
+          That would rather defeat the point.
+        </p>
+
+        <h2>Software</h2>
+        <p>
+          A conventional course can install R and the <code>cmna</code> package and
+          work locally. The website removes some of that setup for demonstrations and
+          short exercises: the laboratories use webR to execute real R in the browser,
+          and the R Workbench provides a general session with selected CMNA functions
+          already loaded.
+        </p>
+        <p>
+          For substantial assignments I would still have students use a normal R
+          installation. A browser laboratory is an excellent place to inspect an
+          algorithm. It is a less excellent place to accumulate an entire semester of
+          scripts, data, and increasingly creative filenames.
+        </p>
+      </article>
+
+      <aside class="adoption-checklist">
+        <h2>Before the first class</h2>
+        <ul>
+          <li>Decide whether CMNA is the computational companion or the primary course sequence.</li>
+          <li>Choose which laboratories will be used in class and which will be left for students.</li>
+          <li>Install R and the <code>cmna</code> package for work that needs to persist beyond a browser session.</li>
+          <li>Tell students when proofs will come from another source rather than quietly pretending they are unnecessary.</li>
+          <li>Make prediction and explanation part of the grading, not just numerical output.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section lab-intro">
+    <div class="shell">
+      <p class="section-kicker">Sample syllabus language</p>
+      <h2 class="section-title">A starting point, not a contract.</h2>
+
+      <div class="syllabus-block">
+        <h3>Course approach</h3>
+        <p>
+          This course uses numerical analysis as a computational subject. We will
+          study the mathematical problem a method is intended to solve, develop the
+          numerical idea far enough to understand its assumptions, inspect a working
+          implementation in R, and test the method on examples chosen both to succeed
+          and to fail. Correct output is not sufficient when the method is used under
+          conditions that make the output unreliable.
+        </p>
+
+        <h3>Software</h3>
+        <p>
+          Students will use R and the CMNA companion software for programming
+          assignments. Browser-based CMNA laboratories may be used for demonstrations,
+          preliminary experiments, and short exercises. Work submitted for grading
+          should be reproducible from the R source, data, and parameters supplied by
+          the student.
+        </p>
+
+        <h3>What counts as an explanation</h3>
+        <p>
+          When an assignment asks why a method succeeds or fails, a screenshot is
+          evidence, not an explanation. Students should identify the relevant
+          assumption, parameter, error source, or convergence condition and connect
+          it to the observed result.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">Assessment</p>
+        <h2 class="section-title">Grade the thinking the computer cannot supply.</h2>
+      </div>
+      <div class="content">
+        <p>
+          Numerical output is easy to check and therefore easy to overweight. I would
+          give substantial credit for the prediction, the choice of method, the
+          explanation of failure, and the interpretation of error. A student who gets
+          the right number from an inappropriate method has not necessarily solved the
+          problem we meant to assign.
+        </p>
+        <p>
+          The <a href="/teaching/break-it/">Break It exercises</a> are designed around
+          that idea. They are particularly useful for short reports, lab writeups, or
+          oral discussion because the interesting part is the diagnosis rather than a
+          long derivation.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
