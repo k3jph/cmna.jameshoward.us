@@ -1986,3 +1986,26 @@ code:not(pre code) {
     grid-template-columns: 1fr;
   }
 }
+
+
+.r-guided-controls select {
+  min-width: 0;
+  width: 100%;
+  min-height: 40px;
+  padding: 0.5rem 2rem 0.5rem 0.6rem;
+  border: 1px solid #466078;
+  background: #102b46;
+  color: #edf2f5;
+  font: 0.92rem var(--mono);
+}
+
+.heatmap-plot {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+}
+
+.gauss-plot {
+  min-height: 380px;
+}
