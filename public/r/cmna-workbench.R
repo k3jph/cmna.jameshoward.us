@@ -1122,3 +1122,147 @@ gauss.legendre.20 <- list(
     for(i in seq_along(xs)) if(is.finite(ys[i])) lines <- c(lines,paste("CURVE",scalar(xs[i]),scalar(ys[i]),sep="\t"))
     paste(lines,collapse="\n")
 }
+
+
+wave <- function(u, alpha, xdelta, tdelta, n) {
+    m <- length(u)
+    uarray <- matrix(u, nrow = 1)
+    newu <- u
+
+    h <- ((alpha * tdelta) / (xdelta))^2
+
+    oldu <- rep(0, m)
+    oldu[2:(m - 1)] <- u[2:(m - 1)] + h *
+        (u[1:(m - 2)] - 2 * u[2:(m - 1)] + u[3:m]) / 2
+
+    for(i in 1:n) {
+        ustep1 <- (2 * u - oldu)
+        ustep2 <- u[1:(m - 2)] - 2 * u[2:(m - 1)] + u[3:m]
+        newu <- ustep1 + h * c(0, ustep2, 0)
+        oldu <- u
+        u <- newu
+        uarray <- rbind(uarray, u)
+    }
+
+    return(uarray)
+}
+
+.cmna_wave_trace_text <- function(u0, speed = 1, xdelta = 0.05, tdelta = 0.02, n = 80) {
+    if (!is.function(u0)) stop("Define u0 as an R function of x.")
+    if (!is.finite(speed) || speed <= 0) stop("speed must be positive.")
+    if (!is.finite(xdelta) || xdelta <= 0) stop("xdelta must be positive.")
+    if (!is.finite(tdelta) || tdelta <= 0) stop("tdelta must be positive.")
+    if (!is.finite(n) || n < 1 || n > 300 || n != as.integer(n))
+        stop("n must be an integer from 1 to 300.")
+
+    x <- seq(0, 1, by=xdelta)
+    if (tail(x,1) < 1) x <- c(x,1)
+    u <- as.numeric(u0(x))
+    if (length(u) != length(x) || any(!is.finite(u))) stop("u0 must return finite values for x.")
+    z <- wave(u, speed, xdelta, tdelta, n)
+
+    scalar <- function(v) format(v,digits=17,scientific=TRUE,trim=TRUE)
+    cfl <- speed * tdelta / xdelta
+    lines <- c(paste("META",length(x),n,scalar(cfl),scalar(xdelta),scalar(tdelta),sep="\t"))
+    for(i in seq_along(x)) lines <- c(lines,paste("X",i,scalar(x[i]),sep="\t"))
+    for(t in 0:n) {
+        for(i in seq_along(x)) lines <- c(lines,paste("U",t,i,scalar(z[t+1,i]),sep="\t"))
+    }
+    paste(lines,collapse="\n")
+}
+
+sa <- function(f, x, temp = 1e4, rate = 1e-4) {
+    step = 1 - rate
+    n <- length(x)
+
+    xbest <- xcurr <- xnext <- x
+    ybest <- ycurr <- ynext <- f(x)
+
+    while(temp > 1) {
+        temp <- temp * step
+        i <- ceiling(runif(1, 0, n))
+        xnext[i] <- rnorm(1, xcurr[i], temp)
+        ynext <- f(xnext)
+        accept <- exp(-(ynext - ycurr) / temp)
+        if(ynext < ycurr || runif(1) < accept) {
+            xcurr <- xnext
+            ycurr <- ynext
+        }
+        if(ynext < ybest) {
+            xbest <- xcurr
+            ybest <- ycurr
+        }
+    }
+
+    return(xbest)
+}
+
+.cmna_sa_trace_text <- function(f, x, temp = 20, rate = 0.02, seed = 1, maxiter = 1200, grid = 31) {
+    if (!is.function(f)) stop("Define f as an R function.")
+    x <- as.numeric(x)
+    if (length(x) != 2 || any(!is.finite(x))) stop("This laboratory visualizes a two-dimensional starting point.")
+    if (!is.finite(temp) || temp <= 1) stop("temp must be greater than 1.")
+    if (!is.finite(rate) || rate <= 0 || rate >= 1) stop("rate must be between 0 and 1.")
+    if (!is.finite(seed)) stop("seed must be finite.")
+
+    set.seed(as.integer(seed))
+    step <- 1 - rate
+    n <- length(x)
+    xbest <- xcurr <- xnext <- x
+    ybest <- ycurr <- ynext <- as.numeric(f(x))[1]
+    if (!is.finite(ycurr)) stop("f(x) must be finite at the starting point.")
+
+    rows <- list()
+    iter <- 0
+    while(temp > 1 && iter < maxiter) {
+        iter <- iter + 1
+        temp <- temp * step
+        idx <- ceiling(runif(1, 0, n))
+        xnext <- xcurr
+        xnext[idx] <- rnorm(1, xcurr[idx], temp)
+        ynext <- as.numeric(f(xnext))[1]
+        if (!is.finite(ynext)) stop("f became non-finite on a proposal.")
+        prob <- min(1, exp(-(ynext-ycurr)/temp))
+        accepted <- ynext < ycurr || runif(1) < prob
+        if (accepted) {
+            xcurr <- xnext
+            ycurr <- ynext
+        }
+        if (ynext < ybest) {
+            xbest <- xcurr
+            ybest <- ycurr
+        }
+        rows[[iter]] <- c(
+            i=iter,temp=temp,p1=xnext[1],p2=xnext[2],py=ynext,
+            accepted=as.numeric(accepted),x1=xcurr[1],x2=xcurr[2],y=ycurr,
+            b1=xbest[1],b2=xbest[2],best=ybest,prob=prob
+        )
+    }
+
+    mat <- do.call(rbind, rows)
+    xmin <- min(c(mat[,"p1"],mat[,"x1"],x[1])); xmax <- max(c(mat[,"p1"],mat[,"x1"],x[1]))
+    ymin <- min(c(mat[,"p2"],mat[,"x2"],x[2])); ymax <- max(c(mat[,"p2"],mat[,"x2"],x[2]))
+    xspan <- max(xmax-xmin,1); yspan <- max(ymax-ymin,1)
+    xmin <- xmin-.2*xspan; xmax <- xmax+.2*xspan
+    ymin <- ymin-.2*yspan; ymax <- ymax+.2*yspan
+
+    gx <- seq(xmin,xmax,length.out=grid)
+    gy <- seq(ymin,ymax,length.out=grid)
+    scalar <- function(v) format(v,digits=17,scientific=TRUE,trim=TRUE)
+    lines <- c(paste("META",iter,scalar(xbest[1]),scalar(xbest[2]),scalar(ybest),
+                     scalar(xmin),scalar(xmax),scalar(ymin),scalar(ymax),sep="\t"))
+    for(r in rows) {
+        lines <- c(lines,paste(
+            "ROW",r["i"],scalar(r["temp"]),scalar(r["p1"]),scalar(r["p2"]),scalar(r["py"]),
+            r["accepted"],scalar(r["x1"]),scalar(r["x2"]),scalar(r["y"]),
+            scalar(r["b1"]),scalar(r["b2"]),scalar(r["best"]),scalar(r["prob"]),sep="\t"
+        ))
+    }
+    for(yy in gy) {
+        for(xx in gx) {
+            z <- tryCatch(as.numeric(f(c(xx,yy)))[1], error=function(e) NA_real_)
+            if(is.finite(z)) lines <- c(lines,paste("GRID",scalar(xx),scalar(yy),scalar(z),sep="\t"))
+        }
+    }
+    paste(lines,collapse="\n")
+}
