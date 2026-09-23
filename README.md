@@ -66,3 +66,10 @@ The laboratory architecture keeps the numerical computation in R/webR and uses J
 The browser laboratory now includes root finding, differentiation, interpolation, deterministic and stochastic integration, linear algebra, ordinary and partial differential equations, local optimization, global stochastic optimization, and the unrestricted R Workbench.
 
 Newer laboratories include Gauss-Legendre quadrature, Monte Carlo integration, polynomial/piecewise/spline interpolation, golden-section search, the heat equation, the wave equation, and simulated annealing.
+
+
+## Teaching resources
+
+The Teaching section provides a fourteen-week course map, chapter learning objectives and crosswalks, instructor notes for the interactive laboratories, a failure-driven "Break It" exercise collection, and adoption/syllabus guidance.
+
+The static teaching material follows the book's original instructional pattern: problem, method, implementation, example, failure mode, and practical consequence. It is intended to support the book rather than turn the site into a second textbook.
