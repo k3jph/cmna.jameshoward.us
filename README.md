@@ -59,3 +59,10 @@ Because GitHub Pages cannot provide the cross-origin-isolated headers required f
 - A general-purpose browser-side R workbench
 
 The laboratory architecture keeps the numerical computation in R/webR and uses JavaScript for presentation, playback, and visualization.
+
+
+### Expanded laboratory set
+
+The browser laboratory now includes root finding, differentiation, interpolation, deterministic and stochastic integration, linear algebra, ordinary and partial differential equations, local optimization, global stochastic optimization, and the unrestricted R Workbench.
+
+Newer laboratories include Gauss-Legendre quadrature, Monte Carlo integration, polynomial/piecewise/spline interpolation, golden-section search, the heat equation, the wave equation, and simulated annealing.
