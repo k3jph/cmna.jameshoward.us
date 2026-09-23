@@ -592,3 +592,100 @@ gd <- function(fp, x, h = 1e2, tol = 1e-4, m = 1e3) {
     }
     paste(lines, collapse = "\n")
 }
+
+
+.cmna_newton_trace_text <- function(f, fp, x, tol = 1e-6, m = 100, samples = 241) {
+    if (!is.function(f) || !is.function(fp)) stop("Define f and fp as R functions.")
+    if (!is.finite(x) || !is.finite(tol) || tol <= 0) stop("Use a finite starting value and positive tolerance.")
+
+    scalar <- function(v) format(v, digits = 17, scientific = TRUE, trim = TRUE)
+    iter <- 0
+    oldx <- x
+    current <- oldx + 10 * tol
+    rows <- list()
+    path <- c(x, current)
+
+    while(abs(current - oldx) > tol) {
+        iter <- iter + 1
+        if(iter > m) stop("No solution found before the iteration limit.")
+        oldx <- current
+        fx <- as.numeric(f(current))[1]
+        fpx <- as.numeric(fp(current))[1]
+        if (!is.finite(fx) || !is.finite(fpx)) stop("f or fp became non-finite.")
+        if (abs(fpx) < .Machine$double.eps) stop("The derivative became too small for a Newton step.")
+        nextx <- current - fx / fpx
+        if (!is.finite(nextx)) stop("Newton's method left the finite number line.")
+        rows[[iter]] <- c(i=iter, x=current, fx=fx, fpx=fpx, nextx=nextx)
+        current <- nextx
+        path <- c(path, current)
+    }
+
+    xmin <- min(path); xmax <- max(path)
+    span <- max(xmax - xmin, 1)
+    xmin <- xmin - 0.35 * span; xmax <- xmax + 0.35 * span
+    xs <- seq(xmin, xmax, length.out=samples)
+    ys <- vapply(xs, function(xx) {
+        yy <- tryCatch(as.numeric(f(xx))[1], error=function(e) NA_real_)
+        if (is.finite(yy)) yy else NA_real_
+    }, numeric(1))
+
+    lines <- c(paste("META", scalar(current), iter, scalar(xmin), scalar(xmax), sep="\t"))
+    for (r in rows) {
+        lines <- c(lines, paste("ROW", r["i"], scalar(r["x"]), scalar(r["fx"]),
+                               scalar(r["fpx"]), scalar(r["nextx"]), sep="\t"))
+    }
+    for (j in seq_along(xs)) {
+        if (is.finite(ys[j])) lines <- c(lines, paste("SAMPLE", scalar(xs[j]), scalar(ys[j]), sep="\t"))
+    }
+    paste(lines, collapse="\n")
+}
+
+.cmna_secant_trace_text <- function(f, x, tol = 1e-6, m = 100, samples = 241) {
+    if (!is.function(f)) stop("Define f as an R function.")
+    if (!is.finite(x) || !is.finite(tol) || tol <= 0) stop("Use a finite starting value and positive tolerance.")
+
+    scalar <- function(v) format(v, digits = 17, scientific = TRUE, trim = TRUE)
+    i <- 0
+    oldx <- x
+    oldfx <- as.numeric(f(x))[1]
+    current <- oldx + 10 * tol
+    rows <- list()
+    path <- c(oldx, current)
+
+    while(abs(current - oldx) > tol) {
+        i <- i + 1
+        if (i > m) stop("No solution found before the iteration limit.")
+
+        fx <- as.numeric(f(current))[1]
+        if (!is.finite(fx) || !is.finite(oldfx)) stop("f became non-finite.")
+        denom <- fx - oldfx
+        if (abs(denom) < .Machine$double.eps) stop("The secant slope collapsed.")
+        newx <- current - fx * ((current - oldx) / denom)
+        if (!is.finite(newx)) stop("The secant method left the finite number line.")
+
+        rows[[i]] <- c(i=i, oldx=oldx, oldfx=oldfx, x=current, fx=fx, nextx=newx)
+        oldx <- current
+        oldfx <- fx
+        current <- newx
+        path <- c(path, current)
+    }
+
+    xmin <- min(path); xmax <- max(path)
+    span <- max(xmax - xmin, 1)
+    xmin <- xmin - 0.35 * span; xmax <- xmax + 0.35 * span
+    xs <- seq(xmin, xmax, length.out=samples)
+    ys <- vapply(xs, function(xx) {
+        yy <- tryCatch(as.numeric(f(xx))[1], error=function(e) NA_real_)
+        if (is.finite(yy)) yy else NA_real_
+    }, numeric(1))
+
+    lines <- c(paste("META", scalar(current), i, scalar(xmin), scalar(xmax), sep="\t"))
+    for (r in rows) {
+        lines <- c(lines, paste("ROW", r["i"], scalar(r["oldx"]), scalar(r["oldfx"]),
+                               scalar(r["x"]), scalar(r["fx"]), scalar(r["nextx"]), sep="\t"))
+    }
+    for (j in seq_along(xs)) {
+        if (is.finite(ys[j])) lines <- c(lines, paste("SAMPLE", scalar(xs[j]), scalar(ys[j]), sep="\t"))
+    }
+    paste(lines, collapse="\n")
+}
