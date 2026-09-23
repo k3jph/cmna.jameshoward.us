@@ -44,3 +44,18 @@ The method atlas is structured from `src/data/methods.ts` and can be filtered in
 The site includes a client-side R workbench powered by webR. Valid R is executed in the browser through WebAssembly rather than on a CMNA computation server. A small bundle of canonical CMNA functions is loaded into the session at startup; base R remains available for arbitrary user code and plotting.
 
 Because GitHub Pages cannot provide the cross-origin-isolated headers required for webR's interruptible SharedArrayBuffer channel, the workbench uses the PostMessage channel. A pathological or infinite R computation is terminated by reloading the page and thereby destroying the browser session.
+
+
+### Current laboratories
+
+- Bisection with arbitrary R functions and playable interval convergence
+- Newton's method with playable tangent geometry
+- Secant method with playable chord geometry
+- Root-finder comparison for bisection, Newton, and secant
+- Simpson's rule with arbitrary R integrands and playable quadratic panels
+- Jacobi and Gauss-Seidel with arbitrary R matrices and residual histories
+- Euler, midpoint, and fourth-order Runge-Kutta with arbitrary R ODEs
+- Gradient descent with arbitrary two-dimensional R objectives and gradients
+- A general-purpose browser-side R workbench
+
+The laboratory architecture keeps the numerical computation in R/webR and uses JavaScript for presentation, playback, and visualization.
