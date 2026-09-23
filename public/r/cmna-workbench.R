@@ -500,3 +500,95 @@ rungekutta4 <- function(f, x0, y0, h, n) {
     }
     paste(lines, collapse = "\n")
 }
+
+
+gd <- function(fp, x, h = 1e2, tol = 1e-4, m = 1e3) {
+    iter <- 0
+
+    oldx <- x
+    x = x - h * fp(x)
+
+    while(vecnorm(x - oldx) > tol) {
+        iter <- iter + 1
+        if(iter > m)
+            return(x)
+        oldx <- x
+        x = x - h * fp(x)
+    }
+
+    return(x)
+}
+
+.cmna_gradient_trace_text <- function(f, fp, x, h = 0.05, tol = 1e-4, m = 250, grid = 35) {
+    if (!is.function(f) || !is.function(fp))
+        stop("Define both f(x) and fp(x).")
+    x <- as.numeric(x)
+    if (length(x) != 2 || any(!is.finite(x)))
+        stop("This laboratory visualizes two-dimensional starting points only.")
+    if (!is.finite(h) || h <= 0) stop("h must be a positive finite step size.")
+    if (!is.finite(tol) || tol <= 0) stop("tol must be positive.")
+    if (!is.finite(m) || m < 1) stop("m must be positive.")
+
+    scalar <- function(v) format(v, digits = 17, scientific = TRUE, trim = TRUE)
+    rows <- list()
+
+    current <- x
+    value <- as.numeric(f(current))[1]
+    grad <- as.numeric(fp(current))
+    if (length(grad) != 2 || any(!is.finite(c(value, grad))))
+        stop("f must return one finite value and fp must return a finite vector of length two.")
+
+    rows[[1]] <- c(i=0, x1=current[1], x2=current[2], value=value, gradnorm=vecnorm(grad))
+    iter <- 0
+
+    repeat {
+        nextx <- current - h * grad
+        delta <- vecnorm(nextx - current)
+        iter <- iter + 1
+
+        value <- as.numeric(f(nextx))[1]
+        grad <- as.numeric(fp(nextx))
+        if (length(grad) != 2 || any(!is.finite(c(nextx, value, grad))))
+            stop("The descent path became non-finite. Try a smaller step size.")
+
+        rows[[length(rows)+1]] <- c(
+            i=iter, x1=nextx[1], x2=nextx[2],
+            value=value, gradnorm=vecnorm(grad)
+        )
+        current <- nextx
+
+        if (delta <= tol || iter >= m) break
+    }
+
+    mat <- do.call(rbind, rows)
+    xmin <- min(mat[, "x1"]); xmax <- max(mat[, "x1"])
+    ymin <- min(mat[, "x2"]); ymax <- max(mat[, "x2"])
+    xspan <- max(xmax - xmin, 1)
+    yspan <- max(ymax - ymin, 1)
+    xmin <- xmin - 0.35 * xspan; xmax <- xmax + 0.35 * xspan
+    ymin <- ymin - 0.35 * yspan; ymax <- ymax + 0.35 * yspan
+
+    gx <- seq(xmin, xmax, length.out = grid)
+    gy <- seq(ymin, ymax, length.out = grid)
+
+    lines <- c(paste(
+        "META", iter, scalar(current[1]), scalar(current[2]),
+        scalar(value), scalar(xmin), scalar(xmax), scalar(ymin), scalar(ymax),
+        sep = "\t"
+    ))
+    for (r in rows) {
+        lines <- c(lines, paste(
+            "ROW", r["i"], scalar(r["x1"]), scalar(r["x2"]),
+            scalar(r["value"]), scalar(r["gradnorm"]), sep="\t"
+        ))
+    }
+    for (yy in gy) {
+        for (xx in gx) {
+            z <- tryCatch(as.numeric(f(c(xx, yy)))[1], error=function(e) NA_real_)
+            if (is.finite(z)) {
+                lines <- c(lines, paste("GRID", scalar(xx), scalar(yy), scalar(z), sep="\t"))
+            }
+        }
+    }
+    paste(lines, collapse = "\n")
+}
