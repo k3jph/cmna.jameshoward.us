@@ -8,7 +8,7 @@
     "build": "npm test && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --test && node --check public/js/r-workbench.js && node --check public/js/bisection-r-lab.js && node --check public/js/bisection-lab.js && node --check public/js/root-compare.js && node --check public/js/method-finder.js && node --check public/js/simpson-lab.js && node --check public/js/iterative-linear-lab.js && node --check public/js/ivp-lab.js"
+    "test": "node --test && node --check public/js/r-workbench.js && node --check public/js/bisection-r-lab.js && node --check public/js/bisection-lab.js && node --check public/js/root-compare.js && node --check public/js/method-finder.js && node --check public/js/simpson-lab.js && node --check public/js/iterative-linear-lab.js && node --check public/js/ivp-lab.js && node --check public/js/gradient-descent-lab.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
