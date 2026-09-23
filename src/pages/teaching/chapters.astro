@@ -1,0 +1,200 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const chapters = [
+  {
+    number: "1",
+    title: "Introduction to Numerical Analysis",
+    purpose: "We begin by making numerical analysis ordinary. The problem is not that mathematics has suddenly stopped being exact. The problem is that the machine, the representation, the algorithm, or the available time may force us to work with an estimate. That makes implementation choices part of the mathematics rather than a housekeeping detail.",
+    objectives: [
+      "Explain why two algorithms that are mathematically equivalent can behave differently on a computer.",
+      "Read simple R functions as algorithms rather than as syntax exercises.",
+      "Compare naive and improved implementations for division, summation, polynomial evaluation, and root extraction.",
+      "Recognize efficiency, representation, and readability as legitimate design constraints."
+    ],
+    functions: ["naivesum", "kahansum", "naivepoly", "horner", "nthroot"],
+    labs: [{ href: "/workbench/", label: "R Workbench" }],
+    warning: "Students tend to treat the first working implementation as the algorithm. This chapter is a good place to break that habit before it gets expensive."
+  },
+  {
+    number: "2",
+    title: "Error Analysis",
+    purpose: "Error analysis is where the comforting fiction that the computer stores real numbers finally becomes inconvenient. We separate accuracy from precision, look at floating-point representation, and then follow roundoff and cancellation into actual calculations. The point is not to make students afraid of floating point. It is to make them stop forgetting it exists.",
+    objectives: [
+      "Distinguish accuracy, precision, truncation error, and floating-point error.",
+      "Explain machine epsilon and why decimal intuition does not always survive binary storage.",
+      "Recognize loss of significance, overflow, underflow, and propagated error.",
+      "Connect numerical stability to the way an algorithm transforms error."
+    ],
+    functions: ["quadratic", "quadratic2", "kahansum"],
+    labs: [{ href: "/methods/finite-differences/", label: "Finite differences" }],
+    warning: "Smaller is not automatically better. The finite-difference lab is useful precisely because reducing h eventually exposes roundoff instead of defeating it."
+  },
+  {
+    number: "3",
+    title: "Linear Algebra",
+    purpose: "Linear algebra is where the book starts to look like the machinery underneath almost everything else. We move from row operations to elimination, decomposition, special matrix structure, and iterative methods. The code makes a useful distinction visible: solving Ax=b is one problem, but there are many computational paths to the solution.",
+    objectives: [
+      "Perform and interpret elementary row operations and Gaussian elimination.",
+      "Explain why LU and Cholesky decompositions are useful rather than merely alternative notation.",
+      "Recognize when matrix structure, including tridiagonal form, should change the algorithm.",
+      "Compare direct and iterative methods using residuals and convergence behavior."
+    ],
+    functions: ["rrefmatrix", "solvematrix", "tridiagmatrix", "lumatrix", "choleskymatrix", "jacobi", "gaussseidel"],
+    labs: [{ href: "/methods/iterative-linear-algebra/", label: "Jacobi vs. Gauss-Seidel" }],
+    warning: "An iterative method can produce a long list of increasingly confident wrong answers. Convergence has assumptions. Make students look at the matrix before they look at the plot."
+  },
+  {
+    number: "4",
+    title: "Interpolation and Extrapolation",
+    purpose: "Interpolation is a useful place to show that fitting the known points does not determine what happens between them. A global polynomial, piecewise lines, and a cubic spline can all agree perfectly at the data and disagree everywhere else. That is not a defect in the mathematics. It is the modeling choice we made when we selected the interpolant.",
+    objectives: [
+      "Distinguish interpolation from extrapolation and explain why the latter asks for more trust.",
+      "Construct linear and higher-order polynomial interpolants.",
+      "Explain the value of piecewise models and local behavior.",
+      "Compare polynomial, piecewise-linear, and cubic-spline responses to changes in the data.",
+      "Relate multidimensional interpolation to practical problems such as image resizing."
+    ],
+    functions: ["linterp", "polyinterp", "pwiselinterp", "cubicspline", "bilinear", "nn"],
+    labs: [{ href: "/methods/interpolation/", label: "Interpolation comparison" }],
+    warning: "Passing through every data point is not evidence that the model between those points is sensible. The laboratory makes that painfully easy to demonstrate."
+  },
+  {
+    number: "5",
+    title: "Differentiation and Integration",
+    purpose: "This chapter is really about using nearby information well. Finite differences estimate a derivative from function values. Newton-Cotes rules estimate area from regularly placed samples. Gaussian quadrature spends those samples differently. Adaptive and stochastic methods change the rules again. The common question is how much information we need, and where we should get it.",
+    objectives: [
+      "Derive and compare forward and symmetric finite-difference approximations.",
+      "Explain the relationship between step size, truncation error, and roundoff.",
+      "Interpret midpoint, trapezoid, and Simpson rules geometrically.",
+      "Explain why Gaussian quadrature uses nonuniform nodes and weights.",
+      "Compare deterministic refinement with Monte Carlo sampling.",
+      "Recognize when the shape or regularity of the integrand should affect method choice."
+    ],
+    functions: ["findiff", "symdiff", "simp", "gaussint", "gauss.legendre", "adaptint", "romberg", "mcint"],
+    labs: [
+      { href: "/methods/finite-differences/", label: "Finite differences" },
+      { href: "/methods/simpson/", label: "Simpson's rule" },
+      { href: "/methods/gaussian-quadrature/", label: "Gauss-Legendre quadrature" },
+      { href: "/methods/monte-carlo/", label: "Monte Carlo integration" }
+    ],
+    warning: "Students often want one integration method to win. It is better to make them say what information the method uses, how many evaluations it spends, and what kind of integrand it expects."
+  },
+  {
+    number: "6",
+    title: "Root Finding and Optimization",
+    purpose: "Root finding and optimization are a good place to make assumptions operational. Bisection asks for a bracket. Newton asks for a derivative and a starting value. Secant tries to get by without the derivative. Golden-section search reduces an interval, while gradient descent follows slope. Simulated annealing occasionally moves the wrong way on purpose. The methods are different because the information available to them is different.",
+    objectives: [
+      "State the information required to start bisection, Newton, and secant methods.",
+      "Compare convergence behavior without treating iteration count as the only cost.",
+      "Explain how golden-section search reuses function evaluations.",
+      "Relate gradient direction and step size to optimization behavior.",
+      "Distinguish local search from stochastic global-search strategies.",
+      "Identify failure modes caused by poor starting points, flat derivatives, multimodality, or aggressive step sizes."
+    ],
+    functions: ["bisection", "newton", "secant", "goldsectmin", "gd", "hillclimbing", "sa"],
+    labs: [
+      { href: "/methods/bisection/", label: "Bisection" },
+      { href: "/methods/newton/", label: "Newton" },
+      { href: "/methods/secant/", label: "Secant" },
+      { href: "/methods/root-finding/", label: "Root-finder comparison" },
+      { href: "/methods/golden-section/", label: "Golden-section search" },
+      { href: "/methods/gradient-descent/", label: "Gradient descent" },
+      { href: "/methods/simulated-annealing/", label: "Simulated annealing" }
+    ],
+    warning: "A fast method with the wrong starting conditions is just a fast way to become confused. Ask whether the method is allowed to work before asking how quickly it works."
+  },
+  {
+    number: "7",
+    title: "Differential Equations",
+    purpose: "Differential equations make the sequential nature of numerical computation impossible to hide. We know the local rule, then use it to advance a state. Euler does this crudely, Runge-Kutta spends more work inside each step, multistep methods reuse history, and PDE schemes repeat the same idea across both space and time.",
+    objectives: [
+      "Interpret Euler and Runge-Kutta methods as different uses of local slope information.",
+      "Explain how step size affects error and computational cost.",
+      "Extend initial-value ideas from a scalar equation to a system.",
+      "Recognize boundary-value problems as requiring additional structure beyond a simple forward march.",
+      "Explain the role of spatial and temporal discretization in the heat and wave equations.",
+      "Connect explicit PDE stability conditions to visible numerical behavior."
+    ],
+    functions: ["euler", "midptivp", "rungekutta4", "adamsbashforth", "eulersys", "heat", "wave"],
+    labs: [
+      { href: "/methods/runge-kutta/", label: "Euler, midpoint, and RK4" },
+      { href: "/methods/heat-equation/", label: "Heat equation" },
+      { href: "/methods/wave-equation/", label: "Wave equation" }
+    ],
+    warning: "A numerical solution can look smooth and still be wrong. Stability, step size, and accumulated error have to be discussed before a pretty curve gets promoted to evidence."
+  }
+];
+---
+<BaseLayout
+  title="Chapter Guide — CMNA Teaching"
+  description="Learning objectives, software links, laboratory crosswalks, and teaching cautions for each chapter of CMNA."
+>
+  <header class="page-head teaching-head">
+    <div class="shell">
+      <p class="eyebrow">Teaching · Chapter guide</p>
+      <h1 class="page-title">What each chapter is trying to teach</h1>
+      <p class="lede">
+        A table of contents tells us what appears in a chapter. It does not tell us
+        what students should be able to do after reading it. This guide is an attempt
+        to make that second question explicit.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell content">
+      <p>
+        The objectives here are not meant to turn CMNA into an outcomes-assessment
+        document. They are more practical than that. If we are going to spend a week
+        on interpolation, we should know whether the point is remembering the name
+        “Vandermonde matrix,” constructing an interpolant, or understanding why a
+        global polynomial can behave badly after one data point moves. Usually the
+        last two are more useful.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell chapter-guide-list">
+      {chapters.map((chapter) => (
+        <article class="chapter-guide" id={"chapter-" + chapter.number}>
+          <div class="chapter-guide-heading">
+            <span>Chapter {chapter.number}</span>
+            <h2>{chapter.title}</h2>
+          </div>
+
+          <div class="chapter-guide-body">
+            <div class="chapter-guide-purpose">
+              <p>{chapter.purpose}</p>
+
+              <div class="chapter-guide-labs">
+                <strong>Related laboratories</strong>
+                <div>
+                  {chapter.labs.map((lab) => <a href={lab.href}>{lab.label}</a>)}
+                </div>
+              </div>
+
+              <div class="chapter-guide-functions">
+                <strong>Representative CMNA functions</strong>
+                <div>{chapter.functions.map((fn) => <code>{fn}</code>)}</div>
+              </div>
+            </div>
+
+            <div>
+              <h3>Students should be able to</h3>
+              <ul class="objective-list">
+                {chapter.objectives.map((objective) => <li>{objective}</li>)}
+              </ul>
+
+              <div class="teaching-warning">
+                <strong>Worth provoking:</strong>
+                <p>{chapter.warning}</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
