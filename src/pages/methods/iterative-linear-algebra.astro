@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const defaultSystem = `A <- matrix(c(
+  10, -1,  2,
+  -1, 11, -1,
+   2, -1, 10
+), nrow = 3, byrow = TRUE)
+
+b <- c(6, 25, -11)`;
+---
+<BaseLayout title="Jacobi and Gauss-Seidel — CMNA" description="Compare iterative linear-system methods using arbitrary R matrices.">
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Linear algebra · CMNA Laboratory</p>
+      <h1 class="page-title">Watch a linear system settle down.</h1>
+      <p class="lede">
+        Jacobi and Gauss-Seidel both replace a direct solve with a sequence of better
+        guesses. Paste your own matrix into R and watch the residual shrink.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>Same equations, different information flow</h2>
+        <p>
+          Jacobi computes an entire new approximation from the previous iterate.
+          Gauss-Seidel uses updated components as soon as they become available.
+          That small implementation difference can produce visibly different
+          convergence histories.
+        </p>
+      </article>
+      <aside class="callout">
+        <strong>Residual</strong>
+        <p>
+          The graph tracks <code>||Ax-b||₂</code>. If the approximation is getting
+          better, that norm should move toward zero.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section lab-section">
+    <div class="shell" data-iterative-lab>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Bring your own system</p>
+          <h2 class="section-title">Define A and b in actual R.</h2>
+          <p class="lede">
+            Diagonally dominant systems are especially friendly to these methods.
+            Try changing the matrix and see whether the residual behaves itself.
+          </p>
+        </div>
+        <div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div>
+      </div>
+
+      <div class="r-guided-grid">
+        <section class="r-guided-editor">
+          <div class="r-editor-label"><span>R</span><small>Define <code>A</code> and <code>b</code></small></div>
+          <textarea class="r-editor r-function-editor" data-r-system spellcheck="false">{defaultSystem}</textarea>
+          <div class="r-guided-controls">
+            <label>tolerance<input type="number" value="0.000001" min="0" step="any" data-tol /></label>
+          </div>
+          <div class="r-run-row">
+            <button class="button r-run" type="button" data-run disabled>Iterate in R</button>
+            <button class="r-reset" type="button" data-reset>Reset R session</button>
+          </div>
+        </section>
+        <aside class="r-guided-primer">
+          <h3>What should you try breaking?</h3>
+          <p>
+            Change the diagonal entries, make the system less diagonally dominant,
+            or try a badly behaved matrix. Failure to converge is not a broken lab;
+            it is numerical analysis doing its job.
+          </p>
+        </aside>
+      </div>
+
+      <div class="lab-summary" data-summary></div>
+      <div class="comparison-legend">
+        <span><i class="legend-azure"></i>Jacobi</span>
+        <span><i class="legend-murrey"></i>Gauss-Seidel</span>
+      </div>
+      <div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Residual norms by iteration" data-plot></svg></div>
+      <div class="lab-stepper">
+        <button class="button secondary-on-light" type="button" data-play disabled>Play convergence</button>
+        <label><span data-step-label>Iteration</span><input type="range" min="0" max="1" value="0" data-step disabled /></label>
+      </div>
+      <p class="lab-status" data-step-detail></p>
+
+      <div class="lab-table-wrap">
+        <table class="lab-table">
+          <thead><tr><th>n</th><th>Jacobi x</th><th>Jacobi residual</th><th>Gauss-Seidel x</th><th>G-S residual</th></tr></thead>
+          <tbody data-rows></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <script is:inline type="module" src="/js/iterative-linear-lab.js"></script>
+</BaseLayout>
