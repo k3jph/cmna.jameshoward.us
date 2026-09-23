@@ -748,3 +748,225 @@ rdiff <- function(f, x, n = 10, h = 1e-4) {
     }
     paste(lines, collapse="\n")
 }
+
+
+## Interpolation methods.
+
+linterp <- function(x1, y1, x2, y2) {
+    m <- (y2 - y1) / (x2 - x1)
+    b <- y2 - m * x2
+    return(c(b, m))
+}
+
+polyinterp <- function(x, y) {
+    if(length(x) != length(y))
+        stop("Length of x and y vectors must be the same")
+
+    n <- length(x) - 1
+    vandermonde <- rep(1, length(x))
+    for(i in 1:n) {
+        xi <- x^i
+        vandermonde <- cbind(vandermonde, xi)
+    }
+    beta <- solve(vandermonde, y)
+    names(beta) <- NULL
+    return(beta)
+}
+
+pwiselinterp <- function(x, y) {
+    n <- length(x) - 1
+    y <- y[order(x)]
+    x <- x[order(x)]
+    mvec <- bvec <- c()
+
+    for(i in 1:n) {
+        p <- linterp(x[i], y[i], x[i + 1], y[i + 1])
+        mvec <- c(mvec, p[2])
+        bvec <- c(bvec, p[1])
+    }
+    return(list(m = mvec, b = bvec))
+}
+
+tridiagmatrix <- function(L, D, U, b) {
+    n <- length(D)
+    L <- c(NA, L)
+    U[1] <- U[1] / D[1]
+    b[1] <- b[1] / D[1]
+    for(i in 2:(n - 1)) {
+        U[i] <- U[i] / (D[i] - L[i] * U[i - 1])
+        b[i] <- (b[i] - L[i] * b[i - 1]) /
+            (D[i] - L[i] * U[i - 1])
+    }
+    b[n] <- (b[n] - L[n] * b[n - 1]) /
+        (D[n] - L[n] * U[n - 1])
+
+    x <- rep.int(0, n)
+    x[n] <- b[n]
+    for(i in (n - 1):1)
+        x[i] <- b[i] - U[i] * x[i + 1]
+    return(x)
+}
+
+cubicspline <- function(x, y) {
+    n <- length(x)
+    dvec <- bvec <- avec <- rep(0, n - 1)
+    vec <- rep(0, n)
+    deltax <- deltay <- rep(0, n - 1)
+
+    for(i in 1:(n - 1)) {
+        avec[i] <- y[i]
+        deltax[i] = x[i + 1] - x[i]
+        deltay[i] = y[i + 1] - y[i]
+    }
+
+    Au <- c(0, deltax[2:(n-1)])
+    Ad <- c(1, 2 * (deltax[1:(n-2)] + deltax[2:(n-1)]), 1)
+    Al <- c(deltax[1:(n-2)], 0)
+
+    vec[0] <- vec[n] <- 0
+    for(i in 2:(n - 1))
+        vec[i] <- 3 * (deltay[i] / deltax[i] -
+                           deltay[i-1] / deltax[i-1])
+
+    cvec <- tridiagmatrix(Al, Ad, Au, vec)
+
+    for(i in 1:(n-1)) {
+        bvec[i] <- (deltay[i] / deltax[i]) -
+            (deltax[i] / 3) * (2 * cvec[i] + cvec[i + 1])
+        dvec[i] <- (cvec[i+1] - cvec[i]) / (3 * deltax[i])
+    }
+
+    return(list(a = avec, b = bvec,
+                c = cvec[1:(n - 1)], d = dvec))
+}
+
+.cmna_interp_trace_text <- function(x, y, samples = 301) {
+    x <- as.numeric(x); y <- as.numeric(y)
+    if (length(x) != length(y) || length(x) < 2)
+        stop("x and y must have equal length with at least two points.")
+    if (any(!is.finite(c(x, y)))) stop("x and y must be finite.")
+    ord <- order(x); x <- x[ord]; y <- y[ord]
+    if (any(diff(x) <= 0)) stop("x values must be distinct.")
+
+    beta <- polyinterp(x, y)
+    pw <- pwiselinterp(x, y)
+    spline <- if(length(x) >= 3) cubicspline(x, y) else NULL
+
+    evalpoly <- function(xx) {
+        powers <- vapply(0:(length(beta)-1), function(k) xx^k, numeric(length(xx)))
+        as.numeric(powers %*% beta)
+    }
+    evalpw <- function(xx) {
+        vapply(xx, function(t) {
+            i <- min(max(findInterval(t, x), 1), length(x)-1)
+            pw$m[i] * t + pw$b[i]
+        }, numeric(1))
+    }
+    evalspline <- function(xx) {
+        if (is.null(spline)) return(evalpw(xx))
+        vapply(xx, function(t) {
+            i <- min(max(findInterval(t, x), 1), length(x)-1)
+            dx <- t - x[i]
+            spline$a[i] + spline$b[i]*dx + spline$c[i]*dx^2 + spline$d[i]*dx^3
+        }, numeric(1))
+    }
+
+    xs <- seq(min(x), max(x), length.out=samples)
+    yp <- evalpoly(xs)
+    yl <- evalpw(xs)
+    ys <- evalspline(xs)
+
+    scalar <- function(v) format(v, digits=17, scientific=TRUE, trim=TRUE)
+    lines <- c(paste("META", length(x), sep="\t"))
+    for(i in seq_along(x)) lines <- c(lines, paste("POINT", i, scalar(x[i]), scalar(y[i]), sep="\t"))
+    for(i in seq_along(xs)) {
+        lines <- c(lines, paste("SAMPLE", scalar(xs[i]), scalar(yp[i]), scalar(yl[i]), scalar(ys[i]), sep="\t"))
+    }
+    paste(lines, collapse="\n")
+}
+
+## Monte Carlo integration.
+
+mcint <- function(f, a, b, m = 1000) {
+    x <- runif(m, min = a, max = b)
+    y.hat <- f(x)
+    area <- (b - a) * sum(y.hat) / m
+    return(area)
+}
+
+.cmna_mc_trace_text <- function(f, a, b, m = 2000, seed = 1, maxpoints = 500, checkpoints = 200) {
+    if (!is.function(f)) stop("Define f as an R function.")
+    if (!is.finite(a) || !is.finite(b) || a == b) stop("Use distinct finite bounds.")
+    if (!is.finite(m) || m < 10 || m > 200000 || m != as.integer(m))
+        stop("m must be an integer from 10 to 200000.")
+    if (!is.finite(seed)) stop("seed must be finite.")
+
+    set.seed(as.integer(seed))
+    x <- runif(m, min=a, max=b)
+    y <- as.numeric(f(x))
+    if (length(y) != m || any(!is.finite(y))) stop("f must return finite values for sampled x.")
+    running <- (b-a) * cumsum(y) / seq_len(m)
+    estimate <- running[m]
+
+    scalar <- function(v) format(v, digits=17, scientific=TRUE, trim=TRUE)
+    lines <- c(paste("META", scalar(estimate), m, seed, sep="\t"))
+
+    ids <- unique(round(seq(1, m, length.out=min(checkpoints, m))))
+    for(i in ids) lines <- c(lines, paste("RUN", i, scalar(running[i]), sep="\t"))
+
+    pids <- unique(round(seq(1, m, length.out=min(maxpoints, m))))
+    for(i in pids) lines <- c(lines, paste("POINT", scalar(x[i]), scalar(y[i]), sep="\t"))
+
+    xs <- seq(a,b,length.out=241)
+    ys <- as.numeric(f(xs))
+    for(i in seq_along(xs)) {
+        if (is.finite(ys[i])) lines <- c(lines, paste("CURVE", scalar(xs[i]), scalar(ys[i]), sep="\t"))
+    }
+    paste(lines, collapse="\n")
+}
+
+## One-dimensional heat equation.
+
+heat <- function(u, alpha, xdelta, tdelta, n) {
+    m <- length(u)
+    uarray <- matrix(u, nrow = 1)
+    newu <- u
+
+    h <- alpha * tdelta / xdelta^2
+    for(i in 1:n) {
+        for(j in 2:(m - 1)) {
+            ustep <- (u[j - 1] + u[j + 1] - 2 * u[j])
+            newu[j] <- u[j] + h * ustep
+        }
+        u <- newu
+        u[1] <- u[m]
+        uarray <- rbind(uarray, u)
+    }
+    return(uarray)
+}
+
+.cmna_heat_trace_text <- function(u0, alpha = 1, xdelta = 0.05, tdelta = 0.001, n = 40) {
+    if (!is.function(u0)) stop("Define u0 as an R function of x.")
+    if (!is.finite(alpha) || alpha <= 0) stop("alpha must be positive.")
+    if (!is.finite(xdelta) || xdelta <= 0) stop("xdelta must be positive.")
+    if (!is.finite(tdelta) || tdelta <= 0) stop("tdelta must be positive.")
+    if (!is.finite(n) || n < 1 || n > 250 || n != as.integer(n))
+        stop("n must be an integer from 1 to 250.")
+
+    x <- seq(0, 1, by=xdelta)
+    if (tail(x,1) < 1) x <- c(x,1)
+    u <- as.numeric(u0(x))
+    if (length(u) != length(x) || any(!is.finite(u))) stop("u0 must return finite values for x.")
+    z <- heat(u, alpha, xdelta, tdelta, n)
+
+    scalar <- function(v) format(v, digits=17, scientific=TRUE, trim=TRUE)
+    hcoef <- alpha * tdelta / xdelta^2
+    lines <- c(paste("META", length(x), n, scalar(hcoef), scalar(xdelta), scalar(tdelta), sep="\t"))
+    for(i in seq_along(x)) lines <- c(lines, paste("X", i, scalar(x[i]), sep="\t"))
+    for(t in 0:n) {
+        for(i in seq_along(x)) {
+            lines <- c(lines, paste("U", t, i, scalar(z[t+1,i]), sep="\t"))
+        }
+    }
+    paste(lines, collapse="\n")
+}
