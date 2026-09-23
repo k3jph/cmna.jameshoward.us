@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const defaultFunction = `f <- function(x, y) {
+  y / (2*x + 1)
+}`;
+---
+<BaseLayout title="Runge-Kutta and IVP Methods — CMNA" description="Compare Euler, midpoint, and fourth-order Runge-Kutta on arbitrary R differential equations.">
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Differential equations · CMNA Laboratory</p>
+      <h1 class="page-title">Turn a derivative into a trajectory.</h1>
+      <p class="lede">
+        Euler trusts one slope. Midpoint samples again halfway through the step.
+        Fourth-order Runge-Kutta asks four questions before deciding where to land.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>One differential equation, three stepping rules</h2>
+        <p>
+          Give the laboratory any R function <code>f(x,y)</code> describing
+          (y' = f(x,y)). The three CMNA methods start from the same initial
+          condition and step size, so their different trajectories come entirely
+          from how much slope information each method uses.
+        </p>
+      </article>
+      <aside class="callout">
+        <strong>RK4's four slopes</strong>
+        <p>
+          The playable view marks the four stage evaluations inside each RK4 step.
+          The final update uses weights (1/6, 1/3, 1/3, 1/6).
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section lab-section">
+    <div class="shell" data-ivp-lab>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Bring your own ODE</p>
+          <h2 class="section-title">Write the derivative in R.</h2>
+          <p class="lede">Then watch three numerical methods advance the same initial value problem.</p>
+        </div>
+        <div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div>
+      </div>
+
+      <div class="r-guided-grid">
+        <section class="r-guided-editor">
+          <div class="r-editor-label"><span>R</span><small>Define <code>f(x,y)</code></small></div>
+          <textarea class="r-editor r-function-editor" data-r-function spellcheck="false">{defaultFunction}</textarea>
+          <div class="r-guided-controls">
+            <label>x₀<input type="number" value="0" step="any" data-x0 /></label>
+            <label>y₀<input type="number" value="1" step="any" data-y0 /></label>
+            <label>step h<input type="number" value="0.05" step="any" data-h /></label>
+            <label>steps n<input type="number" value="40" min="1" max="200" step="1" data-n /></label>
+          </div>
+          <div class="r-run-row">
+            <button class="button r-run" type="button" data-run disabled>Advance in R</button>
+            <button class="r-reset" type="button" data-reset>Reset R session</button>
+          </div>
+        </section>
+        <aside class="r-guided-primer">
+          <h3>Change h before changing anything else.</h3>
+          <p>
+            A smaller step gives every method more opportunities to correct its
+            course. Try doubling and halving <code>h</code> while keeping the total
+            span roughly comparable.
+          </p>
+        </aside>
+      </div>
+
+      <div class="lab-summary" data-summary></div>
+      <div class="comparison-legend">
+        <span><i style="background:#8b949c"></i>Euler</span>
+        <span><i class="legend-gold"></i>Midpoint</span>
+        <span><i class="legend-azure"></i>RK4</span>
+      </div>
+      <div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Euler, midpoint, and RK4 solution paths" data-plot></svg></div>
+      <div class="lab-stepper">
+        <button class="button secondary-on-light" type="button" data-play disabled>Play steps</button>
+        <label><span data-step-label>RK4 step</span><input type="range" min="0" max="1" value="0" data-step disabled /></label>
+      </div>
+      <p class="lab-status" data-step-detail></p>
+      <div class="lab-table-wrap">
+        <table class="lab-table">
+          <thead><tr><th>step</th><th>x</th><th>y</th><th>s₁</th><th>s₂</th><th>s₃</th><th>s₄</th><th>next y</th></tr></thead>
+          <tbody data-rows></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <script is:inline type="module" src="/js/ivp-lab.js"></script>
+</BaseLayout>
