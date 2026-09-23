@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+const defaultCode = `f <- function(x) {
+  x^2 - 3*x + 3
+}`;
+---
+<BaseLayout title="Golden-Section Search — CMNA" description="Watch golden-section search shrink an interval around extrema of arbitrary R functions.">
+<header class="page-head"><div class="shell"><p class="eyebrow">Optimization · CMNA Laboratory</p><h1 class="page-title">Search without taking a derivative.</h1><p class="lede">Golden-section search keeps reusing interior evaluations while shrinking the interval around a local extremum.</p></div></header>
+<section class="section"><div class="shell two-column"><article class="content"><h2>Reuse is the clever part.</h2><p>The golden ratio places the two interior probes so that one survives into the next iteration. Each comparison throws away one part of the interval without having to evaluate both new interior points from scratch.</p></article><aside class="callout"><strong>Min or max</strong><p>The geometry is the same. Only the comparison flips.</p></aside></div></section>
+<section class="section lab-section"><div class="shell" data-golden-lab>
+<div class="lab-heading"><div><p class="section-kicker">Bring your own objective</p><h2 class="section-title">Watch the interval close around an extremum.</h2><p class="lede">Write f(x) in R, choose an interval and whether to seek a minimum or maximum, then play every decision.</p></div><div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div></div>
+<div class="r-guided-grid"><section class="r-guided-editor"><div class="r-editor-label"><span>R</span><small>Define <code>f(x)</code></small></div><textarea class="r-editor r-function-editor" data-r-code spellcheck="false">{defaultCode}</textarea><div class="r-guided-controls"><label>a<input type="number" value="0" step="any" data-a /></label><label>b<input type="number" value="5" step="any" data-b /></label><label>tolerance<input type="number" value="0.0001" min="0" step="any" data-tol /></label><label>target<select data-mode><option value="min">minimum</option><option value="max">maximum</option></select></label></div><div class="r-run-row"><button class="button r-run" type="button" data-run disabled>Search in R</button><button class="r-reset" type="button" data-reset>Reset R session</button></div></section><aside class="r-guided-primer"><h3>Unimodal is the friendly case.</h3><p>Try a function with several local extrema and watch what the initial interval commits you to.</p></aside></div>
+<div class="lab-summary" data-summary></div><div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Golden-section interval search" data-plot></svg></div>
+<div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Play interval search</button><label><span data-step-label>Iteration</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
+<div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>n</th><th>a</th><th>b</th><th>a*</th><th>b*</th><th>f(a*)</th><th>f(b*)</th><th>kept</th></tr></thead><tbody data-rows></tbody></table></div>
+</div></section><script is:inline type="module" src="/js/golden-section-lab.js"></script></BaseLayout>
