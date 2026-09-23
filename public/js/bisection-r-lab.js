@@ -14,10 +14,16 @@ const explanation = root.querySelector("[data-r-explanation]");
 const summary = root.querySelector("[data-r-summary]");
 const plot = root.querySelector("[data-r-plot]");
 const rowsBody = root.querySelector("[data-r-rows]");
+const playButton = root.querySelector("[data-r-play]");
+const slider = root.querySelector("[data-r-step]");
+const stepLabel = root.querySelector("[data-r-step-label]");
+const stepDetail = root.querySelector("[data-r-step-detail]");
 
 let webR;
 let ready = false;
 let starting = null;
+let currentTrace = null;
+let timer = null;
 
 function fmt(value, digits = 8) {
   if (!Number.isFinite(value)) return "—";
@@ -107,7 +113,7 @@ function renderSummary(trace) {
   summary.innerHTML = [
     ["Root estimate", fmt(m.root, 11)],
     ["Iterations", m.iterations],
-    ["Final bracket", fmt(m.width, 9)],
+    ["Final width", fmt(m.width, 9)],
   ].map(([label, value]) =>
     `<div><span>${label}</span><strong>${value}</strong></div>`
   ).join("");
@@ -168,17 +174,18 @@ function renderExplanation(trace, tolerance) {
   `;
 }
 
-function renderRows(trace) {
+function renderRows(trace, activeIndex = 0) {
   rowsBody.innerHTML = "";
-  for (const row of trace.rows) {
+  trace.rows.forEach((row, index) => {
     const tr = document.createElement("tr");
+    if (index === activeIndex) tr.classList.add("is-current");
     const values = [
       row.i,
       fmt(row.a, 7),
       fmt(row.b, 7),
       fmt(row.m, 7),
       fmt(row.fm, 6),
-      row.kept,
+      fmt(row.width, 6),
     ];
     values.forEach((value) => {
       const td = document.createElement("td");
@@ -186,14 +193,13 @@ function renderRows(trace) {
       tr.append(td);
     });
     rowsBody.append(tr);
-  }
+  });
 }
 
-function renderPlot(trace) {
-  const width = 760;
-  const height = 430;
-  const pad = 48;
-  const graphBottom = 285;
+function renderPlot(trace, stepIndex = 0) {
+  const width = 720;
+  const height = 360;
+  const pad = 42;
   plot.replaceChildren();
   plot.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
@@ -208,61 +214,127 @@ function renderPlot(trace) {
     ymin -= 1;
     ymax += 1;
   }
-  const extra = (ymax - ymin) * 0.08;
-  ymin -= extra;
-  ymax += extra;
+  const yPad = (ymax - ymin) * 0.1;
+  ymin -= yPad;
+  ymax += yPad;
 
   const mapX = (x) => pad + ((x - xmin) / (xmax - xmin)) * (width - 2 * pad);
-  const mapY = (y) => graphBottom - pad - ((y - ymin) / (ymax - ymin)) * (graphBottom - 2 * pad);
+  const mapY = (y) => height - pad - ((y - ymin) / (ymax - ymin)) * (height - 2 * pad);
 
   plot.append(svgEl("rect", { x: 0, y: 0, width, height, fill: "#fffdf8" }));
 
-  const zeroY = mapY(0);
+  const axisY = mapY(0);
   plot.append(svgEl("line", {
-    x1: pad, x2: width - pad, y1: zeroY, y2: zeroY,
-    stroke: "#9aa2a8", "stroke-width": 1,
+    x1: pad, x2: width - pad, y1: axisY, y2: axisY,
+    stroke: "#8b949c", "stroke-width": 1,
   }));
 
-  const d = samples.map((p, i) =>
-    `${i ? "L" : "M"}${mapX(p.x).toFixed(2)},${mapY(p.y).toFixed(2)}`
-  ).join(" ");
+  const path = samples.map((point, index) => {
+    const x = mapX(point.x);
+    const y = mapY(point.y);
+    return `${index === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
+  }).join(" ");
+
   plot.append(svgEl("path", {
-    d, fill: "none", stroke: "#102b46", "stroke-width": 3,
+    d: path,
+    fill: "none",
+    stroke: "#102b46",
+    "stroke-width": 3,
   }));
 
-  const rootX = mapX(trace.meta.root);
-  plot.append(svgEl("line", {
-    x1: rootX, x2: rootX, y1: 18, y2: height - 24,
-    stroke: "#7a2d4b", "stroke-width": 2, "stroke-dasharray": "6 5",
-  }));
-
-  const rows = trace.rows;
-  const visible = rows.length <= 12
-    ? rows
-    : [...rows.slice(0, 6), ...rows.slice(-6)];
-  const ladderTop = 315;
-  const ladderHeight = 82;
-  const spacing = visible.length > 1 ? ladderHeight / (visible.length - 1) : 0;
-
-  visible.forEach((row, index) => {
-    const y = ladderTop + index * spacing;
-    plot.append(svgEl("line", {
-      x1: mapX(row.a), x2: mapX(row.b), y1: y, y2: y,
-      stroke: "#d6a744", "stroke-width": 5, "stroke-linecap": "round",
-      opacity: 0.9,
+  if (!trace.rows.length) {
+    const rootX = mapX(trace.meta.root);
+    plot.append(svgEl("circle", {
+      cx: rootX,
+      cy: axisY,
+      r: 7,
+      fill: "#7a2d4b",
+      stroke: "#fffdf8",
+      "stroke-width": 2,
     }));
-    plot.append(svgEl("circle", { cx: mapX(row.m), cy: y, r: 4.5, fill: "#7a2d4b" }));
-  });
+    stepLabel.textContent = "Endpoint root";
+    stepDetail.textContent = "The endpoint is already a root, so bisection has no iterations to play.";
+    return;
+  }
+
+  const row = trace.rows[Math.min(stepIndex, trace.rows.length - 1)];
+  const bracketY = height - 24;
+  const ax = mapX(row.a);
+  const bx = mapX(row.b);
+  const mx = mapX(row.m);
+
+  plot.append(svgEl("line", {
+    x1: ax,
+    x2: bx,
+    y1: bracketY,
+    y2: bracketY,
+    stroke: "#d6a744",
+    "stroke-width": 8,
+    "stroke-linecap": "round",
+  }));
+
+  for (const [x, fill, radius] of [
+    [ax, "#7a2d4b", 8],
+    [bx, "#7a2d4b", 8],
+    [mx, "#d6a744", 7],
+  ]) {
+    plot.append(svgEl("circle", { cx: x, cy: bracketY, r: radius, fill }));
+  }
+
+  const my = mapY(row.fm);
+  plot.append(svgEl("line", {
+    x1: mx,
+    x2: mx,
+    y1: bracketY - 10,
+    y2: my,
+    stroke: "#7a2d4b",
+    "stroke-width": 2,
+    "stroke-dasharray": "6 5",
+  }));
+  plot.append(svgEl("circle", {
+    cx: mx,
+    cy: my,
+    r: 6,
+    fill: "#7a2d4b",
+    stroke: "#fffdf8",
+    "stroke-width": 2,
+  }));
 
   const label = svgEl("text", {
-    x: pad, y: 22, fill: "#5f6b74", "font-size": 13,
+    x: pad,
+    y: 24,
+    fill: "#5f6b74",
+    "font-size": 14,
     "font-family": "system-ui, sans-serif",
   });
-  label.textContent = "Function evaluated by R; nested bars show the shrinking brackets";
+  label.textContent = `Iteration ${row.i}: [${fmt(row.a, 5)}, ${fmt(row.b, 5)}]`;
   plot.append(label);
+
+  stepLabel.textContent = `Iteration ${row.i} of ${trace.meta.iterations}`;
+  const kept = row.kept === "left"
+    ? `[${fmt(row.a, 6)}, ${fmt(row.m, 6)}]`
+    : `[${fmt(row.m, 6)}, ${fmt(row.b, 6)}]`;
+  stepDetail.textContent =
+    `At m = ${fmt(row.m, 8)}, R found f(m) = ${fmt(row.fm, 8)}. The sign test keeps the ${row.kept} half, ${kept}, for the next iteration.`;
+}
+
+function stopPlayback() {
+  if (timer) window.clearInterval(timer);
+  timer = null;
+  playButton.textContent = "Play convergence";
+}
+
+function showStep(stepIndex) {
+  if (!currentTrace) return;
+  const safeIndex = Math.max(0, Math.min(stepIndex, currentTrace.rows.length - 1));
+  slider.value = safeIndex;
+  renderPlot(currentTrace, safeIndex);
+  renderRows(currentTrace, safeIndex);
 }
 
 async function run() {
+  stopPlayback();
+
   const a = Number(aInput.value);
   const b = Number(bInput.value);
   const tol = Number(tolInput.value);
@@ -281,10 +353,14 @@ async function run() {
   }
 
   runButton.disabled = true;
+  playButton.disabled = true;
+  slider.disabled = true;
   explanation.replaceChildren();
   summary.replaceChildren();
   plot.replaceChildren();
   rowsBody.replaceChildren();
+  stepDetail.textContent = "";
+  currentTrace = null;
 
   try {
     await initialise();
@@ -293,12 +369,19 @@ async function run() {
 
     const call = `.cmna_bisection_trace_text(f, a=${a}, b=${b}, tol=${tol}, m=100)`;
     const payload = await webR.evalRString(call);
-    const trace = parseTrace(payload);
+    currentTrace = parseTrace(payload);
 
-    renderSummary(trace);
-    renderExplanation(trace, tol);
-    renderRows(trace);
-    renderPlot(trace);
+    renderSummary(currentTrace);
+    renderExplanation(currentTrace, tol);
+
+    slider.min = 0;
+    slider.max = Math.max(0, currentTrace.rows.length - 1);
+    slider.value = 0;
+    slider.disabled = currentTrace.rows.length <= 1;
+    playButton.disabled = currentTrace.rows.length <= 1;
+
+    renderRows(currentTrace, 0);
+    renderPlot(currentTrace, 0);
     status.textContent = "Everything below was produced from the R function you supplied.";
   } catch (error) {
     status.textContent = error.message || String(error);
@@ -316,6 +399,30 @@ async function run() {
     runButton.disabled = false;
   }
 }
+
+slider.addEventListener("input", () => {
+  stopPlayback();
+  showStep(Number(slider.value));
+});
+
+playButton.addEventListener("click", () => {
+  if (!currentTrace?.rows.length) return;
+
+  if (timer) {
+    stopPlayback();
+    return;
+  }
+
+  let step = Number(slider.value);
+  if (step >= currentTrace.rows.length - 1) step = -1;
+  playButton.textContent = "Pause";
+
+  timer = window.setInterval(() => {
+    step += 1;
+    showStep(step);
+    if (step >= currentTrace.rows.length - 1) stopPlayback();
+  }, 550);
+});
 
 runButton.addEventListener("click", run);
 resetButton.addEventListener("click", () => location.reload());
