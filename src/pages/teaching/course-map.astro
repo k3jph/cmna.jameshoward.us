@@ -1,0 +1,206 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const weeks = [
+  {
+    week: "1",
+    topic: "What numerical analysis is for",
+    reading: "Chapter 1: Numerical Analysis, efficiency, data types, elementary problems",
+    classroom: "Start with a problem that has an exact mathematical answer and ask why we might still want an approximation. Then compare two implementations that compute the same thing differently.",
+    lab: null,
+    assignment: "Compare naive and improved implementations for summation or polynomial evaluation. Record when the answers begin to separate."
+  },
+  {
+    week: "2",
+    topic: "Error is part of the computation",
+    reading: "Chapter 2: Accuracy, precision, floating point, roundoff, loss of significance, stability",
+    classroom: "Make floating-point arithmetic visibly disagree with real arithmetic. Do not rescue the example too quickly.",
+    lab: { href: "/methods/finite-differences/", label: "Finite differences" },
+    assignment: "Find a calculation that becomes worse when a numerical parameter is made smaller. Explain the mechanism."
+  },
+  {
+    week: "3",
+    topic: "Linear systems and elimination",
+    reading: "Chapter 3.1–3.2: Vectors, matrices, row operations, Gaussian elimination, tridiagonal systems",
+    classroom: "Work one elimination far enough by hand that the row operations are concrete, then read the R implementation as the same sequence.",
+    lab: null,
+    assignment: "Solve one system by row reduction, then verify it with R. Explain any difference between the algorithm and the production function."
+  },
+  {
+    week: "4",
+    topic: "Decomposition and iteration",
+    reading: "Chapter 3.3–3.5: LU, Cholesky, Jacobi, Gauss-Seidel, least squares",
+    classroom: "Put Jacobi and Gauss-Seidel on the same system and ask students to predict which residual falls faster before running either method.",
+    lab: { href: "/methods/iterative-linear-algebra/", label: "Jacobi vs. Gauss-Seidel" },
+    assignment: "Modify a well-behaved system until one iterative method converges poorly or fails to converge. Diagnose the matrix, not the symptoms."
+  },
+  {
+    week: "5",
+    topic: "Interpolation is a choice about what happens between the data",
+    reading: "Chapter 4: Polynomial, piecewise, spline, Bézier, multidimensional interpolation",
+    classroom: "Use the same data for a global polynomial, piecewise linear interpolation, and a spline. Move one point and watch which parts of each model move with it.",
+    lab: { href: "/methods/interpolation/", label: "Interpolation comparison" },
+    assignment: "Construct a data set for which the global polynomial behaves badly between otherwise ordinary points."
+  },
+  {
+    week: "6",
+    topic: "Differentiation without a symbolic derivative",
+    reading: "Chapter 5.1: Finite differences and second derivatives",
+    classroom: "Begin with a secant line and shrink h. Ask when the secant should become the tangent, then let floating point complicate the answer.",
+    lab: { href: "/methods/finite-differences/", label: "Finite differences" },
+    assignment: "For a function with a known derivative, sweep h across several orders of magnitude and explain the error curve."
+  },
+  {
+    week: "7",
+    topic: "Newton-Cotes integration",
+    reading: "Chapter 5.2: Multipanel rules and Newton-Cotes error",
+    classroom: "Draw the geometry of midpoint, trapezoid, and Simpson rules before comparing their numerical results.",
+    lab: { href: "/methods/simpson/", label: "Simpson's rule" },
+    assignment: "Choose an integrand where increasing the panel count matters a great deal, and another where it hardly matters at all."
+  },
+  {
+    week: "8",
+    topic: "Integration without uniform panels",
+    reading: "Chapter 5.3–5.4: Gaussian quadrature, adaptive integration, Romberg, Monte Carlo",
+    classroom: "Put Gaussian quadrature and Monte Carlo next to each other. One carefully chooses points; the other chooses them randomly. Both are trying to spend function evaluations intelligently.",
+    lab: { href: "/methods/gaussian-quadrature/", label: "Gaussian quadrature" },
+    lab2: { href: "/methods/monte-carlo/", label: "Monte Carlo" },
+    assignment: "Use the same smooth integrand with Simpson, Gauss-Legendre, and Monte Carlo. Compare error against the number of function evaluations."
+  },
+  {
+    week: "9",
+    topic: "Three ways to find a root",
+    reading: "Chapter 6.1: Bisection, Newton, secant",
+    classroom: "Ask what information each method requires before discussing speed. A method that cannot legally start does not get credit for theoretical convergence.",
+    lab: { href: "/methods/root-finding/", label: "Root-finder comparison" },
+    assignment: "Find one function where Newton is dramatically faster than bisection and another where the starting value makes Newton embarrassing."
+  },
+  {
+    week: "10",
+    topic: "Optimization in one dimension",
+    reading: "Chapter 6.2: Golden-section search and gradient descent",
+    classroom: "Compare interval reduction with slope following. They solve related problems but ask the function for different information.",
+    lab: { href: "/methods/golden-section/", label: "Golden-section search" },
+    assignment: "Use a multimodal function to show why an interval or starting point can decide which extremum we find."
+  },
+  {
+    week: "11",
+    topic: "Optimization in more than one dimension",
+    reading: "Chapter 6.3–6.4: Multidimensional gradient descent, hill climbing, simulated annealing, applications",
+    classroom: "Put gradient descent and simulated annealing on the same landscape. One follows local slope; the other is sometimes permitted to make a worse move.",
+    lab: { href: "/methods/gradient-descent/", label: "Gradient descent" },
+    lab2: { href: "/methods/simulated-annealing/", label: "Simulated annealing" },
+    assignment: "Change only the starting point or random seed and explain why the final answers differ."
+  },
+  {
+    week: "12",
+    topic: "Initial value problems",
+    reading: "Chapter 7.1: Euler, Runge-Kutta, linear multistep methods",
+    classroom: "Advance one Euler step by hand, then unpack the four slopes in RK4. The difference between the methods should be visible before it is numerical.",
+    lab: { href: "/methods/runge-kutta/", label: "Euler, midpoint, and RK4" },
+    assignment: "Hold the differential equation fixed and vary h. Compare how the three methods respond."
+  },
+  {
+    week: "13",
+    topic: "Systems and boundary value problems",
+    reading: "Chapter 7.2: Systems of ODEs and boundary value problems",
+    classroom: "Use a coupled system to show that the numerical method has not fundamentally changed; only the state being advanced has.",
+    lab: { href: "/workbench/", label: "R Workbench" },
+    assignment: "Implement or adapt a small system example and inspect how an error in one component propagates through the rest of the state."
+  },
+  {
+    week: "14",
+    topic: "Partial differential equations and numerical stability",
+    reading: "Chapter 7.3–7.4: Heat equation, wave equation, applications",
+    classroom: "Run a stable discretization first. Then violate the stability condition on purpose. Students should see the numerical solution fail before we ask them to describe why.",
+    lab: { href: "/methods/heat-equation/", label: "Heat equation" },
+    lab2: { href: "/methods/wave-equation/", label: "Wave equation" },
+    assignment: "Construct one stable and one unstable discretization for the same initial condition. Explain the difference in terms of the numerical scheme."
+  },
+];
+---
+<BaseLayout
+  title="Fourteen Weeks with CMNA"
+  description="A sample fourteen-week course map using the CMNA book, package, and browser laboratories."
+>
+  <header class="page-head teaching-head">
+    <div class="shell">
+      <p class="eyebrow">Teaching · Course design</p>
+      <h1 class="page-title">Fourteen weeks with CMNA</h1>
+      <p class="lede">
+        This is one way to turn the book into a semester. It is not a mandate. The
+        useful part is the sequence: understand the problem, expose the algorithm,
+        run it, and then change something important enough that the result might
+        surprise us.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell content">
+      <p>
+        A traditional numerical analysis course can spend much more time on proofs
+        than CMNA does, and there is nothing wrong with that. In that course, this
+        map works best as the computational spine running alongside the analytical
+        material. In a computational methods or scientific computing course, the
+        balance can move farther toward implementation and experiment.
+      </p>
+      <p>
+        Either way, I would resist the temptation to treat the laboratories as
+        demonstrations we perform after the lecture. They are more useful when
+        students have to make a prediction first. The computer should settle an
+        argument, not start one.
+      </p>
+    </div>
+  </section>
+
+  <section class="section teaching-schedule-section">
+    <div class="shell">
+      <div class="teaching-week-list">
+        {weeks.map((item) => (
+          <article class="teaching-week">
+            <div class="teaching-week-number">Week {item.week}</div>
+            <div class="teaching-week-main">
+              <h2>{item.topic}</h2>
+              <p class="teaching-reading"><strong>Reading:</strong> {item.reading}</p>
+              <p>{item.classroom}</p>
+              {(item.lab || item.lab2) && (
+                <p class="teaching-lab-links">
+                  <strong>Laboratory:</strong>{" "}
+                  {item.lab && <a href={item.lab.href}>{item.lab.label}</a>}
+                  {item.lab && item.lab2 && " · "}
+                  {item.lab2 && <a href={item.lab2.href}>{item.lab2.label}</a>}
+                </p>
+              )}
+              <p class="teaching-assignment"><strong>Assignment seed:</strong> {item.assignment}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-intro">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">Compressing the course</p>
+        <h2 class="section-title">Eight weeks is possible. Something has to give.</h2>
+      </div>
+      <div class="content">
+        <p>
+          For an accelerated course, I would combine Weeks 1 and 2, combine the two
+          linear algebra weeks, combine differentiation with Newton-Cotes integration,
+          combine root finding with one-dimensional optimization, and treat the final
+          two differential-equation weeks as a single unit. Interpolation deserves its
+          own week because the distinction between global and local models is too
+          useful to rush.
+        </p>
+        <p>
+          The thing I would not compress is the prediction step. If time is short,
+          remove an algorithm before removing the opportunity to ask what an algorithm
+          should do. Coverage is easy to measure and remarkably easy to overvalue.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
