@@ -80,3 +80,12 @@ The static teaching material follows the book's original instructional pattern: 
 The Numerical Zoo provides worked canonical problems chosen for interesting numerical behavior rather than routine practice. Current entries include Wilkinson's polynomial, Hilbert matrices, Runge's function, cancellation in the quadratic formula, Himmelblau's function, oscillatory and narrow-peak integrals, and an Euler stability example.
 
 Guided laboratories now share a common experiment toolbar. Current states can be encoded into a shareable URL, exported as an R script, opened directly in the browser R Workbench, inspected against canonical package source, and paired with a print-friendly prediction worksheet.
+
+
+## Privacy and analytics
+
+CMNA uses the same privacy-first consent pattern as jameshoward.us. Google Analytics does not load until the visitor affirmatively accepts optional analytics cookies. Rejecting analytics leaves the full site and browser R laboratories available.
+
+The consent manager honors Global Privacy Control, stores a host-only `cookieConsent` choice for 365 days, disables advertising-related Google storage and signals, and exposes Cookie Settings from the footer. The site also records selected Laboratory interactions after consent, including runs, playback, R export, Workbench handoff, source inspection, and prediction-worksheet use.
+
+The current GA4 measurement ID is shared with jameshoward.us; CMNA traffic remains distinguishable by hostname.
