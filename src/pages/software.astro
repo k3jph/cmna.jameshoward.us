@@ -1,9 +1,31 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "cmna",
+  alternateName: "Computational Methods for Numerical Analysis",
+  version: "1.0.5",
+  programmingLanguage: "R",
+  author: {
+    "@type": "Person",
+    name: "James P. Howard, II",
+    url: "https://jameshoward.us/"
+  },
+  codeRepository: "https://github.com/k3jph/cmna-pkg",
+  runtimePlatform: "R",
+  license: "https://opensource.org/license/bsd-2-clause",
+  sameAs: [
+    "https://cran.r-project.org/package=cmna",
+    "https://doi.org/10.5281/zenodo.3249230"
+  ]
+};
 ---
 <BaseLayout
   title="Software — CMNA"
   description="The companion software for Computational Methods for Numerical Analysis with R."
+  schema={softwareSchema}
 >
   <header class="page-head">
     <div class="shell">
