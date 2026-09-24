@@ -1,17 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { updates } from "../data/updates";
 ---
 <BaseLayout
-  title="Updates — CMNA"
-  description="Corrections, additions, and continuing work around Computational Methods for Numerical Analysis with R."
+  title="Updates | CMNA"
+  description="Corrections, software changes, teaching additions, and continuing work around Computational Methods for Numerical Analysis with R."
 >
   <header class="page-head">
     <div class="shell">
       <p class="eyebrow">Living companion</p>
       <h1 class="page-title">What has changed since the book went to press.</h1>
       <p class="lede">
-        CMNA was published in 2017. The software, examples, corrections, and teaching
-        material do not have to stop there.
+        CMNA was published in 2017. Corrections, software, examples, and teaching
+        material do not have to stop there. This page keeps those different kinds of
+        change separate so a new laboratory does not masquerade as book errata.
       </p>
     </div>
   </header>
@@ -19,55 +21,57 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="section">
     <div class="shell two-column">
       <article class="content">
-        <h2>What belongs here</h2>
+        <h2>Four kinds of change</h2>
         <p>
-          This section tracks material that extends or clarifies the published book:
-          verified errata, changes to the companion software, improved examples,
-          reproducible demonstrations, and teaching notes that are useful enough to
-          preserve.
+          A correction to the printed book, a new package release, a teaching note,
+          and a new website feature are all useful, but they mean different things.
+          The distinction matters. If a printed equation is wrong, a reader needs a
+          correction. If the browser gets a new laboratory, the 2017 book did not
+          suddenly become wrong.
+        </p>
+        <p>
+          So this record uses explicit categories. Book errata correct or clarify the
+          published text. Software entries record changes to the companion package.
+          Teaching entries add material for instructors and students. Website entries
+          describe the maintained companion itself.
         </p>
 
-        <h2>What this is not</h2>
+        <h2>No second edition is being announced</h2>
         <p>
-          There is no second edition of CMNA at present. Nor is this page an
-          announcement of one. The site is useful on its own as a maintained companion
-          to the existing book.
+          There is no second edition of CMNA at present. The site is useful on its own
+          as a maintained companion to the existing book. If the accumulated work
+          eventually supports another edition, there will be a much better record of
+          what actually changed than a blank document and several years of memory.
         </p>
-        <p>
-          Over time, however, the accumulated work can provide a concrete record of
-          what has changed, what readers use, and what deserves more treatment. If a
-          future edition ever makes sense, that record will be far more useful than
-          starting from a blank page.
-        </p>
-
-        <h2>Current sources of change</h2>
-        <ul>
-          <li>verified corrections and clarifications to the 2017 text;</li>
-          <li>maintenance and testing of the <code>cmna</code> R package;</li>
-          <li>additional method explanations and worked examples;</li>
-          <li>teaching material derived from actual use; and</li>
-          <li>small companion implementations, including <code>cmna-el</code>.</li>
-        </ul>
       </article>
 
-      <aside>
-        <div class="card">
-          <h3>Errata</h3>
-          <p>
-            The previous CMNA page records an errata update dated April 3, 2019.
-            Those corrections can be consolidated here as the site is populated.
-          </p>
-          <a href="https://jameshoward.us/books/computational-methods-numerical-analysis-r/">Existing book page →</a>
-        </div>
-        <div class="card aside-card">
-          <h3>Software history</h3>
-          <p>
-            The package repository provides a concrete record of maintenance,
-            testing, and changes made after publication.
-          </p>
-          <a href="https://github.com/k3jph/cmna-pkg">Package repository →</a>
-        </div>
+      <aside class="updates-key">
+        <h2>Categories</h2>
+        <dl>
+          <div><dt>Book errata</dt><dd>Corrections or clarifications to the printed text.</dd></div>
+          <div><dt>Software</dt><dd>Released package changes and canonical source history.</dd></div>
+          <div><dt>Teaching</dt><dd>Course material, exercises, and instructor resources.</dd></div>
+          <div><dt>Website</dt><dd>Companion-site features and maintained examples.</dd></div>
+        </dl>
       </aside>
+    </div>
+  </section>
+
+  <section class="section updates-section">
+    <div class="shell updates-list">
+      {updates.map((entry) => (
+        <article class="update-entry">
+          <div class="update-meta">
+            <time datetime={entry.date}>{entry.date}</time>
+            <span data-kind={entry.kind}>{entry.kind}</span>
+          </div>
+          <div>
+            <h2>{entry.title}</h2>
+            <p>{entry.summary}</p>
+            {entry.href && <a href={entry.href}>{entry.linkLabel ?? "More →"}</a>}
+          </div>
+        </article>
+      ))}
     </div>
   </section>
 </BaseLayout>
