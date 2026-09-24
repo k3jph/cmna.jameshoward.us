@@ -1,0 +1,180 @@
+/*
+ * Cookie consent controls for cmna.jameshoward.us.
+ * The behavior matches jameshoward.us; the presentation follows CMNA's
+ * Azure, Or, Murrey, paper, serif, and sans-serif visual system.
+ */
+
+.gdpr-cookie {
+  --gdpr-cookie-background: #091b2c;
+  --gdpr-cookie-background-soft: #102b46;
+  --gdpr-cookie-gold: #d6a744;
+  --gdpr-cookie-gold-pale: #ead7a1;
+  --gdpr-cookie-murrey: #7a2d4b;
+  --gdpr-cookie-text: #fffdf8;
+  --gdpr-cookie-muted: #c5d0d8;
+  --gdpr-cookie-rule: rgba(255,255,255,.14);
+  --gdpr-cookie-focus: #ead7a1;
+
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10000;
+  box-sizing: border-box;
+  padding: 1.15rem 1.5rem;
+  color: var(--gdpr-cookie-text);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(214,167,68,.10), transparent 28rem),
+    linear-gradient(120deg, var(--gdpr-cookie-background-soft), var(--gdpr-cookie-background));
+  border-top: 5px solid var(--gdpr-cookie-gold);
+  box-shadow: 0 -10px 32px rgb(9 27 44 / 34%);
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 180ms linear, transform 180ms linear;
+}
+
+.gdpr-cookie,
+.gdpr-cookie * {
+  box-sizing: border-box;
+}
+
+.gdpr-cookie[hidden] {
+  display: none;
+}
+
+.gdpr-cookie.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gdpr-cookie__panel {
+  display: flex;
+  gap: 1.25rem 2.5rem;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 1180px);
+  margin: 0 auto;
+}
+
+.gdpr-cookie__copy {
+  max-width: 790px;
+}
+
+.gdpr-cookie .gdpr-cookie__title {
+  margin: 0 0 .32rem;
+  padding: 0;
+  color: var(--gdpr-cookie-gold-pale);
+  font-family: Charter, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.gdpr-cookie .gdpr-cookie__description,
+.gdpr-cookie .gdpr-cookie__more {
+  margin: 0;
+  padding: 0;
+  color: var(--gdpr-cookie-text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: .94rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.gdpr-cookie .gdpr-cookie__more {
+  margin-top: .35rem;
+  color: var(--gdpr-cookie-muted);
+  font-size: .82rem;
+}
+
+.gdpr-cookie a {
+  color: var(--gdpr-cookie-gold-pale);
+  font-weight: 750;
+  text-decoration: underline;
+  text-decoration-color: rgb(214 167 68 / 58%);
+  text-underline-offset: .18em;
+}
+
+.gdpr-cookie a:hover {
+  color: #ffffff;
+  text-decoration-color: var(--gdpr-cookie-gold-pale);
+}
+
+.gdpr-cookie__actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: .7rem;
+}
+
+.gdpr-cookie .gdpr-cookie__button {
+  min-width: 10rem;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: .62rem 1rem;
+  border: 2px solid var(--gdpr-cookie-gold);
+  border-radius: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: .055em;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 150ms linear, background-color 150ms linear, border-color 150ms linear;
+}
+
+.gdpr-cookie .gdpr-cookie__button--accept {
+  color: var(--gdpr-cookie-background);
+  background: var(--gdpr-cookie-gold);
+}
+
+.gdpr-cookie .gdpr-cookie__button--reject {
+  color: var(--gdpr-cookie-gold-pale);
+  background: transparent;
+}
+
+.gdpr-cookie .gdpr-cookie__button:hover {
+  color: var(--gdpr-cookie-background);
+  background: var(--gdpr-cookie-gold-pale);
+  border-color: var(--gdpr-cookie-gold-pale);
+}
+
+.gdpr-cookie .gdpr-cookie__button:focus-visible,
+.gdpr-cookie a:focus-visible {
+  outline: 3px solid var(--gdpr-cookie-focus);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .gdpr-cookie {
+    padding: 1rem;
+  }
+
+  .gdpr-cookie__panel {
+    display: block;
+  }
+
+  .gdpr-cookie__actions {
+    margin-top: 1rem;
+  }
+
+  .gdpr-cookie .gdpr-cookie__button {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .gdpr-cookie__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gdpr-cookie,
+  .gdpr-cookie .gdpr-cookie__button {
+    transition: none;
+  }
+}
