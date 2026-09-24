@@ -1,6 +1,6 @@
 const input = document.querySelector("[data-site-search]");
 const form = document.querySelector("[data-site-search-form]");
-const status = document.querySelector("[data-site-search-status]");
+const statusEl = document.querySelector("[data-site-search-status]");
 const results = [...document.querySelectorAll("[data-search-result]")];
 
 function normalize(value) {
@@ -24,11 +24,11 @@ function applySearch(rawQuery, updateUrl = false) {
   }
 
   if (!query) {
-    status.textContent = `${results.length} indexed entries. Start typing to narrow the list.`;
+    statusEl.textContent = `${results.length} indexed entries. Start typing to narrow the list.`;
   } else if (count === 1) {
-    status.textContent = `1 result for “${rawQuery.trim()}”.`;
+    statusEl.textContent = `1 result for “${rawQuery.trim()}”.`;
   } else {
-    status.textContent = `${count} results for “${rawQuery.trim()}”.`;
+    statusEl.textContent = `${count} results for “${rawQuery.trim()}”.`;
   }
 
   if (updateUrl) {
