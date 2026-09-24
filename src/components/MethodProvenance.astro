@@ -1,0 +1,58 @@
+---
+interface LinkItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  book: string;
+  functions: string[];
+  sources: string[];
+  teachingHref: string;
+  zoo?: LinkItem[];
+}
+
+const { book, functions, sources, teachingHref, zoo = [] } = Astro.props;
+const packageCommit = "9d57edec65c929a18aa5258e84f619649a93f269";
+---
+<section class="method-provenance" aria-label="Method provenance">
+  <div>
+    <span>Book</span>
+    <strong>{book}</strong>
+    <a href="/book/">Book details</a>
+  </div>
+
+  <div>
+    <span>CMNA package</span>
+    <strong>{functions.map((fn) => <code>{fn}</code>)}</strong>
+    <p class="method-provenance-links">
+      {sources.map((source, index) => (
+        <>
+          {index > 0 && " · "}
+          <a href={`https://github.com/k3jph/cmna-pkg/blob/${packageCommit}/${source}`}>{source}</a>
+        </>
+      ))}
+    </p>
+  </div>
+
+  <div>
+    <span>Teaching</span>
+    <strong>Instructor notes and chapter context</strong>
+    <a href={teachingHref}>Open teaching material</a>
+  </div>
+
+  {zoo.length > 0 && (
+    <div>
+      <span>Numerical Zoo</span>
+      <strong>Worked problems</strong>
+      <p class="method-provenance-links">
+        {zoo.map((item, index) => (
+          <>
+            {index > 0 && " · "}
+            <a href={item.href}>{item.label}</a>
+          </>
+        ))}
+      </p>
+    </div>
+  )}
+</section>
