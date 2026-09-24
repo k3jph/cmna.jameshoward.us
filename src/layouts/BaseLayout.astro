@@ -9,6 +9,7 @@ interface Props {
   description?: string;
   image?: string;
   schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
 }
 
 const {
@@ -16,6 +17,7 @@ const {
   description = "The web companion to Computational Methods for Numerical Analysis with R by James P. Howard, II.",
   image = "https://jameshoward.us/assets/img/CMNA-cover-300.webp",
   schema,
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -29,6 +31,7 @@ const socialImage = new URL(image, Astro.site);
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#102B46" />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/cmna-mark.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
