@@ -1,7 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "CMNA",
+  alternateName: "Computational Methods for Numerical Analysis with R",
+  url: "https://cmna.jameshoward.us/",
+  author: {
+    "@type": "Person",
+    name: "James P. Howard, II",
+    url: "https://jameshoward.us/"
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://cmna.jameshoward.us/search/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+};
 ---
-<BaseLayout>
+<BaseLayout schema={siteSchema}>
   <section class="hero">
     <div class="shell hero-grid">
       <div>
