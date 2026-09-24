@@ -63,8 +63,8 @@ function parse(payload){
   return result;
 }
 function renderSummary(){
-  const init=trace.frames[0],last=trace.frames.at(-1);
-  const span0=Math.max(...init)-Math.min(...init),spanN=Math.max(...last)-Math.min(...last);
+  const last=trace.frames.at(-1);
+  const spanN=Math.max(...last)-Math.min(...last);
   summary.innerHTML=[
     ["FTCS coefficient",fmt(trace.meta.hcoef,7)],
     ["time steps",trace.meta.n],
