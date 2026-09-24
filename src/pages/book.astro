@@ -1,9 +1,30 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const bookSchema = {
+  "@context": "https://schema.org",
+  "@type": "Book",
+  name: "Computational Methods for Numerical Analysis with R",
+  author: {
+    "@type": "Person",
+    name: "James P. Howard, II",
+    url: "https://jameshoward.us/"
+  },
+  datePublished: "2017",
+  publisher: {
+    "@type": "Organization",
+    name: "Chapman & Hall/CRC"
+  },
+  isbn: "9781498723633",
+  numberOfPages: 277,
+  url: "https://cmna.jameshoward.us/book/",
+  sameAs: "https://doi.org/10.1201/9781315120195"
+};
 ---
 <BaseLayout
   title="The Book — CMNA"
   description="About Computational Methods for Numerical Analysis with R by James P. Howard, II."
+  schema={bookSchema}
 >
   <header class="page-head">
     <div class="shell">
