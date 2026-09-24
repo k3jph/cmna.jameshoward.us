@@ -1266,3 +1266,23 @@ sa <- function(f, x, temp = 1e4, rate = 1e-4) {
     }
     paste(lines,collapse="\n")
 }
+
+
+quadratic <- function(b2, b1, b0) {
+    t1 <- sqrt(b1^2 - 4 * b2 * b0)
+    t2 <- 2 * b2
+
+    x1 <- - (b1 + t1) / t2
+    x2 <- - (b1 - t1) / t2
+    return(c(x1, x2))
+}
+
+quadratic2 <- function(b2, b1, b0) {
+    t1 <- sqrt(b1^2 - 4 * b2 * b0)
+    t2 <- 2 * b0
+
+    x1 <- t2 / (-b1 - t1)
+    x2 <- t2 / (-b1 + t1)
+
+    return(c(x2, x1))
+}
