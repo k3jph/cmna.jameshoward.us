@@ -1,4 +1,4 @@
-import { WebR, ChannelType } from "https://webr.r-wasm.org/latest/webr.mjs";
+import { WebR, ChannelType } from "https://webr.r-wasm.org/v0.6.0/webr.mjs";
 
 const root = document.querySelector("[data-simpson-lab]");
 if (!root) throw new Error("Simpson laboratory root not found.");
