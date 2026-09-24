@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
 const defaultSystem = `A <- matrix(c(
   10, -1,  2,
   -1, 11, -1,
@@ -97,5 +98,12 @@ b <- c(6, 25, -11)`;
       </div>
     </div>
   </section>
+  <MethodProvenance
+    book="§3.4 · Iterative Methods · pp. 79–85"
+    functions={["jacobi","gaussseidel"]}
+    sources={["R/iterativematrix.R"]}
+    teachingHref="/teaching/chapters/#chapter-3" zoo={[{ label: "Hilbert matrix", href: "/zoo/hilbert-matrix/" }]}
+  />
+
   <script is:inline type="module" src="/js/iterative-linear-lab.js"></script>
 </BaseLayout>

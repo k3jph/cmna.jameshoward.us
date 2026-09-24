@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
 const defaultFunction = `f <- function(x, y) {
   y / (2*x + 1)
 }`;
@@ -93,5 +94,12 @@ const defaultFunction = `f <- function(x, y) {
       </div>
     </div>
   </section>
+  <MethodProvenance
+    book="§7.1.1–7.1.2 · Euler and Runge-Kutta Methods · pp. 200–208"
+    functions={["euler","midptivp","rungekutta4"]}
+    sources={["R/ivp.R"]}
+    teachingHref="/teaching/chapters/#chapter-7" zoo={[{ label: "Euler's decay trap", href: "/zoo/euler-decay-trap/" }]}
+  />
+
   <script is:inline type="module" src="/js/ivp-lab.js"></script>
 </BaseLayout>
