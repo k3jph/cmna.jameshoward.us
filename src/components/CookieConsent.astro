@@ -31,8 +31,16 @@
 <script is:inline src="/assets/js/gdpr-cookie.js" defer></script>
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    if (typeof window.cookieStart === 'function') {
-      window.cookieStart('G-FSDET4HG4L', 'cookieConsent', 365, '1');
+    const gaMeasurementId = 'G-XXXXXXXXXX';
+
+    // Replace the placeholder above with the CMNA GA4 measurement ID.
+    // Until then, analytics remains completely disabled and the consent
+    // banner stays hidden.
+    if (
+      gaMeasurementId !== 'G-XXXXXXXXXX' &&
+      typeof window.cookieStart === 'function'
+    ) {
+      window.cookieStart(gaMeasurementId, 'cookieConsent', 365, '1');
     }
   }, { once: true });
 </script>
