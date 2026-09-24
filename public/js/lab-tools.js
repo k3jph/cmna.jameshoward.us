@@ -164,7 +164,7 @@ const configs = {
       const dx = value(root, "[data-dx]");
       const dt = value(root, "[data-dt]");
       const n = value(root, "[data-n]");
-      return `${code}\n\nalpha <- ${alpha}\nxdelta <- ${dx}\ntdelta <- ${dt}\nn <- ${n}\nx <- seq(0, 1, by = xdelta)\nu <- u0(x)\nheat(u, alpha, xdelta, tdelta, n)\n`;
+      return `${code}\n\nalpha <- ${alpha}\nxdelta <- ${dx}\ntdelta <- ${dt}\nn <- ${n}\nx <- seq(0, 1, by = xdelta)\nif (tail(x, 1) < 1) x <- c(x, 1)\nu <- u0(x)\nheat(u, alpha, xdelta, tdelta, n)\n`;
     },
   },
   "/methods/wave-equation/": {
@@ -178,7 +178,7 @@ const configs = {
       const dx = value(root, "[data-dx]");
       const dt = value(root, "[data-dt]");
       const n = value(root, "[data-n]");
-      return `${code}\n\nspeed <- ${speed}\nxdelta <- ${dx}\ntdelta <- ${dt}\nn <- ${n}\nx <- seq(0, 1, by = xdelta)\nu <- u0(x)\nwave(u, speed, xdelta, tdelta, n)\n`;
+      return `${code}\n\nspeed <- ${speed}\nxdelta <- ${dx}\ntdelta <- ${dt}\nn <- ${n}\nx <- seq(0, 1, by = xdelta)\nif (tail(x, 1) < 1) x <- c(x, 1)\nu <- u0(x)\nwave(u, speed, xdelta, tdelta, n)\n`;
     },
   },
   "/methods/golden-section/": {
