@@ -8,12 +8,14 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title = "CMNA — Computational Methods for Numerical Analysis with R",
   description = "The web companion to Computational Methods for Numerical Analysis with R by James P. Howard, II.",
   image = "https://jameshoward.us/assets/img/CMNA-cover-300.webp",
+  schema,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -35,6 +37,9 @@ const socialImage = new URL(image, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    {schema && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
     <title>{title}</title>
   </head>
   <body>
