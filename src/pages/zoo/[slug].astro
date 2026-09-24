@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { zooEntries, type ZooEntry } from "../../data/zoo";
+
+export function getStaticPaths() {
+  return zooEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: ZooEntry;
+}
+
+const { entry } = Astro.props;
+---
+<BaseLayout
+  title={entry.title + " | Numerical Zoo | CMNA"}
+  description={entry.subtitle}
+>
+  <header class="page-head zoo-head">
+    <div class="shell">
+      <p class="eyebrow">Numerical Zoo · {entry.kind}</p>
+      <h1 class="page-title">{entry.title}</h1>
+      <p class="lede">{entry.subtitle}</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>Why numerical analysts keep this one around</h2>
+        {entry.why.map((paragraph) => <p>{paragraph}</p>)}
+      </article>
+
+      <aside class="zoo-lab-box">
+        <span>Take it out of the cage</span>
+        <h2>Run the problem</h2>
+        {entry.labs.map((lab) => (
+          <a href={lab.href}>
+            <strong>{lab.label}</strong>
+            <small>{lab.note}</small>
+          </a>
+        ))}
+      </aside>
+    </div>
+  </section>
+
+  <section class="section zoo-worked-section">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">R setup</p>
+        <h2 class="section-title">Start with the actual object.</h2>
+      </div>
+      <div class="code-panel">
+        <pre><code>{entry.code}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">By hand first</p>
+        <h2 class="section-title">Do enough arithmetic to see the trap.</h2>
+      </div>
+      <div class="zoo-steps">
+        {entry.hand.map((step, index) => (
+          <article>
+            <span>{index + 1}</span>
+            <p>{step}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-intro">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">What to look for</p>
+        <h2 class="section-title">Now make it earn its reputation.</h2>
+      </div>
+      <div class="content">
+        <ul class="zoo-watch-list">
+          {entry.watch.map((item) => <li>{item}</li>)}
+        </ul>
+        <div class="teaching-warning">
+          <strong>Keep this distinction:</strong>
+          <p>{entry.next}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section zoo-next-section">
+    <div class="shell">
+      <a href="/zoo/">← Back to the Numerical Zoo</a>
+    </div>
+  </section>
+</BaseLayout>
