@@ -1,6 +1,7 @@
 ---
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import CookieConsent from "../components/CookieConsent.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -43,6 +44,8 @@ const socialImage = new URL(image, Astro.site);
       <slot />
     </main>
     <SiteFooter />
+    <CookieConsent />
     <script is:inline type="module" src="/js/lab-tools.js"></script>
+    <script is:inline src="/js/analytics-events.js" defer></script>
   </body>
 </html>
