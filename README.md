@@ -41,7 +41,7 @@ The method atlas is structured from `src/data/methods.ts` and can be filtered in
 
 ## R Workbench
 
-The site includes a client-side R workbench powered by webR. Valid R is executed in the browser through WebAssembly rather than on a CMNA computation server. A small bundle of canonical CMNA functions is loaded into the session at startup; base R remains available for arbitrary user code and plotting.
+The site includes a client-side R workbench powered by webR v0.6.0, pinned for reproducible production behavior. Valid R is executed in the browser through WebAssembly rather than on a CMNA computation server. A small bundle of canonical CMNA functions is loaded into the session at startup; base R remains available for arbitrary user code and plotting.
 
 Because GitHub Pages cannot provide the cross-origin-isolated headers required for webR's interruptible SharedArrayBuffer channel, the workbench uses the PostMessage channel. A pathological or infinite R computation is terminated by reloading the page and thereby destroying the browser session.
 
