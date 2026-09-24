@@ -2891,3 +2891,11 @@ code:not(pre code) {
     margin: 0.55in;
   }
 }
+
+
+.lab-source-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
