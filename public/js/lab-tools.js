@@ -334,7 +334,10 @@ function injectToolbar(config, root) {
         <span>Canonical package source</span>
         <h3>${config.title}</h3>
       </div>
-      <button type="button" data-copy-source disabled>Copy source</button>
+      <div class="lab-source-actions">
+        <button type="button" data-copy-source disabled>Copy source</button>
+        <button type="button" data-source-workbench disabled>Modify in Workbench</button>
+      </div>
     </div>
     <div class="lab-source-files" data-source-files></div>
   `;
@@ -395,6 +398,7 @@ function injectToolbar(config, root) {
       drawer.dataset.loaded = "1";
       drawer._sourceText = chunks.map((c) => `# ${c.path}\n${c.text}`).join("\n\n");
       drawer.querySelector("[data-copy-source]").disabled = false;
+      drawer.querySelector("[data-source-workbench]").disabled = false;
     } catch (error) {
       target.innerHTML = "";
       const p = document.createElement("p");
@@ -407,6 +411,11 @@ function injectToolbar(config, root) {
     if (!drawer._sourceText) return;
     await copy(drawer._sourceText);
     notify(toolbar, "Package source copied.");
+  });
+
+  drawer.querySelector("[data-source-workbench]").addEventListener("click", () => {
+    if (!drawer._sourceText) return;
+    location.href = "/workbench/#code=" + encodeText(drawer._sourceText);
   });
 }
 
