@@ -1,4 +1,3 @@
----
 import { updates } from "../../data/updates";
 
 export const prerender = true;
@@ -47,4 +46,3 @@ export function GET() {
     }
   });
 }
----
