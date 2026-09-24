@@ -14,4 +14,12 @@ const defaultCode = `f <- function(x) {
 <div class="lab-summary" data-summary></div><div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Golden-section interval search" data-plot></svg></div>
 <div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Play interval search</button><label><span data-step-label>Iteration</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
 <div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>n</th><th>a</th><th>b</th><th>a*</th><th>b*</th><th>f(a*)</th><th>f(b*)</th><th>kept</th></tr></thead><tbody data-rows></tbody></table></div>
-</div></section><script is:inline type="module" src="/js/golden-section-lab.js"></script></BaseLayout>
+</div></section><script is:inline type="module" src="/js/golden-section-lab.js"></script>
+  <MethodProvenance
+    book="§6.2.1 · Golden Section Search · p. 175"
+    functions={["goldsectmin","goldsectmax"]}
+    sources={["R/goldsect.R"]}
+    teachingHref="/teaching/chapters/#chapter-6"
+  />
+
+</BaseLayout>
