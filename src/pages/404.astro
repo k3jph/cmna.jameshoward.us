@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Not Found — CMNA" description="The requested CMNA page was not found.">
+<BaseLayout title="Not Found | CMNA" description="The requested CMNA page was not found." noindex={true}>
   <header class="page-head">
     <div class="shell">
       <p class="eyebrow">404</p>
@@ -13,6 +13,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div class="hero-actions">
         <a class="button" href="/">Return home</a>
         <a class="button secondary" href="/methods/">Browse methods</a>
+        <a class="button secondary" href="/search/">Search CMNA</a>
       </div>
     </div>
   </header>
