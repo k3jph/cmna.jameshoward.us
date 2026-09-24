@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const bookBib = `@book{howard2017cmna,
+  author    = {Howard, James P.},
+  title     = {Computational Methods for Numerical Analysis with R},
+  year      = {2017},
+  publisher = {Chapman and Hall/CRC},
+  doi       = {10.1201/9781315120195},
+  isbn      = {9781498723633}
+}`;
+
+const packageBib = `@software{howard2021cmna,
+  author  = {Howard, James P.},
+  title   = {cmna: Computational Methods for Numerical Analysis},
+  version = {1.0.5},
+  year    = {2021},
+  doi     = {10.5281/zenodo.3249230},
+  url     = {https://github.com/k3jph/cmna-pkg}
+}`;
+
+const siteBib = `@misc{howard2026cmnaweb,
+  author       = {Howard, James P.},
+  title        = {CMNA: Web Companion to Computational Methods for Numerical Analysis with R},
+  year         = {2026},
+  howpublished = {\url{https://cmna.jameshoward.us/}},
+  note         = {Accessed: YYYY-MM-DD}
+}`;
+---
+<BaseLayout
+  title="Citing CMNA"
+  description="Citation information for the CMNA book, R package, and web companion."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Citation</p>
+      <h1 class="page-title">Citing CMNA</h1>
+      <p class="lede">
+        The book, the R package, and this website are related, but they are not the
+        same object. Cite the thing you actually used.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell content">
+      <p>
+        If the argument, explanation, or method comes from the book, cite the book.
+        If your work depends on the software implementation, cite the package. If you
+        are referring to a browser laboratory, teaching resource, Numerical Zoo
+        entry, or another part of this web companion, cite the site and include the
+        page URL when useful.
+      </p>
+    </div>
+  </section>
+
+  <section class="section citation-section">
+    <div class="shell citation-grid">
+      <article class="citation-card">
+        <span>Book</span>
+        <h2><em>Computational Methods for Numerical Analysis with R</em></h2>
+        <p>
+          Howard, James P. <em>Computational Methods for Numerical Analysis with R</em>.
+          Chapman &amp; Hall/CRC, 2017. DOI: 10.1201/9781315120195.
+        </p>
+        <dl>
+          <div><dt>Print ISBN</dt><dd>978-1-4987-2363-3</dd></div>
+          <div><dt>eBook ISBN</dt><dd>978-1-351-64650-5</dd></div>
+        </dl>
+        <pre><code>{bookBib}</code></pre>
+        <div class="citation-actions">
+          <a href="/citations/cmna-book.bib">BibTeX</a>
+          <a href="/citations/cmna-book.ris">RIS</a>
+          <a href="https://doi.org/10.1201/9781315120195">DOI</a>
+        </div>
+      </article>
+
+      <article class="citation-card">
+        <span>Software</span>
+        <h2><code>cmna</code> R package</h2>
+        <p>
+          Howard, James P. <em>cmna: Computational Methods for Numerical Analysis</em>,
+          version 1.0.5, 2021.
+        </p>
+        <dl>
+          <div><dt>Package DOI</dt><dd>10.5281/zenodo.3249230</dd></div>
+          <div><dt>Version</dt><dd>1.0.5</dd></div>
+        </dl>
+        <pre><code>{packageBib}</code></pre>
+        <div class="citation-actions">
+          <a href="/citations/cmna-package.bib">BibTeX</a>
+          <a href="/citations/cmna-package.ris">RIS</a>
+          <a href="https://doi.org/10.5281/zenodo.3249230">DOI</a>
+        </div>
+      </article>
+
+      <article class="citation-card">
+        <span>Website</span>
+        <h2>CMNA web companion</h2>
+        <p>
+          Howard, James P. <em>CMNA: Web Companion to Computational Methods for
+          Numerical Analysis with R</em>. 2026. Use the specific page URL when
+          referring to a laboratory, teaching resource, or worked problem.
+        </p>
+        <pre><code>{siteBib}</code></pre>
+        <div class="citation-actions">
+          <a href="/citations/cmna-website.bib">BibTeX</a>
+          <a href="/citations/cmna-website.ris">RIS</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
