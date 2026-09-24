@@ -17,6 +17,21 @@ let shelter;
 let ready = false;
 let running = false;
 
+function decodeSharedCode(text) {
+  const padded = text.replaceAll("-", "+").replaceAll("_", "/") + "===".slice((text.length + 3) % 4);
+  const binary = atob(padded);
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+if (location.hash.startsWith("#code=")) {
+  try {
+    editor.value = decodeSharedCode(location.hash.slice(6));
+  } catch (_) {
+    // Leave the default example intact if a shared fragment is malformed.
+  }
+}
+
 function appendOutput(type, data) {
   const line = document.createElement("div");
   line.className = "r-output-line " + (type === "stderr" ? "r-output-error" : "");
