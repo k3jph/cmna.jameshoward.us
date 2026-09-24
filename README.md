@@ -73,3 +73,10 @@ Newer laboratories include Gauss-Legendre quadrature, Monte Carlo integration, p
 The Teaching section provides a fourteen-week course map, chapter learning objectives and crosswalks, instructor notes for the interactive laboratories, a failure-driven "Break It" exercise collection, and adoption/syllabus guidance.
 
 The static teaching material follows the book's original instructional pattern: problem, method, implementation, example, failure mode, and practical consequence. It is intended to support the book rather than turn the site into a second textbook.
+
+
+## Numerical Zoo and experiment portability
+
+The Numerical Zoo provides worked canonical problems chosen for interesting numerical behavior rather than routine practice. Current entries include Wilkinson's polynomial, Hilbert matrices, Runge's function, cancellation in the quadratic formula, Himmelblau's function, oscillatory and narrow-peak integrals, and an Euler stability example.
+
+Guided laboratories now share a common experiment toolbar. Current states can be encoded into a shareable URL, exported as an R script, opened directly in the browser R Workbench, inspected against canonical package source, and paired with a print-friendly prediction worksheet.
