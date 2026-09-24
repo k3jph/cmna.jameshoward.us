@@ -15,4 +15,12 @@ y <- c(0, 1.2, 0.4, 2.0, 1.4)`;
 <div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Three interpolants through supplied data" data-plot></svg></div>
 <div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Sweep across x</button><label><span data-step-label>x</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
 <div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>point</th><th>x</th><th>y</th></tr></thead><tbody data-rows></tbody></table></div>
-</div></section><script is:inline type="module" src="/js/interpolation-lab.js"></script></BaseLayout>
+</div></section><script is:inline type="module" src="/js/interpolation-lab.js"></script>
+  <MethodProvenance
+    book="§4.1–4.2 · Polynomial and Piecewise Interpolation · pp. 89–103"
+    functions={["polyinterp","pwiselinterp","cubicspline"]}
+    sources={["R/polyinterp.R","R/pwiselinterp.R","R/cubicspline.R"]}
+    teachingHref="/teaching/chapters/#chapter-4" zoo={[{ label: "Runge's function", href: "/zoo/runge-function/" }]}
+  />
+
+</BaseLayout>
