@@ -300,7 +300,7 @@ async function copy(text) {
 }
 
 function sourceUrl(path) {
-  return `https://raw.githubusercontent.com/k3jph/cmna-pkg/main/${path}`;
+  return `https://raw.githubusercontent.com/k3jph/cmna-pkg/9d57edec65c929a18aa5258e84f619649a93f269/${path}`;
 }
 
 function injectToolbar(config, root) {
