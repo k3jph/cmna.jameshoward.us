@@ -2899,3 +2899,84 @@ code:not(pre code) {
   gap: 0.45rem;
   justify-content: flex-end;
 }
+
+
+/* Citation guide */
+
+.citation-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.citation-card {
+  padding: 1.35rem;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--gold);
+  background: rgba(255, 253, 248, 0.8);
+}
+
+.citation-card > span {
+  color: var(--murrey);
+  font-size: 0.68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.citation-card h2 {
+  margin: 0.25rem 0 0.65rem;
+  color: var(--azure);
+  font: 700 1.55rem/1.1 var(--serif);
+}
+
+.citation-card p {
+  max-width: 60rem;
+  color: #3f4e59;
+}
+
+.citation-card dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  margin: 1rem 0;
+}
+
+.citation-card dl div {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.citation-card dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.citation-card dd {
+  margin: 0;
+}
+
+.citation-card pre {
+  max-height: 19rem;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--code);
+  color: #e8eef3;
+}
+
+.citation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.citation-actions a {
+  display: inline-block;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--line);
+  background: #faf7f0;
+  font-weight: 750;
+  text-decoration: none;
+}
