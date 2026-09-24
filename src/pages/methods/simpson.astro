@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
 const defaultFunction = `f <- function(x) {
   exp(-x^2)
 }`;
@@ -107,6 +108,13 @@ const defaultFunction = `f <- function(x) {
       </div>
     </div>
   </section>
+
+  <MethodProvenance
+    book="§5.2.1 · Multipanel Interpolation Rules · p. 131"
+    functions={["simp"]}
+    sources={["R/simp.R"]}
+    teachingHref="/teaching/chapters/#chapter-5" zoo={[{ label: "Oscillatory integral", href: "/zoo/oscillatory-integral/" }, { label: "Narrow peak", href: "/zoo/narrow-peak/" }]}
+  />
 
   <script is:inline type="module" src="/js/simpson-lab.js"></script>
 </BaseLayout>
