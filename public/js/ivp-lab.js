@@ -1,4 +1,4 @@
-import { WebR, ChannelType } from "https://webr.r-wasm.org/latest/webr.mjs";
+import { WebR, ChannelType } from "https://webr.r-wasm.org/v0.6.0/webr.mjs";
 
 const root=document.querySelector("[data-ivp-lab]");
 if(!root) throw new Error("IVP lab root not found.");
