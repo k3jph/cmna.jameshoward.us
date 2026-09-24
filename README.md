@@ -88,4 +88,4 @@ CMNA uses the same privacy-first consent pattern as jameshoward.us. Google Analy
 
 The consent manager honors Global Privacy Control, stores a host-only `cookieConsent` choice for 365 days, disables advertising-related Google storage and signals, and exposes Cookie Settings from the footer. The site also records selected Laboratory interactions after consent, including runs, playback, R export, Workbench handoff, source inspection, and prediction-worksheet use.
 
-The current GA4 measurement ID is shared with jameshoward.us; CMNA traffic remains distinguishable by hostname.
+The GA4 measurement ID is currently a placeholder (`G-XXXXXXXXXX`) in `src/components/CookieConsent.astro`. Until it is replaced with the CMNA measurement ID, Google Analytics remains disabled and the consent banner stays hidden.
