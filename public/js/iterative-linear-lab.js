@@ -98,7 +98,7 @@ function renderPlot(active=0){
     ["Jacobi",trace.rows.Jacobi,"#102b46"],
     ["Gauss-Seidel",trace.rows["Gauss-Seidel"],"#7a2d4b"],
   ];
-  for(const [name,rows,color] of series){
+  for(const [,rows,color] of series){
     const d=rows.map((r,i)=>`${i?"L":"M"}${mapX(r.i).toFixed(2)},${mapY(Math.log10(Math.max(r.residual,1e-16))).toFixed(2)}`).join(" ");
     plot.append(svgEl("path",{d,fill:"none",stroke:color,"stroke-width":3}));
     const row=rows[Math.min(active,rows.length-1)];
