@@ -89,3 +89,14 @@ CMNA uses the same privacy-first consent pattern as jameshoward.us. Google Analy
 The consent manager honors Global Privacy Control, stores a host-only `cookieConsent` choice for 365 days, disables advertising-related Google storage and signals, and exposes Cookie Settings from the footer. The site also records selected Laboratory interactions after consent, including runs, playback, R export, Workbench handoff, source inspection, and prediction-worksheet use.
 
 The GA4 measurement ID is currently a placeholder (`G-XXXXXXXXXX`) in `src/components/CookieConsent.astro`. Until it is replaced with the CMNA measurement ID, Google Analytics remains disabled and the consent banner stays hidden.
+
+
+## Search, citations, and provenance
+
+The site includes a static search index spanning methods, R functions, teaching material, the Numerical Zoo, software, and reference pages. Citation guidance is available for the book, package, and website, including downloadable BibTeX and RIS files.
+
+Interactive method pages also carry provenance blocks connecting the browser experiment back to the relevant section of the 2017 book, the pinned CMNA 1.0.5 package source, teaching material, and related Numerical Zoo problems.
+
+## Reproducible production build
+
+Production uses the committed npm lockfile with `npm ci` in both CI and GitHub Pages deployment. Browser R imports are pinned to webR v0.6.0 rather than the moving `latest` URL. Dependabot checks the npm toolchain weekly.
