@@ -58,8 +58,6 @@ function parse(payload){
   return result;
 }
 function renderSummary(){
-  const ys=trace.points.map(p=>p.y);
-  const mean=ys.reduce((a,b)=>a+b,0)/Math.max(1,ys.length);
   summary.innerHTML=[
     ["Monte Carlo estimate",fmt(trace.meta.estimate,10)],
     ["Samples",trace.meta.m],
