@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
 
 const implementation = [
   'bisection <- function(f, a, b, tol = 1e-3, m = 100) {',
@@ -306,6 +307,13 @@ const arbitraryExample = `f <- function(x) {
       </aside>
     </div>
   </section>
+
+  <MethodProvenance
+    book="§6.1.1 · Bisection Method · p. 166"
+    functions={["bisection"]}
+    sources={["R/bisection.R"]}
+    teachingHref="/teaching/chapters/#chapter-6" zoo={[{ label: "Wilkinson's polynomial", href: "/zoo/wilkinson-polynomial/" }]}
+  />
 
   <script is:inline type="module" src="/js/bisection-lab.js"></script>
   <script is:inline type="module" src="/js/bisection-r-lab.js"></script>

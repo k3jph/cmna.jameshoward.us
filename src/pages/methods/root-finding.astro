@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
 ---
 <BaseLayout
   title="Root-Finding Methods — CMNA"
@@ -137,6 +138,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       </aside>
     </div>
   </section>
+
+  <MethodProvenance
+    book="§6.1 · One-Dimensional Root Finding · pp. 165–174"
+    functions={["bisection","newton","secant"]}
+    sources={["R/bisection.R","R/newton.R","R/secant.R"]}
+    teachingHref="/teaching/chapters/#chapter-6" zoo={[{ label: "Wilkinson's polynomial", href: "/zoo/wilkinson-polynomial/" }]}
+  />
 
   <script is:inline type="module" src="/js/root-compare.js"></script>
 </BaseLayout>
