@@ -16,4 +16,12 @@ const defaultCode = `f <- function(x) {
 <div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Running Monte Carlo integral estimate" data-conv-plot></svg></div>
 <div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Play sampling</button><label><span data-step-label>n</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
 <div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>samples n</th><th>running estimate</th></tr></thead><tbody data-rows></tbody></table></div>
-</div></section><script is:inline type="module" src="/js/monte-carlo-lab.js"></script></BaseLayout>
+</div></section><script is:inline type="module" src="/js/monte-carlo-lab.js"></script>
+  <MethodProvenance
+    book="§5.4.3 · Monte Carlo Methods · p. 151"
+    functions={["mcint"]}
+    sources={["R/mcintegrate.R"]}
+    teachingHref="/teaching/chapters/#chapter-5" zoo={[{ label: "Oscillatory integral", href: "/zoo/oscillatory-integral/" }, { label: "Narrow peak", href: "/zoo/narrow-peak/" }]}
+  />
+
+</BaseLayout>
