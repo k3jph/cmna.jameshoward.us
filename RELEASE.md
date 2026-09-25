@@ -8,7 +8,7 @@ This checklist is for the quiet publication of https://cmna.jameshoward.us.
 - [ ] npm ci succeeds from the committed package-lock.json.
 - [ ] webR remains pinned to the tested production version in every browser laboratory.
 - [ ] Search, sitemap, robots policy, structured data, manifest, and the Updates RSS feed build without errors.
-- [ ] G-XXXXXXXXXX in src/components/CookieConsent.astro is either replaced with the CMNA GA4 measurement ID or deliberately left as the disabled placeholder.
+- [x] CMNA is configured with GA4 measurement ID G-FSDET4HG4L.
 - [ ] If Analytics is enabled, accept/reject/reopen behavior is tested and Google Analytics does not load before consent.
 - [ ] The privacy notice matches the services actually enabled at release.
 
