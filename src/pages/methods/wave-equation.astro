@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
+const defaultCode = `u0 <- function(x) {
+  sin(2*pi*x)
+}`;
+---
+<BaseLayout title="Wave Equation — CMNA" description="Animate the one-dimensional wave equation from arbitrary R initial conditions.">
+<header class="page-head"><div class="shell"><p class="eyebrow">Partial differential equations · CMNA Laboratory</p><h1 class="page-title">Turn an initial shape into motion.</h1><p class="lede">Define the initial displacement in R, then watch the finite-difference wave scheme propagate it through time.</p></div></header>
+<section class="section"><div class="shell two-column"><article class="content"><h2>Space and time are both discretized.</h2><p>The method updates each grid point from neighboring values in space and earlier values in time. That turns a PDE into a repeated recurrence that is ideal for playback.</p></article><aside class="callout"><strong>Watch the Courant number.</strong><p>The ratio <code>speed * dt / dx</code> controls stability. Push it above 1 and the numerical wave can become visibly unphysical.</p></aside></div></section>
+<section class="section lab-section"><div class="shell" data-wave-lab>
+<div class="lab-heading"><div><p class="section-kicker">Bring your own initial displacement</p><h2 class="section-title">Define u₀(x) in R.</h2><p class="lede">Then play the wave through time and see what the grid does to it.</p></div><div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div></div>
+<div class="r-guided-grid"><section class="r-guided-editor"><div class="r-editor-label"><span>R</span><small>Define <code>u0(x)</code> on 0 ≤ x ≤ 1</small></div><textarea class="r-editor r-function-editor" data-r-code spellcheck="false">{defaultCode}</textarea><div class="r-guided-controls"><label>speed<input type="number" value="1" min="0" step="any" data-speed /></label><label>dx<input type="number" value="0.05" min="0" step="any" data-dx /></label><label>dt<input type="number" value="0.02" min="0" step="any" data-dt /></label><label>steps n<input type="number" value="100" min="1" max="300" step="1" data-n /></label></div><div class="r-run-row"><button class="button r-run" type="button" data-run disabled>Propagate in R</button><button class="r-reset" type="button" data-reset>Reset R session</button></div></section><aside class="r-guided-primer"><h3>Make the wave ugly.</h3><p>Try a sharp pulse, a discontinuity, or an unstable Courant number. The numerical artifacts are part of the lesson.</p></aside></div>
+<div class="lab-summary" data-summary></div><div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Wave equation profile over time" data-plot></svg></div>
+<div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Play wave</button><label><span data-step-label>time step</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
+<div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>time step</th><th>min u</th><th>max u</th></tr></thead><tbody data-rows></tbody></table></div>
+</div></section><script is:inline type="module" src="/js/wave-equation-lab.js"></script>
+  <MethodProvenance
+    book="§7.3.2 · The Wave Equation · p. 223"
+    functions={["wave"]}
+    sources={["R/wave.R"]}
+    teachingHref="/teaching/chapters/#chapter-7"
+  />
+
+</BaseLayout>

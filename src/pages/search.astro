@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { methodGroups } from "../data/methods";
+import { zooEntries } from "../data/zoo";
+
+const fixedEntries = [
+  {
+    type: "Book",
+    title: "Computational Methods for Numerical Analysis with R",
+    href: "/book/",
+    text: "Book details, ISBNs, DOI, chapter structure, purchase links, and the role of CMNA as a computational treatment of numerical analysis.",
+    keywords: "book howard crc chapman hall numerical analysis r isbn doi"
+  },
+  {
+    type: "Laboratory",
+    title: "CMNA Laboratory",
+    href: "/laboratory/",
+    text: "Interactive numerical-analysis laboratories powered by real R in the browser, with playback, source inspection, export, sharing, and Workbench handoff.",
+    keywords: "laboratory labs interactive webr browser r experiment"
+  },
+  {
+    type: "Software",
+    title: "CMNA software",
+    href: "/software/",
+    text: "The cmna R package, companion source code, package DOI, GitHub repository, and Emacs support.",
+    keywords: "software package cran github cmna-pkg cmna-el"
+  },
+  {
+    type: "Teaching",
+    title: "Teaching with CMNA",
+    href: "/teaching/",
+    text: "Course maps, chapter guidance, laboratory notes, Break It assignments, adoption material, and prediction worksheets.",
+    keywords: "teaching instructor course syllabus assignment classroom pedagogy"
+  },
+  {
+    type: "Teaching",
+    title: "Fourteen weeks with CMNA",
+    href: "/teaching/course-map/",
+    text: "A complete semester course map pairing chapters, classroom demonstrations, laboratories, and assignment seeds.",
+    keywords: "course map semester fourteen weeks syllabus"
+  },
+  {
+    type: "Teaching",
+    title: "Chapter guide",
+    href: "/teaching/chapters/",
+    text: "Learning objectives, representative functions, laboratory crosswalks, and misconceptions worth provoking across all seven chapters.",
+    keywords: "chapter learning objectives crosswalk instructor"
+  },
+  {
+    type: "Teaching",
+    title: "Teaching with the laboratories",
+    href: "/teaching/laboratories/",
+    text: "Prediction questions, public parameter changes, and follow-up prompts for the CMNA browser laboratories.",
+    keywords: "lab instructor demonstration predict classroom"
+  },
+  {
+    type: "Teaching",
+    title: "Break It",
+    href: "/teaching/break-it/",
+    text: "Failure-driven numerical-analysis exercises built around cancellation, instability, bad starting values, conditioning, and convergence assumptions.",
+    keywords: "break it exercises assignments failure instability cancellation"
+  },
+  {
+    type: "Teaching",
+    title: "Adopting CMNA",
+    href: "/teaching/adoption/",
+    text: "Prerequisites, course roles, software expectations, sample syllabus language, and assessment guidance.",
+    keywords: "adoption syllabus prerequisites assessment"
+  },
+  {
+    type: "Reference",
+    title: "Citing CMNA",
+    href: "/cite/",
+    text: "Book, package, and website citations with downloadable BibTeX and RIS files.",
+    keywords: "citation cite bibtex ris doi bibliography"
+  },
+  {
+    type: "Reference",
+    title: "Updates and errata",
+    href: "/updates/",
+    text: "Corrections, software changes, teaching additions, and continuing project updates around the 2017 book.",
+    keywords: "errata correction updates changes"
+  },
+  {
+    type: "Tool",
+    title: "R Workbench",
+    href: "/workbench/",
+    text: "An unrestricted browser-side R session using webR with CMNA functions loaded.",
+    keywords: "workbench r webr code console plot"
+  },
+  {
+    type: "Tool",
+    title: "Method finder",
+    href: "/methods/finder/",
+    text: "A guided decision tree for moving from a computational problem to suitable CMNA methods.",
+    keywords: "finder choose method decision guide"
+  },
+];
+
+const methodEntries = methodGroups.flatMap((group) =>
+  group.methods.map((method) => ({
+    type: "Method",
+    title: method.name,
+    href: method.href ?? `/methods/#${group.slug}`,
+    text: `${group.title}. CMNA functions: ${method.functions.join(", ")}.`,
+    keywords: [group.title, group.slug, method.name, ...method.functions].join(" ")
+  }))
+);
+
+const zooSearch = zooEntries.map((entry) => ({
+  type: "Numerical Zoo",
+  title: entry.title,
+  href: `/zoo/${entry.slug}/`,
+  text: entry.subtitle,
+  keywords: [entry.kind, entry.title, entry.slug, ...entry.watch].join(" ")
+}));
+
+const entries = [...fixedEntries, ...methodEntries, ...zooSearch];
+---
+<BaseLayout
+  title="Search CMNA"
+  description="Search the CMNA book companion, methods, laboratories, teaching material, and Numerical Zoo."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Search</p>
+      <h1 class="page-title">Find the thing you actually came for.</h1>
+      <p class="lede">
+        Search methods, R functions, laboratories, teaching material, and the
+        Numerical Zoo. This is deliberately a site index, not a general numerical
+        analysis search engine.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell">
+      <form class="site-search-form" action="/search/" method="get" data-site-search-form>
+        <label for="site-search">Search CMNA</label>
+        <div>
+          <input id="site-search" name="q" type="search" autocomplete="off"
+            placeholder="Try “Jacobi”, “Monte Carlo”, “Wilkinson”, or “syllabus”…"
+            data-site-search />
+          <button class="button" type="submit">Search</button>
+        </div>
+        <p data-site-search-status aria-live="polite"></p>
+      </form>
+
+      <div class="site-search-results" data-site-search-results>
+        {entries.map((entry) => (
+          <article
+            class="site-search-result"
+            data-search-result
+            data-search={([entry.type, entry.title, entry.text, entry.keywords].join(" ")).toLowerCase()}
+          >
+            <span>{entry.type}</span>
+            <h2><a href={entry.href}>{entry.title}</a></h2>
+            <p>{entry.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script is:inline src="/js/site-search.js"></script>
+</BaseLayout>

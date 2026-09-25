@@ -1,0 +1,35 @@
+---
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/book/", label: "Book" },
+  { href: "/methods/", label: "Methods" },
+  { href: "/zoo/", label: "Zoo" },
+  { href: "/laboratory/", label: "Laboratory" },
+  { href: "/software/", label: "Software" },
+  { href: "/teaching/", label: "Teaching" },
+  { href: "/updates/", label: "Updates" },
+  { href: "/search/", label: "Search" },
+];
+---
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="site-brand" href="/" aria-label="CMNA home">
+      <img src="/cmna-mark.svg" alt="" width="42" height="42" />
+      <span>
+        <strong>CMNA</strong>
+        <small>Computational Methods for Numerical Analysis</small>
+      </span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class={path.startsWith(item.href) ? "active" : undefined}
+          aria-current={path.startsWith(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>

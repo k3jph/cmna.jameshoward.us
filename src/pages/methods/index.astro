@@ -1,0 +1,175 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { methodGroups, methodCount, functionCount } from "../../data/methods";
+---
+<BaseLayout
+  title="Methods — CMNA"
+  description="Browse the numerical methods and computational topics represented in CMNA."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Method atlas</p>
+      <h1 class="page-title">The algorithms behind the answers.</h1>
+      <p class="lede">
+        This is not a general encyclopedia of numerical analysis. It is a map of the
+        methods that belong to the book and its companion software, with room for
+        demonstrations where seeing the method work is better than another paragraph.
+      </p>
+      <div class="atlas-stats" aria-label="Method atlas summary">
+        <span><strong>{methodGroups.length}</strong> domains</span>
+        <span><strong>{methodCount}</strong> methods</span>
+        <span><strong>{functionCount}</strong> R functions</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="section lab-intro">
+    <div class="shell">
+      <p class="section-kicker">CMNA Laboratory</p>
+      <h2 class="section-title">Some algorithms should be watched, not merely read.</h2>
+      <p class="lede">
+        The laboratory pages turn selected methods into experiments. Change a
+        tolerance, choose a function, walk through individual iterations, and compare
+        the path different algorithms take toward the same answer.
+      </p>
+      <div class="card-grid">
+        <article class="card lab-card">
+          <span class="lab-badge">Live lab</span>
+          <h3>Bisection, one interval at a time</h3>
+          <p>
+            Watch the bracket contract, inspect every midpoint, and scrub backward
+            and forward through the iterations.
+          </p>
+          <a href="/methods/bisection/">Open the bisection laboratory →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Comparison</span>
+          <h3>Three roads to a root</h3>
+          <p>
+            Put bisection, Newton, and secant on the same problem and compare
+            convergence by residual.
+          </p>
+          <a href="/methods/root-finding/">Compare root-finding methods →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge muted">Guide</span>
+          <h3>Method finder</h3>
+          <p>
+            Start with the computational problem and walk toward the CMNA methods
+            that fit the information you actually have.
+          </p>
+          <a href="/methods/finder/">Open the method finder →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Integration</span>
+          <h3>Simpson's rule, panel by panel</h3>
+          <p>
+            Give R your own integrand and watch the quadratic panels accumulate
+            into a numerical integral.
+          </p>
+          <a href="/methods/simpson/">Open the Simpson laboratory →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Linear algebra</span>
+          <h3>Watch a system converge</h3>
+          <p>
+            Paste your own matrix and compare Jacobi with Gauss-Seidel as their
+            residuals shrink—or fail to.
+          </p>
+          <a href="/methods/iterative-linear-algebra/">Open the iterative solver lab →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Differential equations</span>
+          <h3>Four slopes make a step</h3>
+          <p>
+            Supply an arbitrary R ODE and compare Euler, midpoint, and RK4 while
+            playing through RK4's internal stages.
+          </p>
+          <a href="/methods/runge-kutta/">Open the IVP laboratory →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Optimization</span>
+          <h3>Follow the gradient downhill</h3>
+          <p>
+            Define your own two-dimensional objective and gradient in R, then watch
+            every descent step cross the sampled landscape.
+          </p>
+          <a href="/methods/gradient-descent/">Open the gradient descent lab →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge muted">Worked problems</span>
+          <h3>Visit the Numerical Zoo</h3>
+          <p>
+            Wilkinson, Hilbert, Runge, Himmelblau, cancellation, unstable stepping,
+            and other examples kept around because they expose numerical assumptions.
+          </p>
+          <a href="/zoo/">Open the Numerical Zoo →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <div class="atlas-tools">
+        <label for="method-search">Find a method or function</label>
+        <input
+          id="method-search"
+          type="search"
+          placeholder="Try “Simpson”, “jacobi”, “interpolation”…"
+          autocomplete="off"
+          data-method-search
+        />
+        <p class="atlas-status" data-method-status aria-live="polite"></p>
+      </div>
+
+      <div class="method-groups">
+        {methodGroups.map((group) => (
+          <section class="method-group" id={group.slug} data-method-group>
+            <div class="method-group-head">
+              <div>
+                <h2>{group.title}</h2>
+                <p>{group.description}</p>
+              </div>
+              {group.compareHref && (
+                <a class="group-link" href={group.compareHref}>Compare methods →</a>
+              )}
+            </div>
+            <div class="method-list">
+              {group.methods.map((method) => {
+                const search = [group.title, method.name, ...method.functions].join(" ").toLowerCase();
+                const body = (
+                  <>
+                    <span class="method-name">
+                      {method.name}
+                      {method.lab && <small class="inline-lab-badge">LAB</small>}
+                    </span>
+                    <span class="method-functions">
+                      {method.functions.map((fn) => <code>{fn}</code>)}
+                    </span>
+                  </>
+                );
+                return method.href ? (
+                  <a
+                    class="method-item method-item-link"
+                    href={method.href}
+                    data-method-item
+                    data-search={search}
+                  >
+                    {body}
+                  </a>
+                ) : (
+                  <div class="method-item" data-method-item data-search={search}>
+                    {body}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script is:inline src="/js/method-filter.js"></script>
+</BaseLayout>

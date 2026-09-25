@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
+const defaultCode = `f <- function(x) {
+  exp(-x^2)
+}`;
+---
+<BaseLayout title="Monte Carlo Integration — CMNA" description="Watch Monte Carlo integration converge for arbitrary R functions.">
+<header class="page-head"><div class="shell"><p class="eyebrow">Numerical integration · CMNA Laboratory</p><h1 class="page-title">Estimate area by throwing points at the problem.</h1><p class="lede">Give R an arbitrary integrand, then watch a random sample cloud turn into a numerical estimate as n grows.</p></div></header>
+<section class="section"><div class="shell two-column"><article class="content"><h2>Randomness replaces geometry.</h2><p>CMNA's one-dimensional Monte Carlo integrator samples x uniformly over the interval, evaluates f(x), and multiplies the sample mean by the interval width. The estimate wanders, then settles statistically rather than deterministically.</p></article><aside class="callout"><strong>Seed matters.</strong><p>Change the seed without changing anything else. The path will change even though the underlying integral has not.</p></aside></div></section>
+<section class="section lab-section"><div class="shell" data-mc-lab>
+<div class="lab-heading"><div><p class="section-kicker">Bring your own integrand</p><h2 class="section-title">Let R roll the dice.</h2><p class="lede">Write any vectorized R function, choose bounds, sample count, and seed, then play the estimate as the sample grows.</p></div><div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div></div>
+<div class="r-guided-grid"><section class="r-guided-editor"><div class="r-editor-label"><span>R</span><small>Define <code>f(x)</code></small></div><textarea class="r-editor r-function-editor" data-r-code spellcheck="false">{defaultCode}</textarea><div class="r-guided-controls"><label>a<input type="number" value="0" step="any" data-a /></label><label>b<input type="number" value="2" step="any" data-b /></label><label>samples m<input type="number" value="5000" min="10" max="200000" step="1" data-m /></label><label>seed<input type="number" value="42" step="1" data-seed /></label></div><div class="r-run-row"><button class="button r-run" type="button" data-run disabled>Sample in R</button><button class="r-reset" type="button" data-reset>Reset R session</button></div></section><aside class="r-guided-primer"><h3>Convergence looks noisy because it is noisy.</h3><p>Double m. Change the seed. Try an oscillatory function. Monte Carlo teaches a different kind of numerical confidence than Simpson or Gaussian quadrature.</p></aside></div>
+<div class="lab-summary" data-summary></div>
+<div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="R function and Monte Carlo sample cloud" data-curve-plot></svg></div>
+<div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Running Monte Carlo integral estimate" data-conv-plot></svg></div>
+<div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Play sampling</button><label><span data-step-label>n</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
+<div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>samples n</th><th>running estimate</th></tr></thead><tbody data-rows></tbody></table></div>
+</div></section><script is:inline type="module" src="/js/monte-carlo-lab.js"></script>
+  <MethodProvenance
+    book="§5.4.3 · Monte Carlo Methods · p. 151"
+    functions={["mcint"]}
+    sources={["R/mcintegrate.R"]}
+    teachingHref="/teaching/chapters/#chapter-5" zoo={[{ label: "Oscillatory integral", href: "/zoo/oscillatory-integral/" }, { label: "Narrow peak", href: "/zoo/narrow-peak/" }]}
+  />
+
+</BaseLayout>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">CMNA convergence mark</title>
+  <desc id="desc">A square deep blue field bearing a gold pile charged with three diminishing murrey roundels.</desc>
+  <rect x="6" y="6" width="148" height="148" fill="#102B46" stroke="#D6A744" stroke-width="4"/>
+  <path d="M34 8H126L80 150Z" fill="#D6A744"/>
+  <circle cx="80" cy="48" r="14" fill="#7A2D4B"/>
+  <circle cx="80" cy="86" r="9.5" fill="#7A2D4B"/>
+  <circle cx="80" cy="116" r="5.5" fill="#7A2D4B"/>
+</svg>

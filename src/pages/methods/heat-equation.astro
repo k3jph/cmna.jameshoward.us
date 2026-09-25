@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
+const defaultCode = `u0 <- function(x) {
+  sin(pi * x)^2
+}`;
+---
+<BaseLayout title="Heat Equation — CMNA" description="Watch the one-dimensional heat equation evolve from arbitrary R initial conditions.">
+<header class="page-head"><div class="shell"><p class="eyebrow">Partial differential equations · CMNA Laboratory</p><h1 class="page-title">Watch a temperature profile forget its sharp edges.</h1><p class="lede">Define the initial temperature in R, then play the forward-time central-space scheme through time.</p></div></header>
+<section class="section"><div class="shell two-column"><article class="content"><h2>Diffusion as repeated local averaging.</h2><p>At each interior grid point, the FTCS update looks at the second spatial difference and adjusts the current value accordingly. Sharp local variation gets smoothed as time advances.</p></article><aside class="callout"><strong>Stability is visible.</strong><p>The key coefficient is <code>alpha * dt / dx^2</code>. Push it above the usual explicit stability threshold and the solution can stop looking like diffusion very quickly.</p></aside></div></section>
+<section class="section lab-section"><div class="shell" data-heat-lab>
+<div class="lab-heading"><div><p class="section-kicker">Bring your own initial condition</p><h2 class="section-title">Define u₀(x) in R.</h2><p class="lede">Then play the temperature profile through time and watch a space-time heatmap accumulate underneath it.</p></div><div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div></div>
+<div class="r-guided-grid"><section class="r-guided-editor"><div class="r-editor-label"><span>R</span><small>Define <code>u0(x)</code> on 0 ≤ x ≤ 1</small></div><textarea class="r-editor r-function-editor" data-r-code spellcheck="false">{defaultCode}</textarea><div class="r-guided-controls"><label>alpha<input type="number" value="1" min="0" step="any" data-alpha /></label><label>dx<input type="number" value="0.05" min="0" step="any" data-dx /></label><label>dt<input type="number" value="0.001" min="0" step="any" data-dt /></label><label>steps n<input type="number" value="60" min="1" max="250" step="1" data-n /></label></div><div class="r-run-row"><button class="button r-run" type="button" data-run disabled>Diffuse in R</button><button class="r-reset" type="button" data-reset>Reset R session</button></div></section><aside class="r-guided-primer"><h3>Try violating stability.</h3><p>Increase dt while keeping dx fixed. The lab will report the FTCS coefficient so you can connect an ugly numerical solution to the discretization that caused it.</p></aside></div>
+<div class="lab-summary" data-summary></div>
+<div class="lab-plot-frame"><svg class="lab-plot" role="img" aria-label="Heat equation temperature profile" data-plot></svg></div>
+<div class="lab-plot-frame"><svg class="heatmap-plot" role="img" aria-label="Heat equation space-time heatmap" data-heatmap></svg></div>
+<div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Play diffusion</button><label><span data-step-label>time step</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
+<div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>time step</th><th>min u</th><th>mean u</th><th>max u</th></tr></thead><tbody data-rows></tbody></table></div>
+</div></section><script is:inline type="module" src="/js/heat-equation-lab.js"></script>
+  <MethodProvenance
+    book="§7.3.1 · The Heat Equation · p. 219"
+    functions={["heat"]}
+    sources={["R/heat.R"]}
+    teachingHref="/teaching/chapters/#chapter-7"
+  />
+
+</BaseLayout>

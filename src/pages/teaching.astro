@@ -1,0 +1,132 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const resources = [
+  {
+    eyebrow: "Course design",
+    title: "Fourteen weeks with CMNA",
+    text: "A full-semester path through the book, the package, and the laboratories, with enough slack for students to think before we ask them to compute.",
+    href: "/teaching/course-map/",
+  },
+  {
+    eyebrow: "Chapter guide",
+    title: "What each chapter is trying to teach",
+    text: "Learning objectives, software links, live laboratories, and the mistakes worth provoking on purpose.",
+    href: "/teaching/chapters/",
+  },
+  {
+    eyebrow: "In the room",
+    title: "Teaching with the laboratories",
+    text: "Prediction questions, demonstrations, and follow-up prompts for every major interactive laboratory on the site.",
+    href: "/teaching/laboratories/",
+  },
+  {
+    eyebrow: "Assignments",
+    title: "Break It",
+    text: "Exercises built around failure: bad starting values, unstable step sizes, ill-chosen matrices, roundoff, and algorithms doing exactly what we told them to do.",
+    href: "/teaching/break-it/",
+  },
+  {
+    eyebrow: "Worked problems",
+    title: "The Numerical Zoo",
+    text: "Wilkinson, Hilbert, Runge, Himmelblau, cancellation, oscillatory integrals, and other examples kept around because they know how to expose an assumption.",
+    href: "/zoo/",
+  },
+  {
+    eyebrow: "Adoption",
+    title: "Using CMNA in a course",
+    text: "Prerequisites, software expectations, possible roles for the book, and language an instructor can adapt for a syllabus.",
+    href: "/teaching/adoption/",
+  },
+];
+---
+<BaseLayout
+  title="Teaching | CMNA"
+  description="Course maps, chapter guidance, laboratory notes, exercises, and adoption material for teaching numerical analysis with CMNA."
+>
+  <header class="page-head teaching-head">
+    <div class="shell">
+      <p class="eyebrow">Teaching</p>
+      <h1 class="page-title">The code is there so we can see the mathematics.</h1>
+      <p class="lede">
+        CMNA was written around a fairly simple idea: a numerical method is easier to
+        understand when we can see the algorithm, run the code, change the problem,
+        and watch what happens next. The teaching material here keeps that sequence
+        intact.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <p>
+          This is not a substitute for a theorem-and-proof numerical analysis text,
+          and it was never meant to be. The book is most useful in the space between
+          the mathematics on the board and the production routine we eventually call
+          from R. We state the problem, build enough of the method to understand its
+          machinery, implement it plainly, and then make the implementation do some
+          work.
+        </p>
+        <p>
+          That last step matters. A student who can reproduce the update rule but
+          cannot predict what happens when the starting value moves, the step size
+          changes, or the assumptions fail has learned less than the code suggests.
+          The laboratories make those changes cheap. The teaching notes make them
+          deliberate.
+        </p>
+      </article>
+      <aside class="callout">
+        <strong>A useful classroom rhythm</strong>
+        <p>
+          Ask for a prediction before running the code. Run a small example. Change
+          one thing. Then ask why the result changed. Numerical analysis gets much
+          more interesting once the computer is allowed to disagree with the first
+          guess.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section teaching-resource-section">
+    <div class="shell">
+      <p class="section-kicker">Instructor resources</p>
+      <h2 class="section-title">Enough structure to teach with. Not another textbook.</h2>
+      <div class="teaching-resource-grid">
+        {resources.map((resource) => (
+          <article class="teaching-resource-card">
+            <span>{resource.eyebrow}</span>
+            <h3>{resource.title}</h3>
+            <p>{resource.text}</p>
+            <a href={resource.href}>Open resource →</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">A note on failure</p>
+        <h2 class="section-title">A method that fails in public is doing us a favor.</h2>
+      </div>
+      <div class="content">
+        <p>
+          Most instructional examples are chosen because they work. That is sensible
+          for the first five minutes and dangerous after that. Bisection needs a
+          bracket. Newton needs a useful derivative and a tolerable starting point.
+          Jacobi cares about the matrix. Explicit PDE schemes care very much about
+          the relationship between space and time steps. Floating-point arithmetic
+          eventually notices when we subtract nearly equal numbers.
+        </p>
+        <p>
+          Those are not footnotes to the algorithms. They are part of the algorithms.
+          So several of the resources here ask students to make a method misbehave on
+          purpose, explain what assumption was violated, and then repair the problem.
+          We learn more from that than from another page of reassuring output.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

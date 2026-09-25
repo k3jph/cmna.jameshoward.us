@@ -1,0 +1,189 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const labs = [
+  {
+    eyebrow: "Root finding",
+    title: "Bisection",
+    text: "Supply an arbitrary R function, establish a bracket, and play every interval-halving step.",
+    href: "/methods/bisection/",
+  },
+  {
+    eyebrow: "Root finding",
+    title: "Newton's method",
+    text: "Supply f and f' in R, then play tangent lines as their x-intercepts become the next guesses.",
+    href: "/methods/newton/",
+  },
+  {
+    eyebrow: "Root finding",
+    title: "Secant method",
+    text: "Supply only f, then watch successive chords estimate the slope and generate new root approximations.",
+    href: "/methods/secant/",
+  },
+  {
+    eyebrow: "Root finding",
+    title: "Bisection vs. Newton vs. Secant",
+    text: "Run three root finders against the same problem and compare convergence by residual.",
+    href: "/methods/root-finding/",
+  },
+  {
+    eyebrow: "Interpolation",
+    title: "Polynomial, linear, and spline interpolation",
+    text: "Paste x and y vectors into R, then sweep across three interpolants built from exactly the same data.",
+    href: "/methods/interpolation/",
+  },
+  {
+    eyebrow: "Differentiation",
+    title: "Finite differences",
+    text: "Supply an arbitrary R function, shrink h, and watch forward and symmetric secants approach the derivative.",
+    href: "/methods/finite-differences/",
+  },
+  {
+    eyebrow: "Integration",
+    title: "Gauss-Legendre quadrature",
+    text: "Watch specially chosen nodes and weights replace a uniform partition with strategic function evaluations.",
+    href: "/methods/gaussian-quadrature/",
+  },
+  {
+    eyebrow: "Integration",
+    title: "Monte Carlo integration",
+    text: "Let R draw random samples and play the noisy running estimate as the sample size grows.",
+    href: "/methods/monte-carlo/",
+  },
+  {
+    eyebrow: "Integration",
+    title: "Simpson's rule",
+    text: "Give R your own integrand and watch quadratic panels accumulate into a numerical integral.",
+    href: "/methods/simpson/",
+  },
+  {
+    eyebrow: "Linear algebra",
+    title: "Jacobi vs. Gauss-Seidel",
+    text: "Paste your own matrix and watch two iterative solvers drive the residual toward zero.",
+    href: "/methods/iterative-linear-algebra/",
+  },
+  {
+    eyebrow: "Partial differential equations",
+    title: "Heat equation",
+    text: "Define the initial temperature in R, then play FTCS diffusion through time and inspect the space-time heatmap.",
+    href: "/methods/heat-equation/",
+  },
+  {
+    eyebrow: "Partial differential equations",
+    title: "Wave equation",
+    text: "Define an initial displacement in R, then play the finite-difference wave through time and stress the Courant limit.",
+    href: "/methods/wave-equation/",
+  },
+  {
+    eyebrow: "Differential equations",
+    title: "Euler, midpoint, and RK4",
+    text: "Define an arbitrary ODE and play through the four internal slopes of every Runge-Kutta step.",
+    href: "/methods/runge-kutta/",
+  },
+  {
+    eyebrow: "Optimization",
+    title: "Golden-section search",
+    text: "Supply a one-dimensional R objective and watch the search interval shrink around a minimum or maximum.",
+    href: "/methods/golden-section/",
+  },
+  {
+    eyebrow: "Optimization",
+    title: "Gradient descent",
+    text: "Define a two-dimensional objective and gradient in R, then watch the path move across the sampled landscape.",
+    href: "/methods/gradient-descent/",
+  },
+  {
+    eyebrow: "Optimization",
+    title: "Simulated annealing",
+    text: "Let R propose, accept, reject, cool, and remember the best point while wandering across your objective surface.",
+    href: "/methods/simulated-annealing/",
+  },
+];
+---
+<BaseLayout
+  title="CMNA Laboratory"
+  description="Interactive numerical-analysis experiments powered by real R in the browser."
+>
+  <header class="page-head workbench-head">
+    <div class="shell">
+      <p class="eyebrow">CMNA Laboratory</p>
+      <h1 class="page-title">The mathematics should move.</h1>
+      <p class="lede">
+        Read the method, inspect the R implementation, replace the textbook example
+        with your own problem, and then watch the algorithm explain itself.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell">
+      <div class="hardcore-callout">
+        <div>
+          <span class="lab-badge">Actual R</span>
+          <h3>The R Workbench has no training wheels.</h3>
+          <p>
+            If the guided laboratories are too polite, open the workbench and run
+            arbitrary valid R directly in the browser with selected CMNA functions
+            already loaded.
+          </p>
+        </div>
+        <a class="button" href="/workbench/">Open the R Workbench</a>
+      </div>
+
+      <div class="laboratory-grid">
+        {labs.map((lab) => (
+          <article class="laboratory-card">
+            <span>{lab.eyebrow}</span>
+            <h2>{lab.title}</h2>
+            <p>{lab.text}</p>
+            <a href={lab.href}>Open laboratory →</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-intro">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">Experiment portability</p>
+        <h2 class="section-title">Share it, export it, or take the source apart.</h2>
+      </div>
+      <div class="content">
+        <p>
+          Every guided laboratory now carries the current experiment with it. The
+          controls can be encoded into a shareable URL, exported as an R script, or
+          opened directly in the unrestricted R Workbench. A source drawer pulls the
+          canonical package implementation alongside the experiment.
+        </p>
+        <p>
+          There is also a print-friendly prediction worksheet for each laboratory.
+          The order is intentional: predict first, run second, explain third.
+        </p>
+        <p><a href="/zoo/">The Numerical Zoo</a> supplies worked problems worth using more than once.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-intro">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">The pattern</p>
+        <h2 class="section-title">One architecture, different numerical ideas.</h2>
+      </div>
+      <div class="content">
+        <p>
+          The browser interface changes with the mathematics. Bisection gets a
+          shrinking bracket. Simpson gets quadratic panels. Iterative linear algebra
+          gets residual histories. RK4 exposes its internal slope samples. Gradient
+          descent draws a path across an objective surface.
+        </p>
+        <p>
+          What stays constant is the important part: R performs the numerical work,
+          while JavaScript turns the intermediate state into something visible and
+          playable.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

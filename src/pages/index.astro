@@ -1,0 +1,205 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "CMNA",
+  alternateName: "Computational Methods for Numerical Analysis with R",
+  url: "https://cmna.jameshoward.us/",
+  author: {
+    "@type": "Person",
+    name: "James P. Howard, II",
+    url: "https://jameshoward.us/"
+  },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://cmna.jameshoward.us/search/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+};
+---
+<BaseLayout schema={siteSchema}>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="eyebrow">Computational Methods for Numerical Analysis with R</p>
+        <h1>
+          CMNA
+          <span>Numerical analysis, built where you can see it.</span>
+        </h1>
+        <p class="hero-copy">
+          Numerical methods are easier to understand when the machinery is visible.
+          CMNA pairs a traditional numerical-analysis sequence with complete R
+          implementations that can be read, run, changed, and tested.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="/methods/">Explore the methods</a>
+          <a class="button secondary" href="/book/">About the book</a>
+        </div>
+      </div>
+      <figure class="hero-figure">
+        <img
+          src="https://jameshoward.us/assets/img/CMNA-cover-300.webp"
+          alt="Cover of Computational Methods for Numerical Analysis with R"
+          width="300"
+          height="450"
+        />
+        <figcaption>James P. Howard, II · Chapman &amp; Hall/CRC · 2017</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <p class="section-kicker">The project</p>
+      <h2 class="section-title">A book, working code, and room to keep going.</h2>
+      <p class="lede">
+        This site is the front door for the book and its companion software. It is
+        intentionally narrower than a numerical-analysis encyclopedia: the material
+        here follows the ideas, algorithms, examples, and teaching problems that
+        belong to CMNA.
+      </p>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>The book</h3>
+          <p>
+            The 2017 text follows the standard path from numerical error through
+            linear algebra, interpolation, integration, optimization, and differential
+            equations.
+          </p>
+          <a href="/book/">Book details →</a>
+        </article>
+        <article class="card">
+          <h3>The methods</h3>
+          <p>
+            Browse the computational ideas by topic, then follow them into the
+            companion R implementations instead of treating the library call as the
+            explanation.
+          </p>
+          <a href="/methods/">Method atlas →</a>
+        </article>
+        <article class="card">
+          <h3>The software</h3>
+          <p>
+            The <code>cmna</code> package collects the implementations used by the
+            book, with source available for inspection and reuse.
+          </p>
+          <a href="/software/">Use the code →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <div>
+        <p class="section-kicker">The central idea</p>
+        <h2 class="section-title">A method is not a black box.</h2>
+        <p class="lede">
+          A numerical routine gives us a result. Numerical analysis asks what happened
+          on the way there: how the approximation moved, what error remains, and
+          whether the computation deserves our trust.
+        </p>
+        <p>
+          That is why CMNA keeps the implementations close to the mathematics. The
+          code is deliberately small enough to inspect and alter, making the algorithm
+          itself part of the lesson rather than an implementation detail hidden behind
+          an API.
+        </p>
+      </div>
+      <div>
+        <div class="convergence" aria-label="Successive approximations decreasing toward a limit">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="code-panel">
+          <pre><code>f &lt;- function(x) x^3 - 2*x^2 - 159*x - 540
+root &lt;- bisection(f, 10, 20)
+
+# The answer matters.
+# The path to the answer matters too.</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-intro">
+    <div class="shell">
+      <p class="section-kicker">CMNA Laboratory</p>
+      <h2 class="section-title">Make the iteration visible.</h2>
+      <p class="lede">
+        A printed algorithm freezes the process at exactly the moment when movement
+        is most informative. The laboratory pages put that movement back: change the
+        problem, walk the iterations, and watch convergence happen.
+      </p>
+      <div class="hardcore-callout">
+        <div>
+          <span class="lab-badge">Actual R</span>
+          <h3>This is R. Go nuts.</h3>
+          <p>
+            The browser workbench runs valid R locally with webR. Define functions,
+            draw plots, create matrices, and call bundled CMNA algorithms without a
+            remote computation server.
+          </p>
+        </div>
+        <a class="button" href="/workbench/">Open the R Workbench</a>
+      </div>
+
+      <div class="card-grid">
+        <article class="card lab-card">
+          <span class="lab-badge">Live lab</span>
+          <h3>Halve the uncertainty</h3>
+          <p>
+            Run bisection against several functions, inspect every bracket, and play
+            the convergence from the first interval to the final estimate.
+          </p>
+          <a href="/methods/bisection/">Open the bisection lab →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge">Comparison</span>
+          <h3>Same root, different path</h3>
+          <p>
+            Compare bisection, Newton, and secant by residual and see why iteration
+            count alone is not the whole story.
+          </p>
+          <a href="/methods/root-finding/">Compare root finders →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge muted">Atlas</span>
+          <h3>Find the machinery</h3>
+          <p>
+            Search the method atlas by concept or R function across the algorithms
+            currently represented in the companion package.
+          </p>
+          <a href="/methods/finder/">Open the method finder →</a>
+        </article>
+        <article class="card lab-card">
+          <span class="lab-badge muted">Worked problems</span>
+          <h3>Meet the usual suspects</h3>
+          <p>
+            The Numerical Zoo keeps Wilkinson, Hilbert, Runge, Himmelblau, and other
+            examples around because they are unusually good at exposing assumptions.
+          </p>
+          <a href="/zoo/">Open the Numerical Zoo →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <p class="section-kicker">Living companion</p>
+      <h2 class="section-title">The printed page does not have to be the end of the project.</h2>
+      <p class="lede">
+        Corrections, modernized code, expanded examples, and teaching notes can
+        accumulate here as the project grows beyond the printed page. If that body
+        of work someday supports another edition, the evidence will already exist.
+      </p>
+      <div class="hero-actions">
+        <a class="button" href="/updates/">See project updates</a>
+        <a class="button secondary-on-light" href="/teaching/">Teaching with CMNA</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

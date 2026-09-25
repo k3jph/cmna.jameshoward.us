@@ -1,0 +1,320 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
+
+const implementation = [
+  'bisection <- function(f, a, b, tol = 1e-3, m = 100) {',
+  '    iter <- 0',
+  '    f.a <- f(a)',
+  '    f.b <- f(b)',
+  '',
+  '    while (abs(b - a) > tol) {',
+  '        iter <- iter + 1',
+  '        if (iter > m) {',
+  '            warning("iterations maximum exceeded")',
+  '            break',
+  '        }',
+  '        xmid <- (a + b) / 2',
+  '        ymid <- f(xmid)',
+  '        if (f.a * ymid > 0) {',
+  '            a <- xmid',
+  '            f.a <- ymid',
+  '        } else {',
+  '            b <- xmid',
+  '            f.b <- ymid',
+  '        }',
+  '    }',
+  '',
+  '    root <- (a + b) / 2',
+  '    return(root)',
+  '}',
+].join("\n");
+
+const arbitraryExample = `f <- function(x) {
+  exp(-x) - x
+}`;
+---
+<BaseLayout
+  title="Bisection Method — CMNA"
+  description="Learn and experiment with the bisection method as implemented in CMNA."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Root finding · CMNA Laboratory</p>
+      <h1 class="page-title">The bisection method</h1>
+      <p class="lede">
+        Bracket a real root, halve the interval, keep the half that still contains
+        the sign change, and repeat. It is difficult to make glamorous, which is
+        precisely why it is so useful.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>The idea</h2>
+        <p>
+          Suppose a continuous function changes sign between <code>a</code> and
+          <code>b</code>. The intermediate value theorem tells us that at least one
+          real root lies between them. Bisection evaluates the midpoint and discards
+          the half-interval that cannot contain the sign change.
+        </p>
+        <p>
+          Each successful iteration cuts the width of the bracket in half. After
+          <em>n</em> steps, the surviving interval is only
+          <code>(b − a) / 2^n</code> wide. That makes the method slower than some
+          alternatives, but unusually transparent: the computation carries its own
+          error bound around with it.
+        </p>
+
+        <div class="callout">
+          <strong>What bisection buys you:</strong> if the starting interval really
+          brackets a sign change and the function is continuous, the method does not
+          need a clever initial guess or a derivative. It just keeps making the
+          uncertainty smaller.
+        </div>
+      </article>
+
+      <div class="code-panel">
+        <pre><code>{implementation}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section lab-section">
+    <div class="shell" data-bisection-lab>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Experiment</p>
+          <h2 class="section-title">Watch the bracket collapse.</h2>
+          <p class="lede">
+            Choose a function and tolerance, then scrub through the iterations.
+            The Murrey endpoints mark the current bracket; the gold point is the
+            midpoint tested at that step.
+          </p>
+        </div>
+        <div class="lab-expression">
+          <span>f(x)</span>
+          <code data-expression></code>
+        </div>
+      </div>
+
+      <div class="lab-controls">
+        <label>
+          Function
+          <select data-preset>
+            <option value="cubic">x³ − x − 2</option>
+            <option value="fixed">cos(x) − x</option>
+            <option value="sqrt2">x² − 2</option>
+            <option value="book">CMNA cubic</option>
+          </select>
+        </label>
+        <label>
+          Tolerance
+          <select data-tolerance>
+            <option value="0.1">10⁻¹</option>
+            <option value="0.01">10⁻²</option>
+            <option value="0.001" selected>10⁻³</option>
+            <option value="0.000001">10⁻⁶</option>
+          </select>
+        </label>
+        <button class="button lab-button" type="button" data-run>Run</button>
+      </div>
+
+      <div class="lab-summary" data-summary></div>
+      <p class="lab-status" data-status></p>
+
+      <div class="lab-plot-frame">
+        <svg
+          class="lab-plot"
+          role="img"
+          aria-label="Graph of the selected function with the current bisection interval"
+          data-plot
+        ></svg>
+      </div>
+
+      <div class="lab-stepper">
+        <button class="button secondary-on-light" type="button" data-play>Play convergence</button>
+        <label>
+          <span data-step-label>Iteration</span>
+          <input type="range" min="0" max="1" value="0" data-step />
+        </label>
+      </div>
+
+      <div class="lab-table-wrap">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>n</th>
+              <th>a</th>
+              <th>b</th>
+              <th>midpoint</th>
+              <th>f(midpoint)</th>
+              <th>width</th>
+            </tr>
+          </thead>
+          <tbody data-rows></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section r-guided-section">
+    <div class="shell" data-bisection-r-lab>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Bring your own function</p>
+          <h2 class="section-title">Now remove the training wheels.</h2>
+          <p class="lede">
+            Define <code>f</code> as any valid R function, choose an interval, and let
+            the browser run the same bisection logic against your problem. The point
+            here is not merely to get a root: CMNA will unpack why the interval works,
+            what the first sign test does, how the uncertainty shrinks, and exactly
+            why the algorithm stops.
+          </p>
+        </div>
+        <div class="lab-expression r-badge-panel">
+          <span>Runtime</span>
+          <code data-r-status>Preparing R…</code>
+        </div>
+      </div>
+
+      <div class="r-guided-grid">
+        <section class="r-guided-editor">
+          <div class="r-editor-label">
+            <span>R</span>
+            <small>Define a function named <code>f</code></small>
+          </div>
+          <textarea
+            class="r-editor r-function-editor"
+            data-r-function
+            spellcheck="false"
+            autocomplete="off"
+            aria-label="Arbitrary R function for bisection"
+          >{arbitraryExample}</textarea>
+
+          <div class="r-guided-controls">
+            <label>
+              a
+              <input type="number" value="0" step="any" data-r-a />
+            </label>
+            <label>
+              b
+              <input type="number" value="1" step="any" data-r-b />
+            </label>
+            <label>
+              tolerance
+              <input type="number" value="0.000001" min="0" step="any" data-r-tol />
+            </label>
+          </div>
+
+          <div class="r-run-row">
+            <button class="button r-run" type="button" data-r-bisect disabled>Run this R function</button>
+            <button class="r-reset" type="button" data-r-reset>Reset R session</button>
+          </div>
+        </section>
+
+        <aside class="r-guided-primer">
+          <h3>What has to be true first?</h3>
+          <p>
+            Bisection is not magic. The method needs a continuous function and an
+            interval whose endpoint values have opposite signs. If your function does
+            not satisfy that condition, the laboratory will stop there and explain
+            why rather than pretending the algorithm succeeded.
+          </p>
+          <div class="mini-proof">
+            <span>sign f(a)</span>
+            <strong>≠</strong>
+            <span>sign f(b)</span>
+            <strong>⇒</strong>
+            <span>root in [a,b]</span>
+          </div>
+        </aside>
+      </div>
+
+      <div class="lab-summary" data-r-summary></div>
+      <div class="teaching-sequence" data-r-explanation></div>
+
+      <div class="lab-plot-frame">
+        <svg
+          class="lab-plot r-bisection-plot"
+          role="img"
+          aria-label="Graph of the arbitrary R function with the current bisection interval"
+          data-r-plot
+        ></svg>
+      </div>
+
+      <div class="lab-stepper">
+        <button class="button secondary-on-light" type="button" data-r-play disabled>Play convergence</button>
+        <label>
+          <span data-r-step-label>Iteration</span>
+          <input type="range" min="0" max="1" value="0" data-r-step disabled />
+        </label>
+      </div>
+      <p class="lab-status" data-r-step-detail></p>
+
+      <div class="lab-table-wrap">
+        <table class="lab-table">
+          <thead>
+            <tr>
+              <th>n</th>
+              <th>a</th>
+              <th>b</th>
+              <th>midpoint</th>
+              <th>f(midpoint)</th>
+              <th>width</th>
+            </tr>
+          </thead>
+          <tbody data-r-rows></tbody>
+        </table>
+      </div>
+
+      <p class="workbench-source-note">
+        The function and trace above are evaluated by real R through webR. The
+        teaching trace instruments the current CMNA bisection update rule; the
+        canonical <code>bisection()</code> function itself remains unchanged.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>Where bisection sits among root finders</h2>
+        <p>
+          Newton's method can converge much faster when a useful derivative and
+          starting value are available. The secant method estimates that derivative
+          from nearby function values. Bisection trades that speed for a remarkably
+          simple guarantee: preserve the sign-changing bracket and the search region
+          keeps shrinking.
+        </p>
+        <p>
+          <a href="/methods/root-finding/">Compare bisection, Newton, and secant on the same functions →</a>
+        </p>
+      </article>
+
+      <aside class="callout">
+        <strong>Source of truth</strong>
+        <p>
+          The code shown above follows the current <code>cmna</code> package source.
+          The laboratory is a browser-side visualization of the same update rule, not
+          a replacement implementation for production work.
+        </p>
+        <a href="https://github.com/k3jph/cmna-pkg/blob/main/R/bisection.R">View bisection.R on GitHub →</a><br />
+        <a href="/workbench/">Or take bisection into the full R Workbench →</a>
+      </aside>
+    </div>
+  </section>
+
+  <MethodProvenance
+    book="§6.1.1 · Bisection Method · p. 166"
+    functions={["bisection"]}
+    sources={["R/bisection.R"]}
+    teachingHref="/teaching/chapters/#chapter-6" zoo={[{ label: "Wilkinson's polynomial", href: "/zoo/wilkinson-polynomial/" }]}
+  />
+
+  <script is:inline type="module" src="/js/bisection-lab.js"></script>
+  <script is:inline type="module" src="/js/bisection-r-lab.js"></script>
+</BaseLayout>

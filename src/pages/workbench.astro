@@ -1,0 +1,155 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const defaultCode = `f <- function(x) {
+  exp(-x^2) * cos(7 * x)
+}
+
+f(c(-1, 0, 1))
+
+curve(
+  f,
+  from = -3,
+  to = 3,
+  n = 500,
+  xlab = "x",
+  ylab = "f(x)"
+)`;
+---
+<BaseLayout
+  title="R Workbench | CMNA"
+  description="Run real R and selected CMNA algorithms directly in your browser with webR."
+>
+  <header class="page-head workbench-head">
+    <div class="shell">
+      <p class="eyebrow">CMNA Laboratory</p>
+      <h1 class="page-title">This is R. Go nuts.</h1>
+      <p class="lede">
+        Write valid R, run it locally in your browser, and use selected CMNA functions
+        without sending your code to a computation server.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell">
+      <div class="workbench-primer">
+        <div>
+          <p class="section-kicker">Actual R, not R-shaped JavaScript</p>
+          <h2 class="section-title">The browser is the R machine.</h2>
+        </div>
+        <div class="callout">
+          <strong>Local execution</strong>
+          <p>
+            webR runs R through WebAssembly in your browser. Your code is evaluated
+            on your device; CMNA does not send it to a remote R server.
+          </p>
+        </div>
+      </div>
+
+      <div class="r-workbench" data-r-workbench>
+        <div class="r-toolbar">
+          <div class="r-runtime">
+            <span class="r-runtime-dot" aria-hidden="true"></span>
+            <span data-r-status>Preparing R…</span>
+          </div>
+
+          <div class="r-toolbar-actions">
+            <label>
+              Example
+              <select data-r-examples>
+                <option value="">Choose one…</option>
+                <option value="bisection">CMNA bisection</option>
+                <option value="newton">CMNA Newton</option>
+                <option value="matrix">Base R matrix / eigenvalues</option>
+                <option value="plot">Arbitrary function + plot</option>
+                <option value="wilkinson">Wilkinson's polynomial</option>
+                <option value="himmelblau">Himmelblau function</option>
+              </select>
+            </label>
+            <button class="r-reset" type="button" data-r-reset>Reset R session</button>
+          </div>
+        </div>
+
+        <div class="r-editor-shell">
+          <div class="r-editor-label">
+            <span>R</span>
+            <small>⌘/Ctrl + Enter to run</small>
+          </div>
+          <textarea
+            class="r-editor"
+            data-r-editor
+            spellcheck="false"
+            autocomplete="off"
+            aria-label="R code editor"
+          >{defaultCode}</textarea>
+        </div>
+
+        <div class="r-run-row">
+          <button class="button r-run" type="button" data-r-run disabled>Run R</button>
+          <span class="r-timing" data-r-timing></span>
+        </div>
+
+        <div class="r-results">
+          <section>
+            <div class="r-result-heading">
+              <h2>Console</h2>
+              <span>stdout / stderr</span>
+            </div>
+            <div class="r-output" data-r-output aria-live="polite">
+              <div class="r-output-line">R output will appear here.</div>
+            </div>
+          </section>
+
+          <section>
+            <div class="r-result-heading">
+              <h2>Plots</h2>
+              <span>captured from R graphics</span>
+            </div>
+            <div class="r-plots" data-r-plots>
+              <p>No plot yet.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="workbench-notes">
+        <article class="card">
+          <h3>CMNA functions already loaded</h3>
+          <p>
+            The browser bundle now includes the CMNA functions used throughout the
+            Laboratory, spanning root finding, interpolation, differentiation,
+            integration, iterative linear algebra, optimization, and differential
+            equations. The Workbench uses the same R definitions that support the
+            guided experiments.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Your session persists</h3>
+          <p>
+            Define a function or object, run it, and it remains in the R global
+            environment for the next command. The Reset button reloads the page and
+            starts a fresh R session.
+          </p>
+        </article>
+        <article class="card">
+          <h3>You can hurt your own tab</h3>
+          <p>
+            GitHub Pages cannot provide webR's cross-origin-isolated interrupt
+            channel, so an infinite loop cannot be cleanly interrupted. Reloading
+            the page terminates the session. This is a local browser problem, not a
+            CMNA server problem.
+          </p>
+        </article>
+      </div>
+
+      <p class="workbench-source-note">
+        Runtime: <a href="https://docs.r-wasm.org/webr/latest/">webR</a>.
+        Canonical CMNA package source:
+        <a href="https://github.com/k3jph/cmna-pkg">github.com/k3jph/cmna-pkg</a>.
+      </p>
+    </div>
+  </section>
+
+  <script is:inline type="module" src="/js/r-workbench.js"></script>
+</BaseLayout>

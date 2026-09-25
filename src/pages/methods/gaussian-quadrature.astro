@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
+const defaultCode = `f <- function(x) {
+  exp(-x^2)
+}`;
+---
+<BaseLayout title="Gaussian Quadrature — CMNA" description="Explore Gauss-Legendre quadrature nodes and weights on arbitrary R functions.">
+<header class="page-head"><div class="shell"><p class="eyebrow">Numerical integration · CMNA Laboratory</p><h1 class="page-title">Put function evaluations where they matter most.</h1><p class="lede">Gauss-Legendre quadrature does not chop the interval into equal pieces. It chooses special nodes and weights so surprisingly few evaluations can integrate polynomials very accurately.</p></div></header>
+<section class="section"><div class="shell two-column"><article class="content"><h2>The nodes are the method.</h2><p>CMNA's Gaussian integration driver multiplies each function value by a corresponding weight and sums the result. This lab maps standard Gauss-Legendre nodes from [-1,1] onto your interval so you can see exactly where R samples the function.</p></article><aside class="callout"><strong>Compare with Simpson.</strong><p>Use the same smooth function here and in the Simpson lab. One method spreads evaluations across regular panels; the other concentrates them at specially chosen points.</p></aside></div></section>
+<section class="section lab-section"><div class="shell" data-gauss-lab>
+<div class="lab-heading"><div><p class="section-kicker">Bring your own integrand</p><h2 class="section-title">Let the nodes choose themselves.</h2><p class="lede">Write f(x) in R, choose an interval and a 5-, 10-, or 20-point rule, then inspect every weighted evaluation.</p></div><div class="lab-expression"><span>Runtime</span><code data-status>Preparing R…</code></div></div>
+<div class="r-guided-grid"><section class="r-guided-editor"><div class="r-editor-label"><span>R</span><small>Define <code>f(x)</code></small></div><textarea class="r-editor r-function-editor" data-r-code spellcheck="false">{defaultCode}</textarea><div class="r-guided-controls"><label>a<input type="number" value="-1" step="any" data-a /></label><label>b<input type="number" value="1" step="any" data-b /></label><label>nodes<select data-m><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label></div><div class="r-run-row"><button class="button r-run" type="button" data-run disabled>Integrate in R</button><button class="r-reset" type="button" data-reset>Reset R session</button></div></section><aside class="r-guided-primer"><h3>Notice the clustering.</h3><p>The nodes are not uniformly spaced. Increase m and watch how new evaluation points appear while preserving the symmetry of the rule.</p></aside></div>
+<div class="lab-summary" data-summary></div><div class="lab-plot-frame"><svg class="lab-plot gauss-plot" role="img" aria-label="Gauss-Legendre nodes and weights on a function" data-plot></svg></div>
+<div class="lab-stepper"><button class="button secondary-on-light" type="button" data-play disabled>Play nodes</button><label><span data-step-label>Node</span><input type="range" min="0" max="1" value="0" data-step disabled /></label></div><p class="lab-status" data-step-detail></p>
+<div class="lab-table-wrap"><table class="lab-table"><thead><tr><th>node</th><th>x</th><th>f(x)</th><th>weight</th><th>contribution</th></tr></thead><tbody data-rows></tbody></table></div>
+</div></section><script is:inline type="module" src="/js/gaussian-quadrature-lab.js"></script>
+  <MethodProvenance
+    book="§5.3 · Gaussian Integration · pp. 141–144"
+    functions={["gaussint","gauss.legendre"]}
+    sources={["R/gaussint.R"]}
+    teachingHref="/teaching/chapters/#chapter-5" zoo={[{ label: "Oscillatory integral", href: "/zoo/oscillatory-integral/" }, { label: "Narrow peak", href: "/zoo/narrow-peak/" }]}
+  />
+
+</BaseLayout>

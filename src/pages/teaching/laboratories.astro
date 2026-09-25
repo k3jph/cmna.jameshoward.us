@@ -1,0 +1,195 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const labs = [
+  {
+    group: "Root finding",
+    title: "Bisection",
+    href: "/methods/bisection/",
+    before: "Give students the initial interval and tolerance. Ask whether the interval is legal for bisection and how many halvings they expect before the width falls below the tolerance.",
+    show: "Run the prepared case first, then replace the function with one of their own. Stop after the first midpoint and make the sign test explicit before allowing the playback to continue.",
+    after: "What exactly guarantees progress here? Which part of that guarantee disappears if the endpoint signs agree or the function is discontinuous?"
+  },
+  {
+    group: "Root finding",
+    title: "Newton's method",
+    href: "/methods/newton/",
+    before: "Show the function, derivative, and starting value but not the first iterate. Ask where the tangent should meet the x-axis and whether that looks like an improvement.",
+    show: "Play the tangent construction one step at a time. Then move the starting point to a place where the derivative is small or where the tangent points away from the root.",
+    after: "Was the failure caused by Newton's formula, the starting information, or the shape of the function near the iterate?"
+  },
+  {
+    group: "Root finding",
+    title: "Secant method",
+    href: "/methods/secant/",
+    before: "Ask what information we lose when we remove the derivative from Newton's method and what the two function values have to do instead.",
+    show: "Pause on a secant chord and compare its slope with the tangent slope Newton would have used. Then choose two points producing a nearly horizontal chord.",
+    after: "When does avoiding the derivative help enough to justify a less reliable slope estimate?"
+  },
+  {
+    group: "Root finding",
+    title: "Bisection vs. Newton vs. Secant",
+    href: "/methods/root-finding/",
+    before: "Have students predict an ordering before the graph appears, but require them to say what they mean by faster: iterations, function evaluations, derivative evaluations, or wall-clock work.",
+    show: "Use the same function and tolerance for all three. Then choose a starting value that changes Newton's behavior without changing the root.",
+    after: "Which method used more information? Which method made stronger assumptions? Does the iteration count still settle the comparison?"
+  },
+  {
+    group: "Differentiation",
+    title: "Finite differences",
+    href: "/methods/finite-differences/",
+    before: "Ask whether making h smaller should always improve the derivative estimate. Most students will know what the expected answer is. Make them explain the mechanism anyway.",
+    show: "Shrink h across several orders of magnitude while the forward, symmetric, and Richardson estimates move toward and eventually away from the exact derivative.",
+    after: "Where did truncation error stop being the dominant problem and floating-point subtraction begin to matter?"
+  },
+  {
+    group: "Interpolation",
+    title: "Polynomial, piecewise linear, and spline interpolation",
+    href: "/methods/interpolation/",
+    before: "Show the data points and ask what all three interpolants must agree on. Then ask what, if anything, forces them to agree between the data.",
+    show: "Move one y-value substantially. Watch the global polynomial react everywhere while the piecewise methods respond more locally.",
+    after: "If every curve passes through every point, what additional criterion are we really choosing when we choose an interpolation method?"
+  },
+  {
+    group: "Integration",
+    title: "Simpson's rule",
+    href: "/methods/simpson/",
+    before: "Draw one panel with its left endpoint, midpoint, and right endpoint. Ask why three values are enough to determine the quadratic used by Simpson's rule.",
+    show: "Play panels one by one and keep the running area visible. Then increase m and compare how the quadratic pieces follow a curved integrand.",
+    after: "What does increasing m actually change about the local approximation, and what does it cost?"
+  },
+  {
+    group: "Integration",
+    title: "Gauss-Legendre quadrature",
+    href: "/methods/gaussian-quadrature/",
+    before: "Ask students where they would place five evaluations if they were trying to integrate a smooth function well. Most will spread them evenly.",
+    show: "Reveal the Gaussian nodes and weights, then compare the same integrand with Simpson's rule using a similar number of function evaluations.",
+    after: "Why is uniform spacing convenient rather than automatically optimal?"
+  },
+  {
+    group: "Integration",
+    title: "Monte Carlo integration",
+    href: "/methods/monte-carlo/",
+    before: "Ask whether doubling the sample size should double the number of correct digits. Do not let a vague answer about 'more samples' pass.",
+    show: "Hold the function fixed and change only the seed. Then hold the seed fixed and increase m while watching the running estimate wander.",
+    after: "What kind of confidence does Monte Carlo give us that a deterministic quadrature rule does not?"
+  },
+  {
+    group: "Linear algebra",
+    title: "Jacobi vs. Gauss-Seidel",
+    href: "/methods/iterative-linear-algebra/",
+    before: "Show A and b before the residual plot. Ask students to inspect the diagonal and predict whether the iterative methods have any reason to behave nicely.",
+    show: "Run a diagonally dominant example, then weaken the diagonal until the residual histories change character.",
+    after: "What changed in the matrix before anything changed in the graph?"
+  },
+  {
+    group: "Differential equations",
+    title: "Euler, midpoint, and RK4",
+    href: "/methods/runge-kutta/",
+    before: "Give the initial condition and step size. Ask how many slope evaluations each method buys per step and what that extra work is supposed to purchase.",
+    show: "Play one RK4 step slowly enough to identify all four internal slope evaluations. Then halve h and compare all three trajectories.",
+    after: "Was the improvement caused by more steps, a better step, or both?"
+  },
+  {
+    group: "Partial differential equations",
+    title: "Heat equation",
+    href: "/methods/heat-equation/",
+    before: "Show alpha, dx, and dt and ask students to compute the FTCS coefficient before displaying the solution.",
+    show: "Run a stable case first. Then increase dt enough to violate the stability condition and play the same initial temperature profile again.",
+    after: "The differential equation did not change. What numerical assumption did?"
+  },
+  {
+    group: "Partial differential equations",
+    title: "Wave equation",
+    href: "/methods/wave-equation/",
+    before: "Ask for the Courant number and a prediction about stability. Then ask what a wave should preserve that diffusion does not.",
+    show: "Use a smooth wave first, then a sharp pulse. Finally push the Courant number past the stable range.",
+    after: "Which artifacts come from the physical model, which come from the grid, and which come from an unstable discretization?"
+  },
+  {
+    group: "Optimization",
+    title: "Golden-section search",
+    href: "/methods/golden-section/",
+    before: "Show the interval and the two interior probes. Ask which side should be discarded after the function values are known.",
+    show: "Play the interval reduction on a unimodal function, then reuse the same interval on a multimodal one.",
+    after: "What assumption about the objective made the interval reduction sensible in the first case?"
+  },
+  {
+    group: "Optimization",
+    title: "Gradient descent",
+    href: "/methods/gradient-descent/",
+    before: "Show the objective, gradient, starting point, and step size. Ask which direction the first update should move and whether the chosen h looks conservative.",
+    show: "Increase h until the path begins to overshoot. Then reduce it until convergence is painfully slow.",
+    after: "The gradient tells us a direction. What tells us how far to trust it?"
+  },
+  {
+    group: "Optimization",
+    title: "Simulated annealing",
+    href: "/methods/simulated-annealing/",
+    before: "Tell students that the algorithm may accept a worse point. Ask why any optimization method would be designed to do something so obviously wrong.",
+    show: "Run the same objective with several seeds. Then change the cooling rate and watch when the search stops taking bad moves seriously.",
+    after: "When did an uphill move help, and when did it merely waste time?"
+  }
+];
+---
+<BaseLayout
+  title="Teaching with the Laboratories | CMNA"
+  description="Prediction questions, demonstration sequences, and follow-up prompts for the CMNA numerical-analysis laboratories."
+>
+  <header class="page-head teaching-head">
+    <div class="shell">
+      <p class="eyebrow">Teaching · Laboratories</p>
+      <h1 class="page-title">Do not click Run yet.</h1>
+      <p class="lede">
+        The laboratories are most useful after a prediction has been made. Otherwise
+        the animation can become a very pretty way to watch the computer tell us
+        something we never bothered to think about.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell content">
+      <p>
+        For each lab, I would ask three kinds of questions. First, what should happen
+        before we run anything? Second, what parameter or assumption should we change
+        while everyone can see the consequence? Third, what explanation survives
+        after the graph has moved? The notes below are built around that sequence.
+      </p>
+      <p>
+        There is no requirement to use every prompt. In fact, trying to use every
+        prompt would be a fine way to turn a useful demonstration into a hostage
+        situation. Pick the one that exposes the assumption you want students to
+        notice that day.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell teaching-lab-note-list">
+      {labs.map((lab) => (
+        <article class="teaching-lab-note">
+          <div class="teaching-lab-note-head">
+            <span>{lab.group}</span>
+            <h2>{lab.title}</h2>
+            <a href={lab.href}>Open laboratory →</a>
+          </div>
+          <div class="teaching-lab-note-grid">
+            <div>
+              <h3>Before we run it</h3>
+              <p>{lab.before}</p>
+            </div>
+            <div>
+              <h3>Change this in public</h3>
+              <p>{lab.show}</p>
+            </div>
+            <div>
+              <h3>Ask afterward</h3>
+              <p>{lab.after}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

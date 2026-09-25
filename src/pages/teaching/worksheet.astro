@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="Prediction Worksheet | CMNA Teaching"
+  description="A print-friendly prediction and explanation worksheet for CMNA laboratories."
+  noindex={true}
+>
+  <header class="page-head worksheet-screen-head">
+    <div class="shell">
+      <p class="eyebrow">Teaching · Worksheet</p>
+      <h1 class="page-title">Prediction worksheet</h1>
+      <p class="lede">
+        Make the prediction before the graph moves. Then write down what happened and
+        explain the difference.
+      </p>
+    </div>
+  </header>
+
+  <section class="section worksheet-section">
+    <div class="shell">
+      <div class="worksheet-actions">
+        <a href="/teaching/laboratories/">Instructor laboratory notes</a>
+        <button class="button" type="button" data-print>Print worksheet</button>
+      </div>
+
+      <article class="prediction-worksheet">
+        <header>
+          <span>CMNA Laboratory</span>
+          <h1 data-worksheet-title>Bisection</h1>
+          <div class="worksheet-meta">
+            <div><strong>Name</strong><span></span></div>
+            <div><strong>Date</strong><span></span></div>
+          </div>
+        </header>
+
+        <section>
+          <h2>1. Current problem and parameters</h2>
+          <p class="worksheet-instruction">
+            Copy the function, data, matrix, differential equation, interval, starting
+            value, tolerance, step size, or other parameters that define this run.
+          </p>
+          <div class="worksheet-lines tall"></div>
+        </section>
+
+        <section>
+          <h2>2. Before you run it</h2>
+          <p class="worksheet-prompt" data-predict-prompt></p>
+          <div class="worksheet-lines"></div>
+        </section>
+
+        <section>
+          <h2>3. What happened?</h2>
+          <p class="worksheet-prompt" data-observe-prompt></p>
+          <div class="worksheet-lines"></div>
+        </section>
+
+        <section>
+          <h2>4. Explain the result</h2>
+          <p class="worksheet-prompt" data-explain-prompt></p>
+          <div class="worksheet-lines tall"></div>
+        </section>
+
+        <section class="worksheet-small-section">
+          <h2>5. One thing to change next</h2>
+          <div class="worksheet-lines short"></div>
+        </section>
+      </article>
+    </div>
+  </section>
+
+  <script is:inline type="module" src="/js/prediction-worksheet.js"></script>
+</BaseLayout>

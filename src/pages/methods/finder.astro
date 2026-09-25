@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="Method Finder — CMNA"
+  description="A guided way to navigate the numerical methods represented in CMNA."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Method atlas</p>
+      <h1 class="page-title">What are you trying to compute?</h1>
+      <p class="lede">
+        Start with the problem rather than the function name. The finder points into
+        the methods represented in CMNA and explains what assumption or piece of
+        information makes each family useful.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell">
+      <div class="callout finder-note">
+        <strong>This is a teaching map, not an automatic solver.</strong>
+        <p>
+          It cannot inspect your function, prove the necessary hypotheses, or decide
+          that one method is universally superior. It is meant to connect a
+          computational situation to the algorithms discussed in the book.
+        </p>
+      </div>
+
+      <div class="method-finder" data-method-finder>
+        <div data-task-grid>
+          <p class="section-kicker">Choose a problem</p>
+          <div class="finder-task-grid">
+            <button type="button" data-task="root"><strong>Find a root</strong><span>f(x) = 0</span></button>
+            <button type="button" data-task="integrate"><strong>Approximate an integral</strong><span>∫ f(x) dx</span></button>
+            <button type="button" data-task="linear"><strong>Solve a linear system</strong><span>Ax = b</span></button>
+            <button type="button" data-task="interpolate"><strong>Interpolate data</strong><span>values between samples</span></button>
+            <button type="button" data-task="differentiate"><strong>Approximate a derivative</strong><span>f′(x), f″(x)</span></button>
+            <button type="button" data-task="optimize"><strong>Optimize a function</strong><span>min / max</span></button>
+            <button type="button" data-task="ode"><strong>Solve a differential equation</strong><span>advance a state</span></button>
+          </div>
+        </div>
+
+        <div class="finder-panel" data-finder-panel hidden>
+          <button class="finder-back" type="button" data-finder-back>← Start over</button>
+          <div data-finder-content></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline src="/js/method-finder.js"></script>
+</BaseLayout>

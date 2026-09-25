@@ -1,0 +1,120 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MethodProvenance from "../../components/MethodProvenance.astro";
+const defaultFunction = `f <- function(x) {
+  exp(-x^2)
+}`;
+---
+<BaseLayout
+  title="Simpson's Rule — CMNA"
+  description="Experiment with Simpson's rule using arbitrary R functions in the CMNA Laboratory."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="eyebrow">Numerical integration · CMNA Laboratory</p>
+      <h1 class="page-title">Simpson's rule</h1>
+      <p class="lede">
+        Replace the integrand with local quadratics, integrate those easy curves,
+        and add the pieces. Then do it to your own R function.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <h2>Three samples define the panel</h2>
+        <p>
+          CMNA's <code>simp()</code> divides the interval into <code>m</code> panels.
+          For each panel it evaluates the function at the left endpoint, midpoint,
+          and right endpoint. Those three values determine a quadratic approximation,
+          whose area is
+        </p>
+        <p class="display-equation"><code>h / 6 × [f(x₀) + 4f(xₘ) + f(x₁)]</code></p>
+        <p>
+          The factor of four on the midpoint is not decoration: it is exactly the
+          weight produced by integrating the interpolating quadratic.
+        </p>
+      </article>
+      <aside class="callout">
+        <strong>What to watch</strong>
+        <p>
+          The dark blue line is the function R actually evaluates. Gold panels show
+          the local quadratic approximations. Play through them one at a time and
+          watch the accumulated area approach the final Simpson estimate.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section lab-section">
+    <div class="shell" data-simpson-lab>
+      <div class="lab-heading">
+        <div>
+          <p class="section-kicker">Bring your own integrand</p>
+          <h2 class="section-title">Let R draw the curve. Let Simpson tile it.</h2>
+          <p class="lede">
+            Write any vectorized R function <code>f(x)</code>, choose bounds and a
+            panel count, then play the approximation panel by panel.
+          </p>
+        </div>
+        <div class="lab-expression">
+          <span>Runtime</span>
+          <code data-status>Preparing R…</code>
+        </div>
+      </div>
+
+      <div class="r-guided-grid">
+        <section class="r-guided-editor">
+          <div class="r-editor-label"><span>R</span><small>Define <code>f(x)</code></small></div>
+          <textarea class="r-editor r-function-editor" data-r-function spellcheck="false">{defaultFunction}</textarea>
+          <div class="r-guided-controls">
+            <label>a<input type="number" value="0" step="any" data-a /></label>
+            <label>b<input type="number" value="2" step="any" data-b /></label>
+            <label>panels m<input type="number" value="8" min="1" max="100" step="1" data-m /></label>
+          </div>
+          <div class="r-run-row">
+            <button class="button r-run" type="button" data-run disabled>Run Simpson in R</button>
+            <button class="r-reset" type="button" data-reset>Reset R session</button>
+          </div>
+        </section>
+        <aside class="r-guided-primer">
+          <h3>What changes when m grows?</h3>
+          <p>
+            More panels make each quadratic local to a smaller piece of the function.
+            For a smooth integrand this usually improves the approximation, while
+            also requiring more function evaluations.
+          </p>
+        </aside>
+      </div>
+
+      <div class="lab-summary" data-summary></div>
+
+      <div class="lab-plot-frame">
+        <svg class="lab-plot" role="img" aria-label="Function with Simpson quadratic panels" data-plot></svg>
+      </div>
+
+      <div class="lab-stepper">
+        <button class="button secondary-on-light" type="button" data-play disabled>Play panels</button>
+        <label><span data-step-label>Panel</span><input type="range" min="0" max="1" value="0" data-step disabled /></label>
+      </div>
+      <p class="lab-status" data-step-detail></p>
+
+      <div class="lab-table-wrap">
+        <table class="lab-table">
+          <thead><tr><th>panel</th><th>x₀</th><th>xₘ</th><th>x₁</th><th>panel area</th><th>running area</th></tr></thead>
+          <tbody data-rows></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <MethodProvenance
+    book="§5.2.1 · Multipanel Interpolation Rules · p. 131"
+    functions={["simp"]}
+    sources={["R/simp.R"]}
+    teachingHref="/teaching/chapters/#chapter-5" zoo={[{ label: "Oscillatory integral", href: "/zoo/oscillatory-integral/" }, { label: "Narrow peak", href: "/zoo/narrow-peak/" }]}
+  />
+
+  <script is:inline type="module" src="/js/simpson-lab.js"></script>
+</BaseLayout>

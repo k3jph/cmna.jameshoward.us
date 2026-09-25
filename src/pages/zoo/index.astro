@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { zooEntries } from "../../data/zoo";
+---
+<BaseLayout
+  title="Numerical Zoo | CMNA"
+  description="A curated collection of functions, matrices, and differential equations that expose interesting numerical behavior."
+>
+  <header class="page-head zoo-head">
+    <div class="shell">
+      <p class="eyebrow">Numerical Zoo</p>
+      <h1 class="page-title">Well-behaved mathematics. Occasionally feral computation.</h1>
+      <p class="lede">
+        These are not here because they are representative homework problems. They
+        are here because each one makes some numerical assumption visible, usually by
+        refusing to cooperate with it.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="shell two-column">
+      <article class="content">
+        <p>
+          Numerical analysis has a useful cast of recurring examples. Some are
+          famous because a perfectly innocent formula becomes ill conditioned. Some
+          expose cancellation, instability, locality, or the consequences of a bad
+          starting value. A few are simply very good at making an algorithm admit
+          what it was assuming all along.
+        </p>
+        <p>
+          The entries here are worked problems rather than dictionary definitions.
+          Each one starts with the object, works far enough by hand to identify the
+          mechanism, gives R code, and points into the CMNA laboratories where the
+          problem can be pushed around.
+        </p>
+      </article>
+      <aside class="callout">
+        <strong>Please feed the animals.</strong>
+        <p>
+          Change parameters, representations, starting values, node locations, and
+          step sizes. A canonical example is only useful if we make it misbehave for
+          ourselves.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell zoo-grid">
+      {zooEntries.map((entry) => (
+        <article class="zoo-card">
+          <span>{entry.kind}</span>
+          <h2>{entry.title}</h2>
+          <p>{entry.subtitle}</p>
+          <a href={"/zoo/" + entry.slug + "/"}>Open cage →</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
