@@ -233,6 +233,7 @@ a:hover {
 
 .hero-figure img {
   width: min(100%, 285px);
+  height: auto;
   border: 1px solid rgba(255, 255, 255, 0.24);
   box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
 }
@@ -429,6 +430,7 @@ code:not(pre code) {
 
 .book-cover {
   width: 100%;
+  height: auto;
   box-shadow: 0 18px 45px rgba(9, 27, 44, 0.22);
 }
 

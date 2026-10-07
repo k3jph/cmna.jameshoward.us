@@ -100,3 +100,7 @@ Interactive method pages also carry provenance blocks connecting the browser exp
 ## Reproducible production build
 
 Production uses the committed npm lockfile with `npm ci` in both CI and GitHub Pages deployment. Browser R imports are pinned to webR v0.6.0 rather than the moving `latest` URL. Dependabot checks the npm toolchain weekly.
+
+## Book cover
+
+The locally served 1024 × 1572 publisher cover is preserved from https://covers.vitalsource.com/vbid/9781351646505/width/1024?style=preview (retrieved 2026-10-07). Cover copyright remains with the respective rights holder.
