@@ -1,0 +1,27 @@
+# Computational Methods for Numerical Analysis
+
+> The living web companion to *Computational Methods for Numerical Analysis with R* by James P. Howard, II, with methods, code, browser laboratories, teaching resources, worked examples, errata, and continuing project updates.
+
+Website: https://cmna.jameshoward.us/
+Creator: James P. Howard, II
+Primary book: *Computational Methods for Numerical Analysis with R* (Chapman & Hall/CRC, 2017)
+
+## Main content
+
+- [Book](https://cmna.jameshoward.us/book/): information about the book and its relationship to the companion site.
+- [Methods](https://cmna.jameshoward.us/methods/): numerical-method atlas and method-specific explanations.
+- [Laboratory](https://cmna.jameshoward.us/laboratory/): browser-based interactive numerical-analysis demonstrations.
+- [R Workbench](https://cmna.jameshoward.us/workbench/): client-side R environment powered by webR.
+- [Teaching](https://cmna.jameshoward.us/teaching/): course maps, instructional notes, exercises, worksheets, and adoption material.
+- [Software](https://cmna.jameshoward.us/software/): companion software and canonical implementations.
+- [Numerical Zoo](https://cmna.jameshoward.us/zoo/): canonical problems selected for interesting numerical behavior and failure modes.
+- [Updates](https://cmna.jameshoward.us/updates/): project news and continuing additions.
+- [Cite](https://cmna.jameshoward.us/cite/): citation guidance for the book and companion material.
+
+## Interpretation notes
+
+This site supports the published book; it is not presented as a separate replacement textbook or as an announced second edition. Interactive laboratories are teaching visualizations. Browser-side R computation runs locally through WebAssembly rather than on a CMNA computation server.
+
+## Related
+
+- [James Howard](https://jameshoward.us/): author profile, scholarship, teaching, and related projects.
